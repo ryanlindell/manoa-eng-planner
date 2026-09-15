@@ -1,0 +1,124 @@
+{
+  "_notes": "Hand-verified against pages/<SUBJECT>.html source. Each entry lists only the fields worth asserting on; parse_course.py may return more.",
+  "courses": [
+    {
+      "subject_file": "ACC",
+      "code": "ACC 465B",
+      "expect": {
+        "subject": "ACC",
+        "number": "465",
+        "alpha_suffix": "B",
+        "is_alpha_parent": false,
+        "title": "Accounting Capstone: Managerial Accounting-Tax-Ethics",
+        "credits_raw": "2",
+        "credits_min": 2.0,
+        "credits_max": 2.0
+      }
+    },
+    {
+      "subject_file": "ACC",
+      "code": "ACC 465",
+      "expect": {
+        "subject": "ACC",
+        "number": "465",
+        "alpha_suffix": null,
+        "is_alpha_parent": true,
+        "title": "(Alpha) Accounting Capstone"
+      }
+    },
+    {
+      "subject_file": "ACC",
+      "code": "ACC 395",
+      "expect": {
+        "title": "Accounting Internship",
+        "credits_raw": "1-3",
+        "credits_min": 1.0,
+        "credits_max": 3.0,
+        "prereq_raw": "consent."
+      }
+    },
+    {
+      "subject_file": "ECE",
+      "code": "ECE 211",
+      "expect": {
+        "subject": "ECE",
+        "number": "211",
+        "alpha_suffix": null,
+        "title": "Basic Circuit Analysis I",
+        "credits_raw": "4",
+        "credits_min": 4.0,
+        "credits_max": 4.0,
+        "gened": [
+          "DP"
+        ]
+      }
+    },
+    {
+      "subject_file": "ECE",
+      "code": "ECE 324",
+      "expect": {
+        "title": "Physical Electronics",
+        "credits_raw": "3",
+        "gened": [
+          "DP"
+        ]
+      }
+    },
+    {
+      "subject_file": "PHIL",
+      "code": "PHIL 100",
+      "expect": {
+        "gened": [
+          "DH"
+        ]
+      }
+    },
+    {
+      "subject_file": "BIOL",
+      "code": "BIOL 171",
+      "expect": {
+        "gened": [
+          "DB"
+        ]
+      }
+    },
+    {
+      "subject_file": "BIOL",
+      "code": "BIOL 171L",
+      "expect": {
+        "subject": "BIOL",
+        "number": "171",
+        "alpha_suffix": "L",
+        "gened": [
+          "DY"
+        ]
+      }
+    },
+    {
+      "subject_file": "PHYS",
+      "code": "PHYS 151",
+      "expect": {
+        "gened": [
+          "DP"
+        ]
+      }
+    },
+    {
+      "subject_file": "ENG",
+      "code": "ENG 100",
+      "expect": {
+        "gened": [
+          "FW"
+        ]
+      }
+    },
+    {
+      "subject_file": "MATH",
+      "code": "MATH 241",
+      "expect": {
+        "subject": "MATH",
+        "number": "241"
+      }
+    }
+  ]
+}

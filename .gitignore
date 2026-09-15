@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+cache/
+cookies.txt
+browser_profile/
+browser_profile_*/
+
+# Raw scraped/captured HTML -- large, fully reproducible from the site via
+# capture_playwright.py, and not meant to live in version control.
+pages/
+debug/
+capture_log*.txt

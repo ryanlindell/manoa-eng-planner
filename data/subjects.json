@@ -1,0 +1,718 @@
+[
+  {
+    "code": "ACC",
+    "label": "ACC"
+  },
+  {
+    "code": "AMST",
+    "label": "AMST"
+  },
+  {
+    "code": "ANAT",
+    "label": "ANAT"
+  },
+  {
+    "code": "ANSC",
+    "label": "ANSC"
+  },
+  {
+    "code": "ANTH",
+    "label": "ANTH"
+  },
+  {
+    "code": "ARAB",
+    "label": "ARAB"
+  },
+  {
+    "code": "ARCH",
+    "label": "ARCH"
+  },
+  {
+    "code": "AREC",
+    "label": "AREC"
+  },
+  {
+    "code": "ART",
+    "label": "ART"
+  },
+  {
+    "code": "AS",
+    "label": "AS"
+  },
+  {
+    "code": "ASAN",
+    "label": "ASAN"
+  },
+  {
+    "code": "ASL",
+    "label": "ASL"
+  },
+  {
+    "code": "ASTR",
+    "label": "ASTR"
+  },
+  {
+    "code": "ATMO",
+    "label": "ATMO"
+  },
+  {
+    "code": "BE",
+    "label": "BE"
+  },
+  {
+    "code": "BIOC",
+    "label": "BIOC"
+  },
+  {
+    "code": "BIOL",
+    "label": "BIOL"
+  },
+  {
+    "code": "BIOM",
+    "label": "BIOM"
+  },
+  {
+    "code": "BLAW",
+    "label": "BLAW"
+  },
+  {
+    "code": "BOT",
+    "label": "BOT"
+  },
+  {
+    "code": "BUS",
+    "label": "BUS"
+  },
+  {
+    "code": "CAAM",
+    "label": "CAAM"
+  },
+  {
+    "code": "CALL",
+    "label": "CALL"
+  },
+  {
+    "code": "CAM",
+    "label": "CAM"
+  },
+  {
+    "code": "CEE",
+    "label": "CEE"
+  },
+  {
+    "code": "CHAM",
+    "label": "CHAM"
+  },
+  {
+    "code": "CHEM",
+    "label": "CHEM"
+  },
+  {
+    "code": "CHN",
+    "label": "CHN"
+  },
+  {
+    "code": "CINE",
+    "label": "CINE"
+  },
+  {
+    "code": "CIS",
+    "label": "CIS"
+  },
+  {
+    "code": "CLAS",
+    "label": "CLAS"
+  },
+  {
+    "code": "CMB",
+    "label": "CMB"
+  },
+  {
+    "code": "COA",
+    "label": "COA"
+  },
+  {
+    "code": "COM",
+    "label": "COM"
+  },
+  {
+    "code": "COMG",
+    "label": "COMG"
+  },
+  {
+    "code": "CSD",
+    "label": "CSD"
+  },
+  {
+    "code": "CUL",
+    "label": "CUL"
+  },
+  {
+    "code": "DATA",
+    "label": "DATA"
+  },
+  {
+    "code": "DH",
+    "label": "DH"
+  },
+  {
+    "code": "DIS",
+    "label": "DIS"
+  },
+  {
+    "code": "DNCE",
+    "label": "DNCE"
+  },
+  {
+    "code": "DRB",
+    "label": "DRB"
+  },
+  {
+    "code": "EALL",
+    "label": "EALL"
+  },
+  {
+    "code": "ECON",
+    "label": "ECON"
+  },
+  {
+    "code": "EDCS",
+    "label": "EDCS"
+  },
+  {
+    "code": "EDEA",
+    "label": "EDEA"
+  },
+  {
+    "code": "EDEF",
+    "label": "EDEF"
+  },
+  {
+    "code": "EDEP",
+    "label": "EDEP"
+  },
+  {
+    "code": "EDUC",
+    "label": "EDUC"
+  },
+  {
+    "code": "ELI",
+    "label": "ELI"
+  },
+  {
+    "code": "ENG",
+    "label": "ENG"
+  },
+  {
+    "code": "ENGR",
+    "label": "ENGR"
+  },
+  {
+    "code": "EPET",
+    "label": "EPET"
+  },
+  {
+    "code": "ERTH",
+    "label": "ERTH"
+  },
+  {
+    "code": "ES",
+    "label": "ES"
+  },
+  {
+    "code": "ESEE",
+    "label": "ESEE"
+  },
+  {
+    "code": "ESL",
+    "label": "ESL"
+  },
+  {
+    "code": "FDM",
+    "label": "FDM"
+  },
+  {
+    "code": "FIL",
+    "label": "FIL"
+  },
+  {
+    "code": "FIN",
+    "label": "FIN"
+  },
+  {
+    "code": "FISH",
+    "label": "FISH"
+  },
+  {
+    "code": "FMCH",
+    "label": "FMCH"
+  },
+  {
+    "code": "FR",
+    "label": "FR"
+  },
+  {
+    "code": "FSHN",
+    "label": "FSHN"
+  },
+  {
+    "code": "GEO",
+    "label": "GEO"
+  },
+  {
+    "code": "GER",
+    "label": "GER"
+  },
+  {
+    "code": "GERI",
+    "label": "GERI"
+  },
+  {
+    "code": "GES",
+    "label": "GES"
+  },
+  {
+    "code": "GRK",
+    "label": "GRK"
+  },
+  {
+    "code": "HAW",
+    "label": "HAW"
+  },
+  {
+    "code": "HDFS",
+    "label": "HDFS"
+  },
+  {
+    "code": "HIST",
+    "label": "HIST"
+  },
+  {
+    "code": "HNDI",
+    "label": "HNDI"
+  },
+  {
+    "code": "HON",
+    "label": "HON"
+  },
+  {
+    "code": "HRM",
+    "label": "HRM"
+  },
+  {
+    "code": "HSSW",
+    "label": "HSSW"
+  },
+  {
+    "code": "HWST",
+    "label": "HWST"
+  },
+  {
+    "code": "ICS",
+    "label": "ICS"
+  },
+  {
+    "code": "ILO",
+    "label": "ILO"
+  },
+  {
+    "code": "IND",
+    "label": "IND"
+  },
+  {
+    "code": "INS",
+    "label": "INS"
+  },
+  {
+    "code": "IP",
+    "label": "IP"
+  },
+  {
+    "code": "IS",
+    "label": "IS"
+  },
+  {
+    "code": "ITAL",
+    "label": "ITAL"
+  },
+  {
+    "code": "ITM",
+    "label": "ITM"
+  },
+  {
+    "code": "JOUR",
+    "label": "JOUR"
+  },
+  {
+    "code": "JPN",
+    "label": "JPN"
+  },
+  {
+    "code": "KOR",
+    "label": "KOR"
+  },
+  {
+    "code": "KRS",
+    "label": "KRS"
+  },
+  {
+    "code": "LAIS",
+    "label": "LAIS"
+  },
+  {
+    "code": "LATN",
+    "label": "LATN"
+  },
+  {
+    "code": "LAW",
+    "label": "LAW"
+  },
+  {
+    "code": "LING",
+    "label": "LING"
+  },
+  {
+    "code": "LIS",
+    "label": "LIS"
+  },
+  {
+    "code": "LLEA",
+    "label": "LLEA"
+  },
+  {
+    "code": "LTEC",
+    "label": "LTEC"
+  },
+  {
+    "code": "LWEV",
+    "label": "LWEV"
+  },
+  {
+    "code": "LWJT",
+    "label": "LWJT"
+  },
+  {
+    "code": "LWLM",
+    "label": "LWLM"
+  },
+  {
+    "code": "LWLR",
+    "label": "LWLR"
+  },
+  {
+    "code": "LWLW",
+    "label": "LWLW"
+  },
+  {
+    "code": "LWPA",
+    "label": "LWPA"
+  },
+  {
+    "code": "LWUL",
+    "label": "LWUL"
+  },
+  {
+    "code": "MAO",
+    "label": "MAO"
+  },
+  {
+    "code": "MATH",
+    "label": "MATH"
+  },
+  {
+    "code": "MBBE",
+    "label": "MBBE"
+  },
+  {
+    "code": "MBIO",
+    "label": "MBIO"
+  },
+  {
+    "code": "MCB",
+    "label": "MCB"
+  },
+  {
+    "code": "MDED",
+    "label": "MDED"
+  },
+  {
+    "code": "MDHX",
+    "label": "MDHX"
+  },
+  {
+    "code": "ME",
+    "label": "ME"
+  },
+  {
+    "code": "MED",
+    "label": "MED"
+  },
+  {
+    "code": "MEDT",
+    "label": "MEDT"
+  },
+  {
+    "code": "MGT",
+    "label": "MGT"
+  },
+  {
+    "code": "MICR",
+    "label": "MICR"
+  },
+  {
+    "code": "MKT",
+    "label": "MKT"
+  },
+  {
+    "code": "MSL",
+    "label": "MSL"
+  },
+  {
+    "code": "MUS",
+    "label": "MUS"
+  },
+  {
+    "code": "NAVL",
+    "label": "NAVL"
+  },
+  {
+    "code": "NHH",
+    "label": "NHH"
+  },
+  {
+    "code": "NREM",
+    "label": "NREM"
+  },
+  {
+    "code": "NSCI",
+    "label": "NSCI"
+  },
+  {
+    "code": "NSEB",
+    "label": "NSEB"
+  },
+  {
+    "code": "NURS",
+    "label": "NURS"
+  },
+  {
+    "code": "OBGN",
+    "label": "OBGN"
+  },
+  {
+    "code": "OCN",
+    "label": "OCN"
+  },
+  {
+    "code": "OEST",
+    "label": "OEST"
+  },
+  {
+    "code": "ORE",
+    "label": "ORE"
+  },
+  {
+    "code": "PACE",
+    "label": "PACE"
+  },
+  {
+    "code": "PACS",
+    "label": "PACS"
+  },
+  {
+    "code": "PALI",
+    "label": "PALI"
+  },
+  {
+    "code": "PAS",
+    "label": "PAS"
+  },
+  {
+    "code": "PATH",
+    "label": "PATH"
+  },
+  {
+    "code": "PED",
+    "label": "PED"
+  },
+  {
+    "code": "PEPS",
+    "label": "PEPS"
+  },
+  {
+    "code": "PH",
+    "label": "PH"
+  },
+  {
+    "code": "PHIL",
+    "label": "PHIL"
+  },
+  {
+    "code": "PHRM",
+    "label": "PHRM"
+  },
+  {
+    "code": "PHYL",
+    "label": "PHYL"
+  },
+  {
+    "code": "PHYS",
+    "label": "PHYS"
+  },
+  {
+    "code": "PLAN",
+    "label": "PLAN"
+  },
+  {
+    "code": "POLS",
+    "label": "POLS"
+  },
+  {
+    "code": "PORT",
+    "label": "PORT"
+  },
+  {
+    "code": "PPC",
+    "label": "PPC"
+  },
+  {
+    "code": "PRAK",
+    "label": "PRAK"
+  },
+  {
+    "code": "PSTY",
+    "label": "PSTY"
+  },
+  {
+    "code": "PSY",
+    "label": "PSY"
+  },
+  {
+    "code": "PUBA",
+    "label": "PUBA"
+  },
+  {
+    "code": "QHS",
+    "label": "QHS"
+  },
+  {
+    "code": "RE",
+    "label": "RE"
+  },
+  {
+    "code": "REL",
+    "label": "REL"
+  },
+  {
+    "code": "REPR",
+    "label": "REPR"
+  },
+  {
+    "code": "RUS",
+    "label": "RUS"
+  },
+  {
+    "code": "SAM",
+    "label": "SAM"
+  },
+  {
+    "code": "SLS",
+    "label": "SLS"
+  },
+  {
+    "code": "SNSK",
+    "label": "SNSK"
+  },
+  {
+    "code": "SOC",
+    "label": "SOC"
+  },
+  {
+    "code": "SOCS",
+    "label": "SOCS"
+  },
+  {
+    "code": "SPAN",
+    "label": "SPAN"
+  },
+  {
+    "code": "SPED",
+    "label": "SPED"
+  },
+  {
+    "code": "STE",
+    "label": "STE"
+  },
+  {
+    "code": "SURG",
+    "label": "SURG"
+  },
+  {
+    "code": "SUST",
+    "label": "SUST"
+  },
+  {
+    "code": "SW",
+    "label": "SW"
+  },
+  {
+    "code": "TAHR",
+    "label": "TAHR"
+  },
+  {
+    "code": "TAHT",
+    "label": "TAHT"
+  },
+  {
+    "code": "THAI",
+    "label": "THAI"
+  },
+  {
+    "code": "THEA",
+    "label": "THEA"
+  },
+  {
+    "code": "TI",
+    "label": "TI"
+  },
+  {
+    "code": "TIM",
+    "label": "TIM"
+  },
+  {
+    "code": "TONG",
+    "label": "TONG"
+  },
+  {
+    "code": "TPSS",
+    "label": "TPSS"
+  },
+  {
+    "code": "TRMD",
+    "label": "TRMD"
+  },
+  {
+    "code": "UNIV",
+    "label": "UNIV"
+  },
+  {
+    "code": "URDU",
+    "label": "URDU"
+  },
+  {
+    "code": "UROP",
+    "label": "UROP"
+  },
+  {
+    "code": "VIET",
+    "label": "VIET"
+  },
+  {
+    "code": "WGSS",
+    "label": "WGSS"
+  },
+  {
+    "code": "ZOOL",
+    "label": "ZOOL"
+  }
+]
