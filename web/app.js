@@ -1,5 +1,5 @@
 const MIN_SLOTS_PER_SEMESTER = 5;
-const FIXTURE_URL = "../contracts/fixtures/courses.sample.json";
+const FIXTURE_URL = "../contracts/fixtures/courses.json";
 
 // Term semesters (not transfer) must be named exactly "Fall 2026",
 // "Spring 2027", "Summer 2028", etc.
@@ -17,20 +17,32 @@ const INITIAL_SEMESTERS = [
   { name: "Spring 2030" },
 ];
 
-// The "Normal Schedule" reference panel — a hand-placed recommended plan.
-// Read-only; clicking a tile here copies the course into whatever slot is
-// currently selected in Your Plan. Independent of Your Plan's semester list.
+// The "Normal Schedule" reference panel — the EE curriculum check sheet
+// (August 2026, UH Manoa) transcribed course-for-course. Read-only; clicking
+// a tile here copies the course into whatever slot is currently selected in
+// Your Plan. Independent of Your Plan's semester list.
+//
+// Slots the check sheet itself leaves student-choice-dependent (Major Track
+// Group I/II, Technical Electives, EB, FG, Focus designations, DH-or-DL) are
+// REQ-*/-placeholder codes, not real specific courses — see
+// scripts/build_ece_fixture.py for what each one means. Two real either/or
+// choices on the sheet (ECE 160 or ECE 110; ECE 345 or MATH 307) are shown as
+// both alternatives so you can place whichever one applies.
 const TEMPLATE_SEMESTER_LABELS = [
-  "Freshman 1", "Freshman 2",
-  "Sophomore 1", "Sophomore 2",
-  "Junior 1",
+  "Freshman Fall", "Freshman Spring",
+  "Sophomore Fall", "Sophomore Spring",
+  "Junior Fall", "Junior Spring",
+  "Senior Fall", "Senior Spring",
 ];
 const TEMPLATE_PLAN = {
-  "Freshman 1": ["CAS MA 123", "CAS PY 211", "CAS WR 120", "ENG EK 125"],
-  "Freshman 2": ["CAS MA 124", "CAS PY 212", "CAS EN 101", "EE 101"],
-  "Sophomore 1": ["CAS MA 225", "EE 211", "CAS SO 100"],
-  "Sophomore 2": ["EE 212", "EE 302", "CAS HI 108"],
-  "Junior 1": ["EE 341"],
+  "Freshman Fall": ["ENG 100", "MATH 241", "CHEM 161", "CHEM 161L", "ECE 160", "ECE 110", "REQ-FOCUS-H"],
+  "Freshman Spring": ["MATH 242", "PHYS 170", "PHYS 170L", "CHEM 162", "REQ-FG-1", "REQ-FOCUS-E"],
+  "Sophomore Fall": ["ECE 211", "ECE 260", "MATH 243", "PHYS 272", "PHYS 272L", "REQ-FOCUS-O"],
+  "Sophomore Spring": ["ECE 213", "MATH 244", "PHYS 274", "ECE 296", "COMG 251", "REQ-FG-2", "REQ-FOCUS-W"],
+  "Junior Fall": ["ECE 315", "ECE 324", "ECE 371", "ECE 345", "MATH 307", "REQ-EB"],
+  "Junior Spring": ["ECE 323", "ECE 323L", "ECE 342", "REQ-TE-1", "REQ-MAJOR1-1", "REQ-MAJOR1LAB-1", "ECE 396"],
+  "Senior Fall": ["REQ-MAJOR1-2", "REQ-MAJOR1LAB-2", "REQ-MAJOR1-3", "REQ-TE-2", "REQ-DHDL"],
+  "Senior Spring": ["ECE 496", "ECE 495", "REQ-MAJOR2-1", "REQ-MAJOR2-2", "ECON 120", "ECON 130", "ECON 131", "REQ-DS"],
 };
 
 let coursesByCode = new Map();
@@ -636,7 +648,7 @@ async function init() {
     console.error(err);
     renderError(
       "Could not load course fixture. This page fetches " +
-        "contracts/fixtures/courses.sample.json, which browsers block " +
+        "contracts/fixtures/courses.json, which browsers block " +
         "over file:// — serve this repo with a static server (e.g. " +
         "`python -m http.server` from the repo root) and open " +
         "/web/index.html instead."

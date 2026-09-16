@@ -1,0 +1,630 @@
+[
+  {
+    "code": "CHEM 161",
+    "title": "General Chemistry I",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DP"
+    ],
+    "category": "core",
+    "prereq_parse_status": "partial",
+    "prereq_raw": "C (not C-) in CHEM 131 or C (not C-) in CHEM 151 or successful completion of placement exam, or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68679"
+  },
+  {
+    "code": "CHEM 161L",
+    "title": "General Chemistry Lab I",
+    "credits": 1.0,
+    "credits_raw": "1",
+    "gened": [
+      "DY"
+    ],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "CHEM 161 (or concurrent).",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68734"
+  },
+  {
+    "code": "CHEM 162",
+    "title": "General Chemistry II",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DP"
+    ],
+    "category": "core",
+    "prereq_parse_status": "failed",
+    "prereq_raw": "C (not C-) or better in CHEM 161 .",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68680"
+  },
+  {
+    "code": "COMG 251",
+    "title": "Principles of Effective Public Speaking",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DA"
+    ],
+    "category": "hub",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69029"
+  },
+  {
+    "code": "ECE 110",
+    "title": "Introduction to Engineering Computation",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 241 (or concurrent) or MATH 251A (or concurrent) or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69702"
+  },
+  {
+    "code": "ECE 160",
+    "title": "Programming for Engineers",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 241 (or concurrent) or MATH 251A (or concurrent) or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69703"
+  },
+  {
+    "code": "ECE 211",
+    "title": "Basic Circuit Analysis I",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [
+      "DP"
+    ],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 243 (or concurrent) or MATH 253A (or concurrent), and PHYS 272 (or concurrent); or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69706"
+  },
+  {
+    "code": "ECE 213",
+    "title": "Basic Circuit Analysis II",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [
+      "DP"
+    ],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 211 , and MATH 244 (or concurrent) or MATH 253A (or concurrent); or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69707"
+  },
+  {
+    "code": "ECE 260",
+    "title": "Introduction to Digital Design",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 160 or ECE 110 or ICS 111 or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69708"
+  },
+  {
+    "code": "ECE 296",
+    "title": "Sophomore Project",
+    "credits": 1.0,
+    "credits_raw": "1-3",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69709"
+  },
+  {
+    "code": "ECE 315",
+    "title": "Signal and Systems Analysis",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 213 and either MATH 244 or MATH 253A ; or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69710"
+  },
+  {
+    "code": "ECE 323",
+    "title": "Microelectronic Circuits I",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DP"
+    ],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 213",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69711"
+  },
+  {
+    "code": "ECE 323L",
+    "title": "Microelectronic Circuits I Lab",
+    "credits": 1.0,
+    "credits_raw": "1",
+    "gened": [
+      "DY"
+    ],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 213",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69835"
+  },
+  {
+    "code": "ECE 324",
+    "title": "Physical Electronics",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DP"
+    ],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 243 or MATH 253A , and PHYS 274 ; or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69712"
+  },
+  {
+    "code": "ECE 342",
+    "title": "Probability and Statistics",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 315 (or concurrent) and either MATH 244 or MATH 253A ; or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69716"
+  },
+  {
+    "code": "ECE 345",
+    "title": "Linear Algebra and Machine Learning",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 242 or MATH 252A or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69719"
+  },
+  {
+    "code": "ECE 371",
+    "title": "Engineering Electromagnetics I",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 213",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69727"
+  },
+  {
+    "code": "ECE 396",
+    "title": "Junior Project",
+    "credits": 1.0,
+    "credits_raw": "1-6",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 296 or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69729"
+  },
+  {
+    "code": "ECE 495",
+    "title": "Ethics in Electrical Engineering",
+    "credits": 1.0,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ECE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print="
+  },
+  {
+    "code": "ECE 496",
+    "title": "Capstone Design Project",
+    "credits": 2.0,
+    "credits_raw": "2-5",
+    "gened": [],
+    "category": "technical",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "ECE 396 or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ECE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print="
+  },
+  {
+    "code": "ECON 120",
+    "title": "Introduction to Economics",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DS"
+    ],
+    "category": "hub",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69356"
+  },
+  {
+    "code": "ECON 130",
+    "title": "Principles of Microeconomics",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DS"
+    ],
+    "category": "hub",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69357"
+  },
+  {
+    "code": "ECON 131",
+    "title": "Principles of Macroeconomics",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DS"
+    ],
+    "category": "hub",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69358"
+  },
+  {
+    "code": "ENG 100",
+    "title": "Composition I",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "FW"
+    ],
+    "category": "hub",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=69850"
+  },
+  {
+    "code": "MATH 241",
+    "title": "Calculus I",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [
+      "FQ"
+    ],
+    "category": "core",
+    "prereq_parse_status": "partial",
+    "prereq_raw": "MATH 140X or MATH 215 or placement exam.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72327"
+  },
+  {
+    "code": "MATH 242",
+    "title": "Calculus II",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [],
+    "category": "core",
+    "prereq_parse_status": "partial",
+    "prereq_raw": "MATH 241 or MATH 251A or a grade of B or better in MATH 215 ; or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72328"
+  },
+  {
+    "code": "MATH 243",
+    "title": "Calculus III",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 242 or MATH 252A , or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72329"
+  },
+  {
+    "code": "MATH 244",
+    "title": "Calculus IV",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 243 or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72330"
+  },
+  {
+    "code": "MATH 307",
+    "title": "Linear Algebra and Differential Equations",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "MATH 242 or MATH 252A , or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72337"
+  },
+  {
+    "code": "PHYS 170",
+    "title": "General Physics I",
+    "credits": 4.0,
+    "credits_raw": "4",
+    "gened": [
+      "DP"
+    ],
+    "category": "core",
+    "prereq_parse_status": "partial",
+    "prereq_raw": "MATH 242 (or concurrent) or MATH 252A (or concurrent). MATH 216 may be substituted with consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=74106"
+  },
+  {
+    "code": "PHYS 170L",
+    "title": "General Physics I Lab",
+    "credits": 1.0,
+    "credits_raw": "1",
+    "gened": [
+      "DY"
+    ],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "PHYS 170 (or concurrent) or PHYS 170A (or concurrent).",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=74158"
+  },
+  {
+    "code": "PHYS 272",
+    "title": "General Physics II",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DP"
+    ],
+    "category": "core",
+    "prereq_parse_status": "partial",
+    "prereq_raw": "PHYS 151 or PHYS 170 and MATH 242 or MATH 252A , MATH 216 may be substituted with consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=74107"
+  },
+  {
+    "code": "PHYS 272L",
+    "title": "General Physics II Lab",
+    "credits": 1.0,
+    "credits_raw": "1",
+    "gened": [
+      "DY"
+    ],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "PHYS 151L or PHYS 170L , and PHYS 272 (or concurrent) or PHYS 272A (or concurrent).",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=74160"
+  },
+  {
+    "code": "PHYS 274",
+    "title": "General Physics III",
+    "credits": 3.0,
+    "credits_raw": "3",
+    "gened": [
+      "DP"
+    ],
+    "category": "core",
+    "prereq_parse_status": "clean",
+    "prereq_raw": "PHYS 152 or PHYS 272 and MATH 243 (or concurrent) or MATH 253A (or concurrent); or consent.",
+    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=74108"
+  },
+  {
+    "code": "REQ-DHDL",
+    "title": "Diversification: DH or DL",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-DS",
+    "title": "Diversification: DS",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-EB",
+    "title": "Engineering Breadth — CEE/ME/OE/BE 300+, CEE 270, or an approved 300+ science course",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-FG-1",
+    "title": "Foundation: Global & Multicultural (FG)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-FG-2",
+    "title": "Foundation: Global & Multicultural (FG)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-FOCUS-E",
+    "title": "E Focus — Contemporary Ethical Issues (any qualifying course)",
+    "credits": 1,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-FOCUS-H",
+    "title": "H Focus — Hawaiian, Asian & Pacific Issues (any qualifying course)",
+    "credits": 1,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-FOCUS-O",
+    "title": "O Focus — Oral Communication (any qualifying course)",
+    "credits": 1,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-FOCUS-W",
+    "title": "W Focus — Writing Intensive (5 courses total across the degree, min. 2 upper-division)",
+    "credits": 5,
+    "credits_raw": "5",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR1-1",
+    "title": "Major Track — Group I course (your chosen EP or SDS track)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR1-2",
+    "title": "Major Track — Group I course (your chosen EP or SDS track)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR1-3",
+    "title": "Major Track — Group I course (your chosen EP or SDS track)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR1LAB-1",
+    "title": "Major Track — Group I lab",
+    "credits": 1,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR1LAB-2",
+    "title": "Major Track — Group I lab",
+    "credits": 1,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR2-1",
+    "title": "Major Track — Group II course",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-MAJOR2-2",
+    "title": "Major Track — Group II course",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-TE-1",
+    "title": "Technical Elective — ECE 300+ or department-approved (see check sheet notes)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
+    "code": "REQ-TE-2",
+    "title": "Technical Elective — ECE 300+ or department-approved (see check sheet notes)",
+    "credits": 3,
+    "credits_raw": "3",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  }
+]
