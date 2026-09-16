@@ -1,0 +1,118 @@
+[
+  {
+    "code": "ECE 211",
+    "prereq_raw": "MATH 243 (or concurrent) or MATH 253A (or concurrent), and PHYS 272 (or concurrent); or consent."
+  },
+  {
+    "code": "ECE 213",
+    "prereq_raw": "ECE 211 , and MATH 244 (or concurrent) or MATH 253A (or concurrent); or consent."
+  },
+  {
+    "code": "ECE 342",
+    "prereq_raw": "ECE 315 (or concurrent) and either MATH 244 or MATH 253A ; or consent."
+  },
+  {
+    "code": "COA 334",
+    "prereq_raw": "230"
+  },
+  {
+    "code": "SNSK 381",
+    "prereq_raw": "282"
+  },
+  {
+    "code": "DH 251",
+    "prereq_raw": "DH 250"
+  },
+  {
+    "code": "ACC 395",
+    "prereq_raw": "consent."
+  },
+  {
+    "code": "ACC 321",
+    "prereq_raw": "ACC 200 and ACC 210 , or BUS 624 (with a minimum grade of C- or better)."
+  },
+  {
+    "code": "ANSC 244",
+    "prereq_raw": "( ANSC 200 (or concurrent), CHEM 161 / CHEM 161L or higher) with a minimum grade of C."
+  },
+  {
+    "code": "ANSC 321",
+    "prereq_raw": "( ANSC 201 (or concurrent), and ANSC 244 or FSHN 244 ) with a minimum grade of C."
+  },
+  {
+    "code": "ANSC 387",
+    "prereq_raw": "( ANSC 200 or ANSC 201 , and BIOL 171 and BIOL 171L and CHEM 161 ) with a minimum grade of D-."
+  },
+  {
+    "code": "ANSC 445",
+    "prereq_raw": "( BIOL 171 / BIOL 171L or ZOOL 101 / ZOOL 101L , and MATH 140X or higher) with a minimum grade of C. Recommended: biochemistry and genetics or equivalent."
+  },
+  {
+    "code": "AMST 334",
+    "prereq_raw": "one DH, DA, or DL course, sophomore standing, or consent."
+  },
+  {
+    "code": "ANTH 375",
+    "prereq_raw": "sophomore standing, recommend ANTH 152 and ANTH 215 ; or consent."
+  },
+  {
+    "code": "ANTH 460",
+    "prereq_raw": "sophomore standing, recommend ANTH 310 , or consent."
+  },
+  {
+    "code": "ANTH 467",
+    "prereq_raw": "junior standing or higher, ANTH 152 , or consent."
+  },
+  {
+    "code": "ART 330",
+    "prereq_raw": "Two of the following: ART 230 , ART 234 , ART 303 , ART 306 ."
+  },
+  {
+    "code": "ART 791",
+    "prereq_raw": "consent,"
+  },
+  {
+    "code": "ATMO 499",
+    "prereq_raw": "ATMO 302 , ATMO 303 (or concurrent)."
+  },
+  {
+    "code": "GES 320",
+    "prereq_raw": "OCN 201 , CHEM 161 , BIOL 171 ."
+  },
+  {
+    "code": "MDED 545B",
+    "prereq_raw": "FMCH 532 , MED 532 , OBGN 532 , PED 532 , PSTY 532 , SURG 532 ."
+  },
+  {
+    "code": "MAO 301",
+    "prereq_raw": "MAO 202 , no waiver."
+  },
+  {
+    "code": "MATH 134",
+    "prereq_raw": "two years of high school algebra, one year of plane geometry."
+  },
+  {
+    "code": "HWST 491",
+    "prereq_raw": "HWST 341 , HWST 342 , [ HWST 343 or HWST 390 or HWST 490 (or concurrent)] and [ HWST 207 / SUST 217 or HWST 285 or HWST 307 / SUST 317 or HWST 356 / SUST 356 ] and [ SUST 222 or HWST 224 or HWST 225 or HWST 372 or HWST 478 ]."
+  },
+  {
+    "code": "PH 441",
+    "prereq_raw": "( PH 201 , or ANSC 200 , or BIOC 141 , or BIOL 101 , or BIOL 171 , or BOT 101 , or ERTH 101 , or GES 102 , or OEST 101 , or OCN 102 , or ATMO 150, or SOC 180 ) with a minimum grade of C or better; or consent."
+  },
+  {
+    "code": "NREM 677",
+    "prereq_raw": "one physics course (e.g. PHYS 151 ), one calculus course (e.g. NREM 203 ), and one statistics course (e.g. NREM 310 ), or consent. Recommended: either GEO 470 or ERTH 460 or one introductory remote sensing course."
+  },
+  {
+    "code": "FSHN 607",
+    "prereq_raw": "graduate student status with undergraduate courses in organic chemistry, microbiology, additional biological science, physics, and biochemistry. Basic knowledge of food science is expected; or consent."
+  },
+  {
+    "code": "DNCE 400B",
+    "prereq_raw": "audition and performance of role in a Department of Theatre and Dance production for (B); DNCE 200C for (C); DNCE 200D for (D); DNCE 200E for (E); DNCE 200B or DNCE 200C or DNCE 200F , and consent for (F)."
+  },
+  {
+    "code": "ANSC 687",
+    "prereq_raw": "graduate standing or consent and MBBE 402 / MBBE 402L , and FSHN 477 ; or BIOC 441 ."
+  }
+]

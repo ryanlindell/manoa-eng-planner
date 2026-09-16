@@ -25,7 +25,7 @@ def _courses_by_code(subject_file):
     html = _page_html(subject_file)
     if html is None:
         return None
-    return {c["code"]: c for c in parse_course.parse_subject_page(html)}
+    return {c["code"]: c for c in parse_course.parse_subject_page(html) if c["parse_status"] == "ok"}
 
 
 @pytest.mark.parametrize("entry", GOLDEN["courses"], ids=lambda e: e["code"])
@@ -60,6 +60,11 @@ def test_every_course_block_parses(subject_file):
 def test_no_empty_required_fields(subject_file):
     html = (PAGES_DIR / f"{subject_file}.html").read_text(encoding="utf-8")
     for c in parse_course.parse_subject_page(html):
+        if c["parse_status"] != "ok":
+            # A course whose heading didn't match the expected shape must still
+            # be visible (not silently dropped), carrying the raw text instead.
+            assert c["raw_block_snippet"], f"failed block with no raw text: {c}"
+            continue
         # Description can legitimately be empty (e.g. some directed-reading/
         # independent-study courses have no prose at all in the source, only
         # Credits + Repeatable/Restrictions) -- only subject/number/title are

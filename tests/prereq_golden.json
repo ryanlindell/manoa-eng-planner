@@ -1,0 +1,333 @@
+[
+  {
+    "code": "ECE 211",
+    "own_subject": "ECE",
+    "prereq_raw": "MATH 243 (or concurrent) or MATH 253A (or concurrent), and PHYS 272 (or concurrent); or consent.",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "course": "MATH 243",
+          "concurrent": true
+        },
+        {
+          "op": "AND",
+          "children": [
+            {
+              "course": "MATH 253A",
+              "concurrent": true
+            },
+            {
+              "course": "PHYS 272",
+              "concurrent": true
+            }
+          ]
+        },
+        {
+          "type": "consent"
+        }
+      ]
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ECE 213",
+    "own_subject": "ECE",
+    "prereq_raw": "ECE 211 , and MATH 244 (or concurrent) or MATH 253A (or concurrent); or consent.",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "op": "AND",
+          "children": [
+            {
+              "course": "ECE 211"
+            },
+            {
+              "course": "MATH 244",
+              "concurrent": true
+            }
+          ]
+        },
+        {
+          "course": "MATH 253A",
+          "concurrent": true
+        },
+        {
+          "type": "consent"
+        }
+      ]
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ECE 342",
+    "own_subject": "ECE",
+    "prereq_raw": "ECE 315 (or concurrent) and either MATH 244 or MATH 253A ; or consent.",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "op": "AND",
+          "children": [
+            {
+              "course": "ECE 315",
+              "concurrent": true
+            },
+            {
+              "course": "MATH 244"
+            }
+          ]
+        },
+        {
+          "course": "MATH 253A"
+        },
+        {
+          "type": "consent"
+        }
+      ]
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "COA 334",
+    "own_subject": "COA",
+    "prereq_raw": "230",
+    "expected_tree": {
+      "course": "COA 230"
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "SNSK 381",
+    "own_subject": "SNSK",
+    "prereq_raw": "282",
+    "expected_tree": {
+      "course": "SNSK 282"
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "DH 251",
+    "own_subject": "DH",
+    "prereq_raw": "DH 250",
+    "expected_tree": {
+      "course": "DH 250"
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ACC 395",
+    "own_subject": "ACC",
+    "prereq_raw": "consent.",
+    "expected_tree": {
+      "type": "consent"
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ANSC 321",
+    "own_subject": "ANSC",
+    "prereq_raw": "( ANSC 201 (or concurrent), and ANSC 244 or FSHN 244 ) with a minimum grade of C.",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "op": "AND",
+          "children": [
+            {
+              "course": "ANSC 201",
+              "concurrent": true,
+              "min_grade": "C"
+            },
+            {
+              "course": "ANSC 244",
+              "min_grade": "C"
+            }
+          ]
+        },
+        {
+          "course": "FSHN 244",
+          "min_grade": "C"
+        }
+      ]
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ANSC 387",
+    "own_subject": "ANSC",
+    "prereq_raw": "( ANSC 200 or ANSC 201 , and BIOL 171 and BIOL 171L and CHEM 161 ) with a minimum grade of D-.",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "course": "ANSC 200",
+          "min_grade": "D-"
+        },
+        {
+          "op": "AND",
+          "children": [
+            {
+              "course": "ANSC 201",
+              "min_grade": "D-"
+            },
+            {
+              "course": "BIOL 171",
+              "min_grade": "D-"
+            },
+            {
+              "course": "BIOL 171L",
+              "min_grade": "D-"
+            },
+            {
+              "course": "CHEM 161",
+              "min_grade": "D-"
+            }
+          ]
+        }
+      ]
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ART 330",
+    "own_subject": "ART",
+    "prereq_raw": "Two of the following: ART 230 , ART 234 , ART 303 , ART 306 .",
+    "expected_tree": {
+      "op": "N_OF",
+      "children": [
+        {
+          "course": "ART 230"
+        },
+        {
+          "course": "ART 234"
+        },
+        {
+          "course": "ART 303"
+        },
+        {
+          "course": "ART 306"
+        }
+      ],
+      "n": 2
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ART 791",
+    "own_subject": "ART",
+    "prereq_raw": "consent,",
+    "expected_tree": {
+      "type": "consent"
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "PH 441",
+    "own_subject": "PH",
+    "prereq_raw": "( PH 201 , or ANSC 200 , or BIOC 141 , or BIOL 101 , or BIOL 171 , or BOT 101 , or ERTH 101 , or GES 102 , or OEST 101 , or OCN 102 , or ATMO 150, or SOC 180 ) with a minimum grade of C or better; or consent.",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "op": "OR",
+          "children": [
+            {
+              "course": "PH 201",
+              "min_grade": "C"
+            },
+            {
+              "course": "ANSC 200",
+              "min_grade": "C"
+            },
+            {
+              "course": "BIOC 141",
+              "min_grade": "C"
+            },
+            {
+              "course": "BIOL 101",
+              "min_grade": "C"
+            },
+            {
+              "course": "BIOL 171",
+              "min_grade": "C"
+            },
+            {
+              "course": "BOT 101",
+              "min_grade": "C"
+            },
+            {
+              "course": "ERTH 101",
+              "min_grade": "C"
+            },
+            {
+              "course": "GES 102",
+              "min_grade": "C"
+            },
+            {
+              "course": "OEST 101",
+              "min_grade": "C"
+            },
+            {
+              "course": "OCN 102",
+              "min_grade": "C"
+            },
+            {
+              "course": "ATMO 150",
+              "min_grade": "C"
+            },
+            {
+              "course": "SOC 180",
+              "min_grade": "C"
+            }
+          ]
+        },
+        {
+          "type": "consent"
+        }
+      ]
+    },
+    "expected_status": "clean"
+  },
+  {
+    "code": "ANSC 687",
+    "own_subject": "ANSC",
+    "prereq_raw": "graduate standing or consent and MBBE 402 / MBBE 402L , and FSHN 477 ; or BIOC 441 .",
+    "expected_tree": {
+      "op": "OR",
+      "children": [
+        {
+          "type": "standing",
+          "level": "graduate"
+        },
+        {
+          "op": "AND",
+          "children": [
+            {
+              "type": "consent"
+            },
+            {
+              "op": "OR",
+              "children": [
+                {
+                  "course": "MBBE 402"
+                },
+                {
+                  "course": "MBBE 402L"
+                }
+              ]
+            },
+            {
+              "course": "FSHN 477"
+            }
+          ]
+        },
+        {
+          "course": "BIOC 441"
+        }
+      ]
+    },
+    "expected_status": "clean"
+  }
+]

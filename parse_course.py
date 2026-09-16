@@ -11,7 +11,6 @@ shape, not the raw server markup.
 
 import html as html_module
 import re
-from dataclasses import dataclass, field
 
 GENED_CODES = {"FW", "FQ", "FGA", "FGB", "FGC", "DA", "DB", "DH", "DL", "DP", "DS", "DY"}
 
@@ -99,21 +98,31 @@ def _parse_fields(rest: str) -> dict:
     return fields
 
 
-def parse_course_block(block: str) -> dict | None:
+def _failed_block(block: str, raw_heading: str | None) -> dict:
+    """Never silently drop a course block -- if the heading doesn't match the
+    expected shape, surface it (truncated) so a coverage report can count and
+    show it, instead of the block just vanishing from the output."""
+    return {
+        "parse_status": "failed_heading",
+        "code": None,
+        "raw_heading": raw_heading,
+        "raw_block_snippet": strip_tags(block)[:300],
+    }
+
+
+def parse_course_block(block: str) -> dict:
     heading_match = HEADING_RE.search(block)
     if not heading_match:
-        return None
+        return _failed_block(block, None)
     heading = strip_tags(heading_match.group(1))
     heading = " ".join(heading.split())
 
     if " - " not in heading:
-        return None
-    code_part, title = heading.split(" - ", 1)
-    title = title.strip()
+        return _failed_block(block, heading)
 
     m = CODE_TITLE_RE.match(heading)
     if not m:
-        return None
+        return _failed_block(block, heading)
     subject, number, alpha_suffix, title = m.groups()
     alpha_suffix = alpha_suffix or None
     is_alpha_parent = title.strip().lower().startswith("(alpha)")
@@ -129,7 +138,6 @@ def parse_course_block(block: str) -> dict | None:
 
     fields = _parse_fields(block[desc_end:])
 
-    gened_raw = fields.pop("gened_raw", None)
     gened_field_match = re.search(
         r"<strong>General Education Designation\(s\):?</strong>\s*(.*?)(?=<strong>|\Z)", block[desc_end:], re.S
     )
@@ -141,6 +149,7 @@ def parse_course_block(block: str) -> dict | None:
                 gened.append(token)
 
     course = {
+        "parse_status": "ok",
         "code": f"{subject} {number}{alpha_suffix or ''}",
         "subject": subject,
         "number": number,
@@ -165,14 +174,13 @@ def parse_course_block(block: str) -> dict | None:
 
 
 def parse_subject_page(html: str) -> list[dict]:
-    courses = []
-    for block_match in COURSE_BLOCK_RE.finditer(html):
-        course = parse_course_block(block_match.group(1))
-        if course:
-            courses.append(course)
+    """Returns one dict per <li> course block found, in order. Every block
+    yields a record -- failed ones carry parse_status="failed_heading" rather
+    than being dropped (see _failed_block)."""
+    courses = [parse_course_block(m.group(1)) for m in COURSE_BLOCK_RE.finditer(html)]
 
     ref_coids = extract_ref_coids(html)
-    by_code = {c["code"]: c for c in courses}
+    by_code = {c["code"]: c for c in courses if c["parse_status"] == "ok"}
     for code, coid in ref_coids.items():
         if code in by_code and by_code[code]["coid"] is None:
             by_code[code]["coid"] = coid
