@@ -229,7 +229,14 @@
     .then(function (graph) {
       state.graph = graph;
       state.index = buildIndex(graph);
-      document.getElementById("loading").hidden = true;
+      // Not .hidden = true: #loading has its own "display: flex" rule (an
+      // ID selector), which beats the browser's default (non-!important)
+      // "[hidden] { display: none }" UA rule on plain specificity. The
+      // published Artifact papers over this with an auto-injected
+      // "[hidden]{display:none!important}" reset, which is exactly why this
+      // worked there but not when the file is served standalone locally.
+      // An inline style always wins, everywhere, regardless of context.
+      document.getElementById("loading").style.display = "none";
       buildHighlights(graph, state.index);
       // Open on a genuinely deep, real course rather than an empty shell.
       var opener = pickOpener(graph);
