@@ -510,7 +510,13 @@
       userZoomingEnabled: true, userPanningEnabled: true, boxSelectionEnabled: false,
       style: [
         { selector: "node", style: {
-          "shape": "round-rectangle", "width": "label", "height": 34, "padding": "10px",
+          // "width": "label" is deprecated in this Cytoscape version (logs a
+          // warning but silently produces zero-width/overlapping nodes) --
+          // compute an explicit width from the label length instead, same
+          // pattern as the background-color function below.
+          "shape": "round-rectangle",
+          "width": function (ele) { return Math.max(50, String(ele.data("label") || "").length * 8 + 24); },
+          "height": 34, "padding": "10px",
           "background-color": function (ele) { return depthColor(t, ele.data("depth"), ele.data("inCatalog")); },
           "label": "data(label)", "color": t.ink, "font-family": "IBM Plex Mono, monospace",
           "font-size": 12, "font-weight": 600, "text-valign": "center", "text-halign": "center",
@@ -519,7 +525,10 @@
         { selector: "node[?focal]", style: { "background-color": t.accent, "color": t.accentInk, "border-width": 2, "border-color": t.accent, "font-weight": 700 } },
         { selector: "node[status = 'cycle']", style: { "border-width": 2, "border-color": t.critical } },
         { selector: "node[status = 'unresolved_prereq']", style: { "border-style": "dashed", "border-width": 2, "border-color": t.warning } },
-        { selector: "node[inCatalog = false]", style: { "border-style": "dashed", "background-opacity": 0.5, "color": t.ink2 } },
+        // Cytoscape selector syntax: falsy/absent data fields use "[!field]",
+        // not "[field = false]" (which is an invalid selector -- silently
+        // dropped, not applied, logged as an error in the console).
+        { selector: "node[!inCatalog]", style: { "border-style": "dashed", "background-opacity": 0.5, "color": t.ink2 } },
         { selector: "node[?isMore]", style: {
           "shape": "round-rectangle", "background-color": "transparent", "border-width": 1, "border-style": "dashed",
           "border-color": t.hairline, "color": t.ink2, "font-family": "Public Sans, sans-serif", "font-size": 11, "font-weight": 500
