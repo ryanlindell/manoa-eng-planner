@@ -1,0 +1,437 @@
+:root {
+  --border: #ccc;
+  --bg: #f4f6f4;
+  --tile-bg: #fff;
+  --tile-empty-border: #999;
+  --uh-green-dark: #024731;
+  --uh-green: #046a38;
+  --uh-green-light: #e6f0ea;
+  --uh-gold: #c9a227;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: #222;
+}
+
+.app-header {
+  padding: 12px 20px;
+  background: var(--uh-green-dark);
+  color: #fff;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.instructions {
+  max-width: 1300px;
+  margin: 12px auto 0;
+  padding: 0 20px;
+  font-size: 13px;
+  color: #444;
+}
+
+.layout {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.plan-panel,
+.template-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--uh-green-dark);
+  margin: 0 0 8px 0;
+}
+
+.semester-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.semester-toolbar button {
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+#add-semester-btn {
+  background: var(--uh-green);
+  color: #fff;
+  border: 1px solid var(--uh-green);
+}
+
+#add-semester-btn:hover {
+  background: var(--uh-green-dark);
+}
+
+#add-transfer-btn {
+  background: #fff;
+  color: var(--uh-green-dark);
+  border: 1px solid var(--uh-green);
+}
+
+#add-transfer-btn:hover {
+  background: var(--uh-green-light);
+}
+
+.semester-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.semester-box {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+#semester-column > .semester-box {
+  transition: transform 0.2s ease;
+}
+
+.semester-box.transfer {
+  border-left: 3px solid var(--uh-gold);
+  padding-left: 8px;
+}
+
+.semester-box.gap {
+  border-left: 3px dashed #999;
+  padding-left: 8px;
+}
+
+.semester-box.dragging-source {
+  opacity: 0.3;
+}
+
+.semester-drag-ghost {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 24px rgba(2, 71, 49, 0.25);
+}
+
+.semester-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: #888;
+  font-size: 14px;
+}
+
+.drag-handle:hover {
+  color: var(--uh-green);
+}
+
+.semester-name-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: inherit;
+}
+
+.semester-name-input:hover {
+  border-color: var(--border);
+  background: #fff;
+}
+
+.semester-name-input:focus {
+  border-color: var(--uh-green);
+  background: #fff;
+  outline: none;
+}
+
+.semester-name-input.invalid {
+  border-color: #c0392b;
+  background: #fdecea;
+}
+
+.badge-transfer {
+  font-size: 10px;
+  background: var(--uh-gold);
+  color: var(--uh-green-dark);
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.gap-toggle {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  color: #555;
+}
+
+.semester-clear {
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 11px;
+  cursor: pointer;
+  color: #555;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.semester-clear:hover {
+  border-color: #888;
+  color: #222;
+}
+
+.semester-remove {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: #888;
+  padding: 0 2px;
+}
+
+.semester-remove:hover {
+  color: #c0392b;
+}
+
+.gap-note {
+  font-size: 12px;
+  color: #888;
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.tile-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.tile {
+  position: relative;
+  flex: 0 0 auto;
+  width: 110px;
+  height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--tile-bg);
+  padding: 6px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tile.empty {
+  border: 1px dashed var(--tile-empty-border);
+  color: var(--tile-empty-border);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tile.empty.selected {
+  border: 2px solid var(--uh-green);
+  color: var(--uh-green-dark);
+  background: var(--uh-green-light);
+}
+
+.tile-code {
+  font-weight: bold;
+}
+
+.tile-title {
+  font-size: 11px;
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+.tile-footer {
+  font-size: 11px;
+  text-align: right;
+  color: #555;
+}
+
+.tile.category-core {
+  background: #d9ead9;
+}
+
+.tile.category-technical {
+  background: #f5e6b8;
+}
+
+.tile.category-hub {
+  background: #dbe4ee;
+}
+
+.tile.category-elective {
+  background: #f0dcd3;
+}
+
+.tile.category-unknown {
+  background: #eee;
+}
+
+.tile.template-tile.scheduled {
+  background: #bbbbbb;
+  opacity: 0.6;
+}
+
+.tile.flagged {
+  border: 2px solid #c0392b;
+}
+
+.tile-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #555;
+}
+
+.tile-trash {
+  cursor: pointer;
+  line-height: 1;
+  color: #888;
+  display: inline-flex;
+}
+
+.tile-trash:hover {
+  color: #c0392b;
+}
+
+.tile-flag {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 13px;
+  color: #c0392b;
+}
+
+.tile.template-tile {
+  opacity: 0.85;
+  cursor: copy;
+}
+
+.load-error {
+  background: #fdecea;
+  border: 1px solid #c0392b;
+  color: #7a1f14;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-content h3 {
+  margin: 0 0 4px 0;
+}
+
+.modal-content label {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  gap: 4px;
+}
+
+.modal-content input {
+  font-size: 13px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.modal-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-actions button {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#manual-entry-save {
+  background: var(--uh-green);
+  color: #fff;
+  border: 1px solid var(--uh-green);
+}
+
+#manual-entry-save:hover {
+  background: var(--uh-green-dark);
+}
+
+#manual-entry-close {
+  background: #fff;
+  color: #555;
+  border: 1px solid var(--border);
+}
+
+#manual-entry-close:hover {
+  border-color: #888;
+  color: #222;
+}
