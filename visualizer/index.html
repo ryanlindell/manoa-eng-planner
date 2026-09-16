@@ -534,7 +534,13 @@
     return { levelUnits: levelUnits, maxLevel: realMaxLevel, allCodes: Object.keys(level), truncated: truncated };
   }
 
-  var ROW_H = 30, INTRA_GROUP_GAP = 4, UNIT_GAP = 16;
+  // ROW_H must match the node style's "height" (34, below) -- it used to be
+  // 30, which combined with INTRA_GROUP_GAP=4 canceled out exactly to a
+  // real on-screen gap of zero between stacked members of the same
+  // alternative-group box (34 - 30 == 4 == the gap that was supposed to
+  // separate them), so every "pick one of these" group rendered with its
+  // courses touching edge-to-edge.
+  var ROW_H = 34, INTRA_GROUP_GAP = 10, UNIT_GAP = 26;
 
   function unitHeight(u) { return u.codes.length * ROW_H + (u.codes.length - 1) * INTRA_GROUP_GAP; }
 
@@ -649,6 +655,7 @@
         // pinned to the top edge so it doesn't collide with the members.
         { selector: ":parent", style: {
           "shape": "round-rectangle", "background-opacity": 0.08, "border-width": 1, "border-style": "dashed",
+          "padding": "10px",
           "label": "data(label)", "font-family": "Public Sans, sans-serif", "font-size": 10, "font-weight": 600,
           "text-valign": "top", "text-halign": "center", "text-margin-y": -4,
           "color": t.ink2, "border-color": t.edgePrereq, "background-color": t.edgePrereq
