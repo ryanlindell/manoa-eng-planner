@@ -46,8 +46,16 @@ _TOKEN_SPEC = [
     ("EITHER", r"\beither\b"),
     ("AND", r"\band\b"),
     ("OR", r"\bor\b"),
-    ("COURSE", r"\b(?P<course_subj>[A-Z]{2,6})\s*(?P<course_num>\d{2,4}[A-Za-z]?)\b"),
-    ("BARENUM", r"\b(?P<barenum>\d{2,4}[A-Za-z]?)\b"),
+    # Subject codes are case-sensitive on purpose: with the master regex's
+    # global IGNORECASE, lowercase English words like "any"/"one" in phrases
+    # such as "any 100-level ERTH course" or "one 300-level ES course" would
+    # otherwise match as fake subject codes ("ANY 100", "ONE 300"). Real
+    # subject codes are always uppercase in the source HTML.
+    ("COURSE", r"\b(?-i:(?P<course_subj>[A-Z]{2,6}))\s*(?P<course_num>\d{2,4}[A-Za-z]?)\b"),
+    # A bare number followed by "credit(s)"/"unit(s)"/"hour(s)" is a credit
+    # count ("30 or more credits"), not a same-subject course reference.
+    ("BARENUM", r"\b(?P<barenum>\d{2,4}[A-Za-z]?)\b"
+                r"(?!\s*(?:or\s+(?:more|fewer|less)\s+)?(?:credits?|units?|hours?)\b)"),
     ("LPAREN", r"[(\[]"),
     ("RPAREN", r"[)\]]"),
     ("SEMI", r";"),

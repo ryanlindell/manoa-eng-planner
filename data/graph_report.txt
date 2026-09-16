@@ -1,0 +1,67 @@
+=== UH Manoa Catalog -- Prereq Graph Report ===
+Nodes: 8881 (in-catalog: 8770, external/unresolved: 111)
+Edges: 7423 (prereq: 7083, coreq: 340)
+
+Cycles detected (prereq edges only): 2
+  ['GEO 400', 'GEO 401', 'GEO 402', 'GEO 405']
+  ['REL 661B', 'REL 661C']
+
+Dangling references (mentioned but not in dataset): 111 distinct codes
+  MED 531: referenced by 30 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MED 545B']
+  PED 531: referenced by 24 course(s), e.g. ['ANAT 545C', 'MDED 541', 'PED 545B']
+  PSTY 531: referenced by 19 course(s), e.g. ['ANAT 545C', 'MDED 541', 'PSTY 545B']
+  MED 541: referenced by 19 course(s), e.g. ['MED 545B', 'MED 545C', 'MED 545D']
+  KRS 703: referenced by 14 course(s), e.g. ['EDEP 733C', 'EDEP 733E', 'EDEP 733H']
+  EDEP 703: referenced by 14 course(s), e.g. ['EDEP 733C', 'EDEP 733E', 'EDEP 733H']
+  STE 402: referenced by 13 course(s), e.g. ['STE 404B', 'STE 404C', 'STE 404D']
+  KRS 733: referenced by 10 course(s), e.g. ['EDEP 734C', 'EDEP 734E', 'EDEP 734H']
+  EDEP 733: referenced by 10 course(s), e.g. ['EDEP 734C', 'EDEP 734E', 'EDEP 734H']
+  PACE 200: referenced by 10 course(s), e.g. ['PACE 247', 'PACE 310', 'PACE 316']
+  OBGN 531: referenced by 9 course(s), e.g. ['ANAT 545C', 'MDED 541', 'OBGN 545B']
+  FMCH 531: referenced by 8 course(s), e.g. ['ANAT 545C', 'FMCH 545B', 'FMCH 545C']
+  MUS 311: referenced by 8 course(s), e.g. ['MUS 411B', 'MUS 411C', 'MUS 411D']
+  WGSS 300: referenced by 7 course(s), e.g. ['WGSS 318', 'WGSS 339', 'WGSS 362']
+  LAIS 360: referenced by 6 course(s), e.g. ['ANTH 478', 'LAIS 468', 'LAIS 478']
+  JPN 407: referenced by 6 course(s), e.g. ['EALL 603C', 'EALL 603J', 'EALL 603K']
+  ZOOL 306: referenced by 6 course(s), e.g. ['ZOOL 490B', 'ZOOL 490D', 'ZOOL 490E']
+  ICS 110: referenced by 5 course(s), e.g. ['CINE 419', 'CINE 484', 'CINE 487']
+  FIN 629: referenced by 5 course(s), e.g. ['FIN 490B', 'FIN 490C', 'FIN 490D']
+  BIOM 555: referenced by 5 course(s), e.g. ['PATH 545B', 'PATH 545C', 'PATH 545D']
+
+Depth status breakdown (all graph nodes):
+  ok: 4973
+  no_prereq: 3482
+  unresolved_prereq: 310
+  cycle: 5
+  external: 105
+
+Depth distribution (in-catalog courses with a resolvable depth, n=8765):
+  min=0 max=10 mean=0.99
+  depth 0: 5126 courses
+  depth 1: 1704 courses
+  depth 2: 592 courses
+  depth 3: 471 courses
+  depth 4: 404 courses
+  depth 5: 214 courses
+  depth 6: 157 courses
+  depth 7: 53 courses
+  depth 8: 31 courses
+  depth 9: 12 courses
+  depth 10: 1 courses
+
+Deepest courses:
+  KOR 496: depth 10 -- Korean Abroad
+  ASAN 653: depth 9 -- Major Authors in Modern Korean Literature
+  ASAN 664: depth 9 -- Topics and Issues in Modern Korean Literature
+  KOR 495: depth 9 -- Internship Program
+  KOR 613M: depth 9 -- Korean Verse: modern
+  KOR 613T: depth 9 -- Korean Verse: traditional
+  KOR 614M: depth 9 -- Korean Narrative: modern
+  KOR 614T: depth 9 -- Korean Narrative: traditional
+  KOR 615M: depth 9 -- Korean Drama: modern
+  KOR 615T: depth 9 -- Korean Drama: traditional
+  KOR 640: depth 9 -- Literary Translation of Korean
+  KOR 652: depth 9 -- Major Authors in Modern Korean Literature
+  KOR 664: depth 9 -- Topics and Issues in Modern Korean Literature
+  KOR 494: depth 8 -- Introduction to Modern Korean Literature
+  DH 480: depth 8 -- Advanced Clinical Dental Hygiene II

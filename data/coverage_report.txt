@@ -9,8 +9,8 @@ Credits missing on real courses: 0
 coid resolved: 1858/8770 from same-page refs, 3261/8770 after global cross-reference pass
 Duplicate course codes detected: 0
 
-prereq_raw present on 5288/8770 real courses -- clean: 3199, partial: 1817, failed: 272
-  worst subjects for failed prereq: [('MUS', 60), ('STE', 20), ('ES', 17), ('TI', 15), ('LWJT', 12), ('PHIL', 12), ('ITM', 11), ('ENG', 7), ('CHEM', 5), ('DNCE', 5)]
+prereq_raw present on 5288/8770 real courses -- clean: 3199, partial: 1779, failed: 310
+  worst subjects for failed prereq: [('MUS', 60), ('COMG', 23), ('STE', 20), ('ES', 18), ('TI', 15), ('PHIL', 13), ('LWJT', 12), ('ITM', 11), ('PACE', 9), ('ENG', 7)]
 coreq_raw present on 271/8770 real courses -- clean: 242, partial: 19, failed: 10
   worst subjects for failed coreq: [('STE', 6), ('ARCH', 2), ('ECON', 1), ('FMCH', 1)]
 
