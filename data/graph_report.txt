@@ -37,32 +37,32 @@ Depth status breakdown (all graph nodes):
   external: 108
 
 Depth distribution (in-catalog courses with a resolvable depth, n=8765):
-  min=0 max=10 mean=1.01
-  depth 0: 5115 courses
-  depth 1: 1687 courses
-  depth 2: 581 courses
-  depth 3: 466 courses
-  depth 4: 402 courses
-  depth 5: 236 courses
-  depth 6: 167 courses
-  depth 7: 58 courses
-  depth 8: 40 courses
-  depth 9: 12 courses
+  min=0 max=10 mean=1.00
+  depth 0: 5114 courses
+  depth 1: 1720 courses
+  depth 2: 617 courses
+  depth 3: 443 courses
+  depth 4: 366 courses
+  depth 5: 217 courses
+  depth 6: 155 courses
+  depth 7: 71 courses
+  depth 8: 42 courses
+  depth 9: 19 courses
   depth 10: 1 courses
 
 Deepest courses:
   KOR 496: depth 10 -- Korean Abroad
   ASAN 653: depth 9 -- Major Authors in Modern Korean Literature
   ASAN 664: depth 9 -- Topics and Issues in Modern Korean Literature
+  ECE 442: depth 9 -- Digital Communications
+  ECE 446: depth 9 -- Information Theory and Coding
+  ECE 616: depth 9 -- Digital Image Processing
+  ECE 651: depth 9 -- Nonlinear Control Systems
+  ECE 652: depth 9 -- Optimal Control Systems
+  ECE 655: depth 9 -- Robust Control
+  ECE 685: depth 9 -- Biomedical Signal Processing and Analysis
   KOR 495: depth 9 -- Internship Program
   KOR 613M: depth 9 -- Korean Verse: modern
   KOR 613T: depth 9 -- Korean Verse: traditional
   KOR 614M: depth 9 -- Korean Narrative: modern
   KOR 614T: depth 9 -- Korean Narrative: traditional
-  KOR 615M: depth 9 -- Korean Drama: modern
-  KOR 615T: depth 9 -- Korean Drama: traditional
-  KOR 640: depth 9 -- Literary Translation of Korean
-  KOR 652: depth 9 -- Major Authors in Modern Korean Literature
-  KOR 664: depth 9 -- Topics and Issues in Modern Korean Literature
-  KOR 494: depth 8 -- Introduction to Modern Korean Literature
-  ATMO 601: depth 8 -- Atmospheric Dynamics II

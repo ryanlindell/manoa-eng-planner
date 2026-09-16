@@ -113,6 +113,9 @@ class Parser:
         self.pos = 0
         self.own_subject = own_subject
         self.result = result
+        # Set by and_expr() on every call, read by or_expr() right after --
+        # see and_expr()'s comma+AND branch and _fold note in or_expr().
+        self._last_and_absorbable = False
 
     def peek(self):
         return self.tokens[self.pos] if self.pos < len(self.tokens) else None
@@ -175,12 +178,34 @@ class Parser:
                     self._skip(("EITHER",))
                     nodes.append(self.and_expr())
                     continue
+                # Elliptical comma ("A, B, or C") -- no literal "or" right
+                # here, but a later "or" (not "and") governs the rest of
+                # this list, same as if it had been spelled out at every
+                # comma instead of just the last one.
+                if self._peek_list_connector() == "OR":
+                    nodes.append(self.and_expr())
+                    continue
                 self.pos = save
                 break
             if tok.kind == "OR":
                 self.advance()
                 self._skip(("EITHER",))
-                nodes.append(self.and_expr())
+                operand = self.and_expr()
+                # "A or B, and C" -- and_expr() flags an operand like this
+                # when it resolved a comma+"and" into a single plain leaf
+                # tacked onto the very first thing it saw (e.g. "B, and C").
+                # That leaf is a requirement that applies across every
+                # alternative collected here, not just B: fold to
+                # AND(OR(A, B), C) instead of leaving OR[A, AND(B, C)],
+                # which would wrongly make A alone sufficient.
+                if self._last_and_absorbable and operand.get("op") == "AND":
+                    children = operand["children"]
+                    nodes.append(children[0])
+                    lhs = nodes[0] if len(nodes) == 1 else {"op": "OR", "children": list(nodes)}
+                    nodes.clear()
+                    nodes.append({"op": "AND", "children": [lhs] + children[1:]})
+                else:
+                    nodes.append(operand)
             elif tok.kind == "SEMI":
                 self.advance()
                 if self.peek() and self.peek().kind == "OR":
@@ -223,6 +248,7 @@ class Parser:
 
     def and_expr(self):
         nodes = [self.atom()]
+        is_list_and = False
         while True:
             tok = self.peek()
             if tok is None:
@@ -251,14 +277,68 @@ class Parser:
                     self.pos = save
                     break
                 if nxt.kind == "AND":
+                    # "X, and Y or Z" -- the comma marks this "and" as
+                    # starting a new list item rather than a tight X-and-Y
+                    # coupling, so its RHS has to capture a whole following
+                    # or-chain too ("Y or Z"), the same idea as the EITHER
+                    # fix but keyed on the comma instead of that word.
                     self.advance()
-                    nodes.append(self.atom())
+                    was_first = len(nodes) == 1
+                    rhs = self._or_chain_no_semi()
+                    if isinstance(rhs, dict) and rhs.get("op") == "AND":
+                        # No real "or" followed -- flatten instead of
+                        # nesting AND-in-AND ("A, and B and C").
+                        nodes.extend(rhs["children"])
+                    else:
+                        if was_first and (not isinstance(rhs, dict) or "op" not in rhs):
+                            # Nothing accumulated yet, and the RHS is a
+                            # single plain leaf ("B, and C") -- C is a
+                            # candidate universal extra that an enclosing
+                            # or_expr() may need to apply across every
+                            # alternative, not just this one. See its
+                            # "A or B, and C" handling.
+                            is_list_and = True
+                        nodes.append(rhs)
                 else:
-                    self.result.used_implicit_connector = True
+                    # Elliptical comma ("A, B, and C") -- check whether a
+                    # later AND/OR actually governs this list instead of
+                    # guessing. A later "or" means this comma belongs to
+                    # the OR level instead; a later "and" confirms (not
+                    # guesses) AND, so it doesn't count as an implicit
+                    # connector; only a genuinely bare list ("A, B, C" with
+                    # no and/or anywhere) is the real ambiguous guess.
+                    connector = self._peek_list_connector()
+                    if connector == "OR":
+                        self.pos = save
+                        break
+                    if connector != "AND":
+                        self.result.used_implicit_connector = True
                     nodes.append(self.atom())
             else:
                 break
+        self._last_and_absorbable = is_list_and and len(nodes) > 1
         return nodes[0] if len(nodes) == 1 else {"op": "AND", "children": nodes}
+
+    def _peek_list_connector(self):
+        """Scans forward from the current position (without consuming) to
+        find whichever of AND/OR governs the rest of this comma-separated
+        run -- resolves an elliptical comma ("A, B, or C") by the connector
+        that actually appears later, instead of guessing one comma at a
+        time. Ignores connectors inside a nested parenthesized group."""
+        depth = 0
+        for tok in self.tokens[self.pos:]:
+            if tok.kind == "LPAREN":
+                depth += 1
+            elif tok.kind == "RPAREN":
+                if depth == 0:
+                    return None
+                depth -= 1
+            elif depth == 0:
+                if tok.kind in ("AND", "OR"):
+                    return tok.kind
+                if tok.kind in ("SEMI", "DOT"):
+                    return None
+        return None
 
     def atom(self):
         tok = self.peek()

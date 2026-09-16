@@ -7,15 +7,20 @@
       "op": "OR",
       "children": [
         {
-          "course": "MATH 243",
-          "concurrent": true
-        },
-        {
           "op": "AND",
           "children": [
             {
-              "course": "MATH 253A",
-              "concurrent": true
+              "op": "OR",
+              "children": [
+                {
+                  "course": "MATH 243",
+                  "concurrent": true
+                },
+                {
+                  "course": "MATH 253A",
+                  "concurrent": true
+                }
+              ]
             },
             {
               "course": "PHYS 272",
@@ -44,14 +49,19 @@
               "course": "ECE 211"
             },
             {
-              "course": "MATH 244",
-              "concurrent": true
+              "op": "OR",
+              "children": [
+                {
+                  "course": "MATH 244",
+                  "concurrent": true
+                },
+                {
+                  "course": "MATH 253A",
+                  "concurrent": true
+                }
+              ]
             }
           ]
-        },
-        {
-          "course": "MATH 253A",
-          "concurrent": true
         },
         {
           "type": "consent"
@@ -131,25 +141,25 @@
     "own_subject": "ANSC",
     "prereq_raw": "( ANSC 201 (or concurrent), and ANSC 244 or FSHN 244 ) with a minimum grade of C.",
     "expected_tree": {
-      "op": "OR",
+      "op": "AND",
       "children": [
         {
-          "op": "AND",
+          "course": "ANSC 201",
+          "concurrent": true,
+          "min_grade": "C"
+        },
+        {
+          "op": "OR",
           "children": [
-            {
-              "course": "ANSC 201",
-              "concurrent": true,
-              "min_grade": "C"
-            },
             {
               "course": "ANSC 244",
               "min_grade": "C"
+            },
+            {
+              "course": "FSHN 244",
+              "min_grade": "C"
             }
           ]
-        },
-        {
-          "course": "FSHN 244",
-          "min_grade": "C"
         }
       ]
     },

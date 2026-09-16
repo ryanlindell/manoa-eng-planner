@@ -2,28 +2,28 @@
 
 --- Prerequisites ---
 Real courses with prerequisites: 5288
-Flagged as at-risk (mixed OR shape): 368 (7.0%)
+Flagged as at-risk (mixed OR shape): 217 (4.1%)
   by current parse status (the scary bucket is 'clean' -- looks fine, isn't necessarily):
-    clean: 82
-    partial: 286
+    clean: 57
+    partial: 160
     failed: 0
-  worst subjects: [('MED', 28), ('JPN', 22), ('PED', 22), ('PSTY', 17), ('CINE', 15), ('ERTH', 15), ('ECON', 13), ('HWST', 13), ('PHYS', 13), ('CHEM', 11)]
-  sample of 'clean'-but-flagged courses (worth a manual look, 82 total):
+  worst subjects: [('MED', 28), ('PED', 22), ('JPN', 19), ('ERTH', 12), ('PHYS', 11), ('CINE', 10), ('ARCH', 9), ('BE', 6), ('CHEM', 6), ('THEA', 6)]
+  sample of 'clean'-but-flagged courses (worth a manual look, 57 total):
     ACC 321: 'ACC 200 and ACC 210 , or BUS 624 (with a minimum grade of C- or better).'
     ACC 401: 'ACC 200 and ACC 210 , or BUS 624 (with a minimum grade of C- or better).'
     ACC 465B: 'ACC 401 (or concurrent) and ACC 418 (or concurrent) for (B); ACC 418 (or concurrent) for (C).'
     ACC 465C: 'ACC 401 (or concurrent) and ACC 418 (or concurrent) for (B); ACC 418 (or concurrent) for (C).'
-    ANSC 321: '( ANSC 201 (or concurrent), and ANSC 244 or FSHN 244 ) with a minimum grade of C.'
     ANSC 387: '( ANSC 200 or ANSC 201 , and BIOL 171 and BIOL 171L and CHEM 161 ) with a minimum grade of D-.'
     ANSC 687: 'graduate standing or consent and MBBE 402 / MBBE 402L , and FSHN 477 ; or BIOC 441 .'
-    ARCH 220: 'ARCH 132 or ARCH 102 , and MATH 140X .'
     ARCH 750C: 'ARCH 744 for (C); ARCH 739 and ARCH 743 for (G).'
     ARCH 750G: 'ARCH 744 for (C); ARCH 739 and ARCH 743 for (G).'
-    AREC 626: 'NREM 310 or ECON 321 , and MATH 241 ; or consent.'
-    ART 324: 'ART 123 or ART 223 , and ART 214 .'
-    BE 405: 'ECON 120 (with a minimum grade of C-) or ECON 130 (with a minimum grade of C-), and senior standing.'
+    BE 260: '( BIOL 171 , CHEM 162 or CHEM 171 or CHEM 181A , PHYS 170 , and MATH 242 or MATH 252A ) with a minimum grade of C-; or consent.'
     BE 447: '( MATH 215 or MATH 241 or MATH 251A and ECE 110 or ECE 160 or ICS 111 ) with a minimum grade of C; or consent.'
     BIOL 306: 'BIOL 171 and BIOL 171L and BIOL 172 and BIOL 172L or ANSC 201 ; or consent.'
+    BIOL 480L: 'BIOL 171L and BIOL 172L , or MICR 351L , or consent.'
+    CHEM 658: 'CHEM 352 and MATH 244 or MATH 253A .'
+    CINE 325: 'CINE 215 and CINE 216 ; or CINE 310 .'
+    CINE 375: '( CINE 310 , or CINE 215 and CINE 216 ), and CINE 350 , and CINE 370 .'
 
 --- Corequisites ---
 Real courses with corequisites: 271
