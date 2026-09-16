@@ -1,0 +1,1845 @@
+{
+  "prereq": [
+    {
+      "code": "ACC 321",
+      "raw": "ACC 200 and ACC 210 , or BUS 624 (with a minimum grade of C- or better).",
+      "status": "clean"
+    },
+    {
+      "code": "ACC 401",
+      "raw": "ACC 200 and ACC 210 , or BUS 624 (with a minimum grade of C- or better).",
+      "status": "clean"
+    },
+    {
+      "code": "ACC 465B",
+      "raw": "ACC 401 (or concurrent) and ACC 418 (or concurrent) for (B); ACC 418 (or concurrent) for (C).",
+      "status": "clean"
+    },
+    {
+      "code": "ACC 465C",
+      "raw": "ACC 401 (or concurrent) and ACC 418 (or concurrent) for (B); ACC 418 (or concurrent) for (C).",
+      "status": "clean"
+    },
+    {
+      "code": "AMST 354",
+      "raw": "AMST 110 , AMST 150 , AMST 201 , AMST 202 , AMST 211 , or AMST 212 .",
+      "status": "partial"
+    },
+    {
+      "code": "ANSC 321",
+      "raw": "( ANSC 201 (or concurrent), and ANSC 244 or FSHN 244 ) with a minimum grade of C.",
+      "status": "clean"
+    },
+    {
+      "code": "ANSC 387",
+      "raw": "( ANSC 200 or ANSC 201 , and BIOL 171 and BIOL 171L and CHEM 161 ) with a minimum grade of D-.",
+      "status": "clean"
+    },
+    {
+      "code": "ANSC 446",
+      "raw": "( ANSC 301 , BIOL 171 or ZOOL 101 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ANSC 687",
+      "raw": "graduate standing or consent and MBBE 402 / MBBE 402L , and FSHN 477 ; or BIOC 441 .",
+      "status": "clean"
+    },
+    {
+      "code": "ARCH 220",
+      "raw": "ARCH 132 or ARCH 102 , and MATH 140X .",
+      "status": "clean"
+    },
+    {
+      "code": "ARCH 687",
+      "raw": "ARCH 341 , ASAN 312 , PLAN 310 or PLAN 600 .",
+      "status": "partial"
+    },
+    {
+      "code": "ARCH 743",
+      "raw": "ARCH 733 , ARCH 742 , or ARCH 761 .",
+      "status": "partial"
+    },
+    {
+      "code": "ARCH 747T",
+      "raw": "ARCH 744 , and ARCH 750C or ARCH 750G or (B), (G), and (T); ARCH 744 and ARCH 745 for (H); ARCH 726 , ARCH 744 , ARCH 750G , and ARCH 781 for (C), (E), and (P).",
+      "status": "partial"
+    },
+    {
+      "code": "ARCH 750C",
+      "raw": "ARCH 744 for (C); ARCH 739 and ARCH 743 for (G).",
+      "status": "clean"
+    },
+    {
+      "code": "ARCH 750G",
+      "raw": "ARCH 744 for (C); ARCH 739 and ARCH 743 for (G).",
+      "status": "clean"
+    },
+    {
+      "code": "AREC 626",
+      "raw": "NREM 310 or ECON 321 , and MATH 241 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ART 324",
+      "raw": "ART 123 or ART 223 , and ART 214 .",
+      "status": "clean"
+    },
+    {
+      "code": "ART 347",
+      "raw": "ART 242 , and one of ART 343 , ART 344 , or ART 345 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ASAN 636",
+      "raw": "ASAN 312 , ARCH 341 , PLAN 310 , or PLAN 600 .",
+      "status": "partial"
+    },
+    {
+      "code": "ASAN 688",
+      "raw": "ASAN 600 , ASAN 608 , or POLS 645C , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ASAN 694",
+      "raw": "PHIL 360 , PHIL 406 , REL 475 , or REL 490 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 242",
+      "raw": "ASTR 241 , PHYS 274 (or concurrent), and MATH 243 (or concurrent) or MATH 253A (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 300",
+      "raw": "ASTR 210 or ASTR 242 ; PHYS 152 or PHYS 274 ; MATH 216 , MATH 242 , or MATH 252A .",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 300L",
+      "raw": "ASTR 300 (or concurrent); PHYS 152 or PHYS 274 ; PHYS 152L or PHYS 274L ; MATH 216 , MATH 242 , or MATH 252A .",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 320",
+      "raw": "ASTR 210 or ASTR 242 ; PHYS 152 or PHYS 274 ; MATH 216 , MATH 242 , or MATH 252A .",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 326",
+      "raw": "ASTR 210 or ASTR 242 ; and ASTR 300 (or concurrent); and PHYS 152 or PHYS 274 . Recommended: ASTR 280",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 430",
+      "raw": "ASTR 300 ; and PHYS 152 or PHYS 274 ; and MATH 216 , MATH 242 , or MATH 252A .",
+      "status": "partial"
+    },
+    {
+      "code": "ASTR 494",
+      "raw": "ASTR 301 , ASTR 399 (or concurrent) or PHYS 399 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "BE 260",
+      "raw": "( BIOL 171 , CHEM 162 or CHEM 171 or CHEM 181A , PHYS 170 , and MATH 242 or MATH 252A ) with a minimum grade of C-; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BE 405",
+      "raw": "ECON 120 (with a minimum grade of C-) or ECON 130 (with a minimum grade of C-), and senior standing.",
+      "status": "clean"
+    },
+    {
+      "code": "BE 411",
+      "raw": "( BIOL 171 , CHEM 162 or CHEM 171 or CHEM 181A , MATH 243 or MATH 253A , PHYS 151 or PHYS 170 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BE 420",
+      "raw": "( ECE 160 , ECE 211 , and BE 350 or MATH 302 or MATH 307 or ECE 326 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BE 437",
+      "raw": "BE 373 ; and either CEE 320 (or concurrent) or ME 322 (or concurrent); or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BE 447",
+      "raw": "( MATH 215 or MATH 241 or MATH 251A and ECE 110 or ECE 160 or ICS 111 ) with a minimum grade of C; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "BIOL 171",
+      "raw": "( CHEM 131 , CHEM 151 , CHEM 161 , CHEM 171 , or CHEM 181A ) or concurrent, or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 171L",
+      "raw": "( CHEM 131 , CHEM 151 , CHEM 161 , CHEM 171 , or CHEM 181A ) or concurrent, and BIOL 171 (or concurrent) or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 172",
+      "raw": "( CHEM 131 , CHEM 151 , CHEM 161 , CHEM 171 , or CHEM 181A ) or concurrent, or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 172L",
+      "raw": "( CHEM 131 , CHEM 151 , CHEM 161 , CHEM 171 , or CHEM 181A ) or concurrent, and BIOL 172 (or concurrent) or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 305",
+      "raw": "BIOL 171 , BIOL 172 or BOT 201 .",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 306",
+      "raw": "BIOL 171 and BIOL 171L and BIOL 172 and BIOL 172L or ANSC 201 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "BIOL 310",
+      "raw": "one of BIOL 101 , BIOL 123 , or GEO 101 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 470",
+      "raw": "BIOL 171 , and BIOL 172 or BOT 201 . Recommended: a BIOL, ZOOL, or BOT course at 300 or 400 level.",
+      "status": "partial"
+    },
+    {
+      "code": "BIOL 480L",
+      "raw": "BIOL 171L and BIOL 172L , or MICR 351L , or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "BIOL 487",
+      "raw": "BIOL 171 and one of BIOL 172 or BOT 101 .",
+      "status": "partial"
+    },
+    {
+      "code": "BOT 305",
+      "raw": "BIOL 171 , BIOL 172 or BOT 201 .",
+      "status": "partial"
+    },
+    {
+      "code": "BOT 357",
+      "raw": "BIOL 171 and BIOL 172 , or BOT 101 ; and BIOL 265 .",
+      "status": "partial"
+    },
+    {
+      "code": "BOT 456",
+      "raw": "BOT 201 , BOT 305 , BIOL 265 , or BIOL 305 .",
+      "status": "partial"
+    },
+    {
+      "code": "BUS 209",
+      "raw": "ACC 200 or ACC 210 , and ENG 100 . Students may not earn credit for both BUS 209 and ENG 209 .",
+      "status": "partial"
+    },
+    {
+      "code": "BUS 311",
+      "raw": "ICS 101 , or LTEC 112 and LTEC 113 , or equivalent, or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CAM 201",
+      "raw": "CAM 102 , CAM 106 , or CAM 112 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CAM 203",
+      "raw": "CAM 102 , CAM 106 , or CAM 112 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CAM 301",
+      "raw": "CAM 202 , CAM 204 , or CAM 212 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CEE 270",
+      "raw": "grade of C or better in all of the following: PHYS 170 ; MATH 242 or MATH 252A ; and either MATH 243 (or concurrent) or MATH 253A (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CEE 370",
+      "raw": "C or better in all of the following: CEE 270 ; and MATH 244 (or concurrent) or MATH 253A (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CEE 405",
+      "raw": "ECON 120 (with a minimum grade of C-) or ECON 130 (with a minimum grade of C-), and senior standing.",
+      "status": "clean"
+    },
+    {
+      "code": "CEE 422",
+      "raw": "CEE 320 (with a minimum grade of D-), and MATH 244 or MATH 253A (or equivalent).",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 100L",
+      "raw": "CHEM 100 (or concurrent), CHEM 110 (or concurrent), or SUST 120 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 152",
+      "raw": "CHEM 151 , CHEM 162 , or CHEM 171 .",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 152L",
+      "raw": "CHEM 151L , CHEM 162L , or CHEM 171L ; and CHEM 152 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 171",
+      "raw": "Satisfactory Placement Exam score, and MATH 241 or MATH 242 or MATH 243 or MATH 251A or MATH 252A or MATH 253A .",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 181A",
+      "raw": "satisfactory placement exam score and MATH 215 (or concurrent) or MATH 241 (or concurrent) or MATH 251A (or concurrent) with a minimum grade of C.",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 272L",
+      "raw": "C (not C-) or better in CHEM 162L , CHEM 171L , or CHEM 181L ; and C (not C-) or better in CHEM 272 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 274",
+      "raw": "C (not C-) or better in CHEM 162 or CHEM 171 or CHEM 181A , MATH 215 or MATH 241 or MATH 251A .",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 274L",
+      "raw": "C (not C-) or better in CHEM 162L or CHEM 171L or CHEM 181L ; and CHEM 274 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 351",
+      "raw": "CHEM 274 , CHEM 274L , PHYS 272 , PHYS 272L , and MATH 243 or MATH 253A .",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 461",
+      "raw": "CHEM 162 , PHYS 272 , and MATH 242 or MATH 252A with a grade of C or better for prerequisites.",
+      "status": "partial"
+    },
+    {
+      "code": "CHEM 658",
+      "raw": "CHEM 352 and MATH 244 or MATH 253A .",
+      "status": "clean"
+    },
+    {
+      "code": "CHN 204",
+      "raw": "placement test and CHN 102 or CHN 103 or CHN 105 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CHN 451",
+      "raw": "CHN 202 , CHN 204 , or CHN 205 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CHN 655",
+      "raw": "CHN 452 , CHN 455 , or CHN 456 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "CHN 753M",
+      "raw": "EALL 611 , WGSS 613 , WGSS 615 , or WGSS 650 ; or consent for (M); CHN 612 , or consent for (T).",
+      "status": "partial"
+    },
+    {
+      "code": "CHN 753T",
+      "raw": "EALL 611 , WGSS 613 , WGSS 615 , or WGSS 650 ; or consent for (M); CHN 612 , or consent for (T).",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 325",
+      "raw": "CINE 215 and CINE 216 ; or CINE 310 .",
+      "status": "clean"
+    },
+    {
+      "code": "CINE 330",
+      "raw": "CINE 255 ; and one of CINE 215 , CINE 216 , or CINE 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 370",
+      "raw": "CINE 215 , CINE 216 , or CINE 310 ; and CINE 350 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 372",
+      "raw": "CINE 215 , CINE 216 , or CINE 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 375",
+      "raw": "( CINE 310 , or CINE 215 and CINE 216 ), and CINE 350 , and CINE 370 .",
+      "status": "clean"
+    },
+    {
+      "code": "CINE 376",
+      "raw": "CINE 215 , CINE 216 , or CINE 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 377",
+      "raw": "CINE 215 , CINE 216 , or CINE 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 386",
+      "raw": "CINE 215 , CINE 216 , or CINE 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 390",
+      "raw": "CINE 215 , CINE 216 , or CINE 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 399",
+      "raw": "CINE 350 and consent; and one of the following: CINE 310 , CINE 315 , CINE 316 , CINE 317 , CINE 321 , CINE 322 , CINE 323 , or CINE 330 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 405",
+      "raw": "CINE 310 , CINE 350 , and one of the following: CINE 312 , CINE 330 , CINE 370 , CINE 372 , or CINE 374 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 410",
+      "raw": "CINE 310 , CINE 350 , and one of CINE 312 , CINE 330 , CINE 370 , CINE 372 , or CINE 374 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 418",
+      "raw": "CINE 317 or ( CINE 321 , CINE 322 , and CINE 323 ); and CINE 350 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 420",
+      "raw": "CINE 317 or ( CINE 321 , CINE 322 , and CINE 323 ); and CINE 350 .",
+      "status": "partial"
+    },
+    {
+      "code": "CINE 495",
+      "raw": "CINE 350 and consent; and one of the following: CINE 310 , CINE 315 , CINE 316 , CINE 317 , CINE 321 , CINE 322 , CINE 323 , or CINE 330 .",
+      "status": "partial"
+    },
+    {
+      "code": "CMB 621",
+      "raw": "BIOL 402 or MBBE 402 ; and BIOC 441 , BIOL 408 , and graduate standing; or consent. Recommended: CHEM 351 .",
+      "status": "partial"
+    },
+    {
+      "code": "COM 478",
+      "raw": "COM 310 and COM 320 and COM 330 ; and COM 340 or COM 421 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "COM 479",
+      "raw": "COM 310 and COM 320 and COM 330 ; and COM 432 or COM 438 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "COMG 290",
+      "raw": "one of COMG 151 , COMG 170 , COMG 181 , COMG 185 , COMG 251 or COMG 301 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "DATA 235",
+      "raw": "MATH 241 , MATH 203 , MATH 215 , or MATH 251A .",
+      "status": "partial"
+    },
+    {
+      "code": "DNCE 400B",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); DNCE 200C for (C); DNCE 200D for (D); DNCE 200E for (E); DNCE 200B or DNCE 200C or DNCE 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "DNCE 400C",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); DNCE 200C for (C); DNCE 200D for (D); DNCE 200E for (E); DNCE 200B or DNCE 200C or DNCE 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "DNCE 400D",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); DNCE 200C for (C); DNCE 200D for (D); DNCE 200E for (E); DNCE 200B or DNCE 200C or DNCE 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "DNCE 400E",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); DNCE 200C for (C); DNCE 200D for (D); DNCE 200E for (E); DNCE 200B or DNCE 200C or DNCE 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "DNCE 400F",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); DNCE 200C for (C); DNCE 200D for (D); DNCE 200E for (E); DNCE 200B or DNCE 200C or DNCE 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "DNCE 693",
+      "raw": "DNCE 490 , THEA 470 , or THEA 476 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "EALL 602",
+      "raw": "CHN 451 and CHN 452 , or JPN 451 , or KOR 451 and KOR 452 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "EALL 750",
+      "raw": "CHN 451 , CHN 452 , or JPN 451 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECE 211",
+      "raw": "MATH 243 (or concurrent) or MATH 253A (or concurrent), and PHYS 272 (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ECE 213",
+      "raw": "ECE 211 , and MATH 244 (or concurrent) or MATH 253A (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ECE 324",
+      "raw": "MATH 243 or MATH 253A , and PHYS 274 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ECE 422",
+      "raw": "( ECE 160 , ECE 211 , and BE 350 or MATH 302 or MATH 307 or ECE 326 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECE 449",
+      "raw": "ECE 315 and one of ECE 342 , or MATH 371 or MATH 471 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 311",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 340",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 356",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 358",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 362",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 412",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 414",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 415",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 416",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 418",
+      "raw": "ECON 120 , ECON 130 , or ECON 131 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 420",
+      "raw": "ECON 300 , ECON 301 ; MATH 203 , MATH 215 , MATH 241 , or MATH 251A .",
+      "status": "partial"
+    },
+    {
+      "code": "ECON 425",
+      "raw": "ECON 321 or MATH 241 or BUS 310 or NREM 310 or ( MATH 251A and NREM 203 ) or ( MATH 371 and MATH 373 ) or ( MATH 471 and MATH 472 ); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ECON 429",
+      "raw": "ECON 130 or NREM 220 / SUST 220 , and ECON 321 or NREM 310 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ENG 408",
+      "raw": "ENG 303 , ENG 306 , ENG 311 , ENG 313 , or ENG 405 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ENG 412",
+      "raw": "ENG 306 , ENG 311 , or ENG 313 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "EPET 301",
+      "raw": "EPET 201 , or ERTH 101 and ERTH 101L and ERTH 105 , or ERTH 101 and ERTH 107 ; and CHEM 161 and PHYS 272 .",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 200",
+      "raw": "ERTH 101L and one of ERTH 101 , ERTH 103 , ERTH 104 , ERTH 106 , or ERTH 130 ; or consent. ERTH 101L may be taken concurrently.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 301",
+      "raw": "ERTH 200 or ERTH 201 and ( CHEM 162 / CHEM 162L or CHEM 171 / CHEM 171L ). or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 303",
+      "raw": "ERTH 101 or ERTH 103 or ERTH 104 or ERTH 106 or ERTH 130 , MATH 215 or MATH 241 or MATH 251A , and PHYS 151 or PHYS 170 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 313",
+      "raw": "ERTH 200 or ERTH 201 ; and ERTH 250 ; and MATH 241 or MATH 251A ; and PHYS 170 .",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 325",
+      "raw": "ERTH 200 or ERTH 201 , and MATH 241 or MATH 251A , and CHEM 162 (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ERTH 404",
+      "raw": "( ERTH 101 and ERTH 101L , or ERTH 105 or ERTH 107 or ASTR 150 ; and CHEM 161 ; and PHYS 272 ) with a minimum grade of C+; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 406",
+      "raw": "ERTH 101 , ERTH 103 , ERTH 104 , or ERTH 170 .",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 412",
+      "raw": "( ERTH 101 and ERTH 250 , and at least one of ERTH 302 , ERTH 309 , ERTH 313 , ERTH 323 , ERTH 325 , or ERTH 333 ) with a minimum grade of B.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 440",
+      "raw": "ERTH 200 or ERTH 201 , CHEM 162 , and MATH 241 or MATH 251A ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 455",
+      "raw": "ERTH 200 or ERTH 201 , and MATH 215 or MATH 241",
+      "status": "clean"
+    },
+    {
+      "code": "ERTH 469",
+      "raw": "ERTH 101 or ERTH 103 or ERTH 104 or ERTH 106 or ERTH 130 and CHEM 161 and PHYS 170 .",
+      "status": "clean"
+    },
+    {
+      "code": "ERTH 600",
+      "raw": "MATH 244 or MATH 253A , PHYS 400 , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 640",
+      "raw": "CHEM 162 , and MATH 241 or MATH 251A ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ERTH 644",
+      "raw": "CHEM 171 , or CHEM 161 and CHEM 162 ; PHYS 152 ; and MATH 242 or MATH 252A ; and consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ERTH 691",
+      "raw": "ERTH 613 , OCN 760 , or ASTR 633 or equivalent is highly recommended.",
+      "status": "partial"
+    },
+    {
+      "code": "ES 339",
+      "raw": "one ES or WGSS course in the 100, 200 or 300 level; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ES 457",
+      "raw": "one of WGSS 151 , WGSS 175 , WGSS 176 , or WGSS 202 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "FISH 660",
+      "raw": "C or better in OCN 620 or OCN 621 , and a background in biological oceanography and/or physical oceanography required.",
+      "status": "partial"
+    },
+    {
+      "code": "FR 405",
+      "raw": "FR 311 and FR 312 , or FR 306 , or FR 358 , or FR 360 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "FR 406",
+      "raw": "FR 306 or FR 309 , and FR 312 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "FSHN 411",
+      "raw": "( BIOL 171 , CHEM 162 or CHEM 171 or CHEM 181A , MATH 243 or MATH 253A , PHYS 151 or PHYS 170 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "FSHN 420",
+      "raw": "( ECE 160 , ECE 211 , and BE 350 or MATH 302 or MATH 307 or ECE 326 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "FSHN 475",
+      "raw": "CHEM 161 (or higher) or BIOC 241 (or higher); PHYL 141 , BIOL 171 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "FSHN 477",
+      "raw": "FSHN 430 ; and CHEM 162 or higher; and BIOL 402 or MBBE 402 or PEPS 402.",
+      "status": "partial"
+    },
+    {
+      "code": "FSHN 480",
+      "raw": "( FSHN 185 , and PHYL 103 or PHYL 141 or PHYL 301 ) with a minimum grade of C.",
+      "status": "clean"
+    },
+    {
+      "code": "FSHN 687",
+      "raw": "graduate standing or consent and FSHN 477 and MBBE 402 / MBBE 402L ; or BIOC 441 .",
+      "status": "clean"
+    },
+    {
+      "code": "GEO 408",
+      "raw": "either GEO 309 , BIOL 265 or BIOL 487 , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "GES 371",
+      "raw": "MATH 242 , and ICS 110P or ICS 110C or ERTH 250 .",
+      "status": "clean"
+    },
+    {
+      "code": "GES 454L",
+      "raw": "OCN 102 or OCN 201 or BOT 305 or BIOL 305 , or BIOL 171 and BIOL 172 .",
+      "status": "clean"
+    },
+    {
+      "code": "HAW 484",
+      "raw": "HAW 302 and consent, or HAW 401 .",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 212",
+      "raw": "HWST 107 , and HAW 100 or HAW 101 .",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 214",
+      "raw": "HWST 107 , and HAW 100 or HAW 101 .",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 342",
+      "raw": "HWST 107 , HWST 341 , or HAW 201 .",
+      "status": "partial"
+    },
+    {
+      "code": "HWST 434",
+      "raw": "HWST 234 or HWST 235 , and HWST 330 .",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 443",
+      "raw": "HWST 342 or HWST 390 , and HAW 202 .",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 451",
+      "raw": "HWST 207 / SUST 217 and HWST 343 and HWST 351 ; HAW 202 (or concurrent).",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 493",
+      "raw": "HWST 107 , HWST 270 , HWST 341 , HWST 342 , or HAW 202 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "HWST 601",
+      "raw": "HWST 107 , HWST 270 , HWST 341 (or concurrent), HWST 342 (or concurrent), and one of the following: HWST 343 (or concurrent) or HWST 390 (or concurrent) or HWST 490 (or concurrent); or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "HWST 602",
+      "raw": "HWST 107 , HWST 270 , HWST 341 (or concurrent), HWST 342 (or concurrent), and one of the following: HWST 343 (or concurrent) or HWST 390 (or concurrent) or HWST 490 (or concurrent); or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "HWST 603",
+      "raw": "HWST 107 , HWST 270 , HWST 341 (or concurrent), HWST 342 (or concurrent), and one of the following: HWST 343 (or concurrent) or HWST 390 (or concurrent) or HWST 490 (or concurrent); or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "HWST 604",
+      "raw": "HWST 601 and HWST 602 ; HWST 603 (or concurrent).",
+      "status": "clean"
+    },
+    {
+      "code": "HWST 650",
+      "raw": "HWST 107 , HWST 270 , HWST 341 (or concurrent), HWST 342 (or concurrent), and one of the following: HWST 343 (or concurrent) or HWST 390 (or concurrent) or HWST 490 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "HWST 690",
+      "raw": "HWST 107 , HWST 270 , HWST 341 (or concurrent), HWST 342 (or concurrent), and one of the following: HWST 343 (or concurrent) or HWST 390 (or concurrent) or HWST 490 (or concurrent); or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ICS 235",
+      "raw": "MATH 241 , MATH 203 , MATH 215 , or MATH 251A .",
+      "status": "partial"
+    },
+    {
+      "code": "ICS 314",
+      "raw": "( ICS 211 or ECE 205 ) and [ ICS 241 or ECE 362 or ( MATH 301 and MATH 372 )]; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "ICS 355",
+      "raw": "ICS 241 or ( MATH 301 and MATH 372 ).",
+      "status": "clean"
+    },
+    {
+      "code": "IS 361",
+      "raw": "OCN 201 , ORE 202 , or ZOOL 200 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ITM 352",
+      "raw": "ICS 101 , or LTEC 112 and LTEC 113 , (or equivalent), or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 413",
+      "raw": "JPN 401 , JPN 403 or JPN 404 , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 426",
+      "raw": "JPN 401 , JPN 404 , or JPN 405; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 451",
+      "raw": "JPN 302 or JPN 305 ; and JPN 350 or LING 320 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 452",
+      "raw": "JPN 350 or LING 320 , and JPN 401 , JPN 403 , JPN 404 , or JPN 405 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 453",
+      "raw": "JPN 350 (or concurrent) and JPN 401 , JPN 403 , JPN 404 , or JPN 405 (or concurrent); or instructor’s consent. .",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 490",
+      "raw": "JPN 485 or equivalent and consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 604",
+      "raw": "JPN 407 or equivalent, and JPN 451 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 633",
+      "raw": "JPN 601 or JPN 602 (or concurrent), and JPN 606 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "JPN 650C",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 650G",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 650H",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 650K",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 650M",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 650P",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 650S",
+      "raw": "JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730C",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730G",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730H",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730K",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730M",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730P",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "JPN 730S",
+      "raw": "JPN 451 , or JPN 601 and JPN 602 for (C); JPN 634 for (G); JPN 631 for (H) and (K); JPN 601 for (M); JPN 632 for (P); and JPN 633 for (S).",
+      "status": "partial"
+    },
+    {
+      "code": "KRS 463",
+      "raw": "KRS 353 , and either PHYS 100 , PHYS 151 , or PHYS 170 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "KRS 480",
+      "raw": "( FSHN 185 , and KRS 113 or PHYL 103 or ( PHYL 141 / PHYL 141L and PHYL 142 / PHYL 142L ) or PHYL 301 ) with a minimum grade of C.",
+      "status": "clean"
+    },
+    {
+      "code": "LAIS 495B",
+      "raw": "LAIS 360 or LAIS 363 or LAIS 368 or LAIS 372 or LAIS 380 , and SPAN 351 , and SPAN 352 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "LAIS 495C",
+      "raw": "LAIS 360 or LAIS 363 or LAIS 368 or LAIS 372 or LAIS 380 , and SPAN 351 , and SPAN 352 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "LAW 540",
+      "raw": "LAW 506 , or LAW 509 and LAW 510 , with a minimum grade of C-.",
+      "status": "clean"
+    },
+    {
+      "code": "LING 412",
+      "raw": "one of LING 102 , LING 320 , or PSY 100 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "LING 423",
+      "raw": "LING 102 , LING 320 , ICS 111 , or PSY 100 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "LING 431",
+      "raw": "LING 102 , LING 320 , ICS 111 , or PSY 100 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "LING 441",
+      "raw": "LING 102 , LING 320 , ICS 111 , or PSY 100 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "LING 690",
+      "raw": "LING 421 and LING 422 and one of LING 621 or LING 622 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MATH 190",
+      "raw": "one semester of calculus ( MATH 203 , MATH 215 , MATH 241 , MATH 242 , MATH 243 , MATH 244 , MATH 251A , MATH 252A , or MATH 253A ) (or concurrent), or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MATH 331",
+      "raw": "MATH 242 or MATH 252A , and MATH 321 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 351",
+      "raw": "MATH 243 or MATH 253A , and MATH 321 (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 353",
+      "raw": "MATH 243 or MATH 253A , and MATH 321 (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 370",
+      "raw": "MATH 216 or MATH 242 or MATH 252A or ( MATH 203 and BUS 250 ).",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 371",
+      "raw": "MATH 216 , MATH 242 , or MATH 252A ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MATH 407",
+      "raw": "MATH 243 or MATH 253A , and MATH 307 or MATH 311 , and one semester programming; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MATH 411",
+      "raw": "MATH 307 or MATH 311 , and MATH 321 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 414",
+      "raw": "MATH 243 or MATH 253A , and MATH 307 or MATH 311 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 442",
+      "raw": "MATH 244 or MATH 253A , and MATH 307 or MATH 311 , or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MATH 443",
+      "raw": "MATH 244 or MATH 253A , and MATH 311 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MBBE 411",
+      "raw": "( BIOL 171 , CHEM 162 or CHEM 171 or CHEM 181A , MATH 243 or MATH 253A , PHYS 151 or PHYS 170 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MBBE 422",
+      "raw": "( ECE 160 , ECE 211 , and BE 350 or MATH 302 or MATH 307 or ECE 326 ) with a minimum grade of C; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MBBE 447",
+      "raw": "(MATH 215 or MATH 241 or MATH 251A and ECE 110 or ECE 160 or ICS 111) with a minimum grade of C; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "MBBE 687",
+      "raw": "graduate standing or consent and MBBE 402 / MBBE 402L , and FSHN 477 ; or BIOC 441 .",
+      "status": "clean"
+    },
+    {
+      "code": "ME 301",
+      "raw": "EPET 201 , or ERTH 101 and ERTH 101L and ERTH 105 , or ERTH 101 and ERTH 107 ; and CHEM 161 and PHYS 272 .",
+      "status": "partial"
+    },
+    {
+      "code": "ME 371",
+      "raw": "C or better in all of the following: CEE 270 ; and MATH 244 (or concurrent) or MATH 253A (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "ME 374",
+      "raw": "CEE 271 or ME 271 (C or better), MATH 244 (or MATH 253A )and either MATH 302 or MATH 307 .",
+      "status": "partial"
+    },
+    {
+      "code": "ME 402",
+      "raw": "one of ME 360 , MATH 407 , or PHYS 305 (or concurrent for any); and ME 375 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "ME 404",
+      "raw": "ME 422 (or concurrent ), and either ME 360 , MATH 407 or PHYS 305 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "ME 466",
+      "raw": "ME 331 , CHEM 162 , CHEM 171 , or CHEM 181A (with a grade of C- or better).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545B",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545C",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545D",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545E",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545F",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MDED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545G",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545H",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545I",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545K",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545M",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545N",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545O",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545P",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545Q",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545R",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545S",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545T",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545U",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 545W",
+      "raw": "531 or MED 532 for (C), (E), (F), (G), (H), (K), (M), (N), (O), (Q), (R), (S), and (T); MED 532 for (U); MED 541 for (D) and (W).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546B",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R); MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546C",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546D",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546E",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546F",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546G",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546H",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546O",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MED 546R",
+      "raw": "531 or MED 532 for (B), (C), and (O); MED 532 for (R)​; MED 541 for (E) and (H).",
+      "status": "partial"
+    },
+    {
+      "code": "MICR 685",
+      "raw": "MICR 431 , MICR 463 , or MICR 470 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MSL 301",
+      "raw": "MSL 101 , MSL 102 , MSL 201 , and MSL 202 ; or MSL 203 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "MUS 655",
+      "raw": "MUS 353 or MUS 354 , teaching experience, and graduate standing.",
+      "status": "partial"
+    },
+    {
+      "code": "MUS 657",
+      "raw": "graduate status in music and MUS 107 or MUS 407 (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "NAVL 395",
+      "raw": "NAVL 100L , NAVL 101 , NAVL 102 , NAVL 201 , NAVL 202 , NAVL 303 , NAVL 304 , or NAVL 402 .",
+      "status": "partial"
+    },
+    {
+      "code": "NREM 301",
+      "raw": "( NREM 251 / TPSS 251 or NREM 210 ; CHEM 151 or higher; and BIOL 172 ) with a minimum grade of C-; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "NREM 302",
+      "raw": "NREM 210 / PEPS 210 / SUST 210 or NREM 251 / SOCS 251 / TPSS 251 or ( BIOL 101 or higher) or GEO 101 or ( ERTH 101 or higher); and NREM 220 / SUST 220 or one ECON course or two DS courses.",
+      "status": "partial"
+    },
+    {
+      "code": "NREM 429",
+      "raw": "NREM 220 / SUST 220 or ECON 130 , and SUST 310 or ECON 321 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "NREM 477",
+      "raw": "either NREM 203 (or concurrent) or NREM 310 (or concurrent), and NREM 301 (or concurrent) with a minimum grade of C-; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "NREM 601",
+      "raw": "NREM 600 (with a minimum grade of B-), and ( ECON 130 or NREM 220 / SUST 220 , and BIOL 171 ) with a minimum grade of C, or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "NURS 741",
+      "raw": "NURS 620 or equivalent course and an advanced statistics course; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "OCN 454L",
+      "raw": "OCN 102 or OCN 201 or BOT 305 or BIOL 305 , or BIOL 171 and BIOL 172 .",
+      "status": "clean"
+    },
+    {
+      "code": "OCN 629",
+      "raw": "OCN 403 , OCN 626 , OCN 627 , or OCN 628 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "OCN 631",
+      "raw": "one of OCN 622 , OCN 623 , ERTH 407 , or ERTH 603 .",
+      "status": "partial"
+    },
+    {
+      "code": "OCN 632",
+      "raw": "C or better in OCN 620 or OCN 621 , and a background in biological oceanography and/or physical oceanography required.",
+      "status": "partial"
+    },
+    {
+      "code": "OCN 653",
+      "raw": "OCN 621 or OCN 623 , and OCN 626 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "PED 545B",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545C",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545D",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545E",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545F",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545G",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545H",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545I",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545J",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545K",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545M",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545N",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545P",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545Q",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545R",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545S",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545T",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545U",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545V",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545W",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545X",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PED 545Y",
+      "raw": "PED 531 or PED 532 for (B), (C), (E), (F), (G), (H), (I), (J), (K), (M), (N), (P), (Q), (R), (S), (T), (U), and (V); PED 532 for (D), (W), (X), and (Y).",
+      "status": "partial"
+    },
+    {
+      "code": "PH 310",
+      "raw": "PH 201 , and PH 210 or MATH 140X or MATH 161 or higher; or instructor approval.",
+      "status": "clean"
+    },
+    {
+      "code": "PH 341",
+      "raw": "PH 201 , and one of the following: BIOL 101 or BIOL 171 or BIOL 172 or PHYL 103 or PHYL 141 or FSHN 185 .",
+      "status": "partial"
+    },
+    {
+      "code": "PHIL 340",
+      "raw": "PHIL 100 or above, HAW 100 , HWST 107 , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "PHYL 302",
+      "raw": "( PHYL 141 and PHYL 142 ) with A- or better, or PHYL 301 with C or better, or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 152L",
+      "raw": "PHYS 151L or PHYS 170L , and PHYS 152 (or concurrent).",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 272",
+      "raw": "PHYS 151 or PHYS 170 and MATH 242 or MATH 252A , MATH 216 may be substituted with consent.",
+      "status": "partial"
+    },
+    {
+      "code": "PHYS 272A",
+      "raw": "PHYS 151 or PHYS 170 and MATH 242 or MATH 252A , MATH 216 may be substituted with consent.",
+      "status": "partial"
+    },
+    {
+      "code": "PHYS 272L",
+      "raw": "PHYS 151L or PHYS 170L , and PHYS 272 (or concurrent) or PHYS 272A (or concurrent).",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 274",
+      "raw": "PHYS 152 or PHYS 272 and MATH 243 (or concurrent) or MATH 253A (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 274L",
+      "raw": "PHYS 152L or PHYS 272L , and PHYS 274 (or concurrent).",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 305",
+      "raw": "PHYS 152 or PHYS 272 or PHYS 272A , and MATH 244 (or concurrent) or MATH 253A (or concurrent); or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 350",
+      "raw": "PHYS 272 or PHYS 272A ; and MATH 244 (or concurrent) or MATH 253A (or concurrent).",
+      "status": "partial"
+    },
+    {
+      "code": "PHYS 400",
+      "raw": "MATH 244 or MATH 253A , and MATH 307 or MATH 311 ; or consent. Recommended: upper division mathematics course.",
+      "status": "partial"
+    },
+    {
+      "code": "PHYS 430",
+      "raw": "PHYS 274 and MATH 244 or MATH 253A .",
+      "status": "clean"
+    },
+    {
+      "code": "PHYS 480",
+      "raw": "PHYS 274 , PHYS 310 , PHYS 350 , PHYS 400 (or concurrent); either MATH 244 or MATH 253A ; and either MATH 311 or MATH 307 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "PHYS 650",
+      "raw": "PHYS 450 ; and PHYS 600 (or concurrent), or MATH 402 .",
+      "status": "partial"
+    },
+    {
+      "code": "PHYS 670",
+      "raw": "PHYS 400 or PHYS 481 or PHYS 600 and MATH 402 .",
+      "status": "clean"
+    },
+    {
+      "code": "PLAN 601",
+      "raw": "one of ECON 321 , GEO 380 , or SOC 476 .",
+      "status": "partial"
+    },
+    {
+      "code": "PLAN 636",
+      "raw": "PLAN 310 , PLAN 600 , or ASAN 312 .",
+      "status": "partial"
+    },
+    {
+      "code": "POLS 344",
+      "raw": "HAW 302 (or concurrent) and one of POLS 110 , POLS 120 , POLS 130 , POLS 170 , or POLS 171 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "POLS 384",
+      "raw": "any 100 level POLS course (or concurrent), WGSS 151 (or concurrent), or WGSS 362 (or concurrent); or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545B",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545C",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545D",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545E",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545F",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545G",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545H",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545I",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545J",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545K",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545M",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545N",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545O",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545Q",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545R",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545S",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PSTY 545T",
+      "raw": "531 or PSTY 532 , and fourth-year standing.",
+      "status": "partial"
+    },
+    {
+      "code": "PUBA 350",
+      "raw": "PUBA 304, PUBA 330 , or PLAN 310 .",
+      "status": "partial"
+    },
+    {
+      "code": "REL 310",
+      "raw": "REL 150 , REL 201 , or REL 210 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "REL 680B",
+      "raw": "650 for (B); REL 600 , 650 and (B) for (C).",
+      "status": "partial"
+    },
+    {
+      "code": "REL 680C",
+      "raw": "650 for (B); REL 600 , 650 and (B) for (C).",
+      "status": "partial"
+    },
+    {
+      "code": "SOC 446",
+      "raw": "SOC 300 , WGSS 151 or any 200- or 300-level WGSS course; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "SPAN 458",
+      "raw": "any two of SPAN 301 ; SPAN 303 , SPAN 358 , SPAN 359 , or SPAN 360 .",
+      "status": "partial"
+    },
+    {
+      "code": "SPED 601",
+      "raw": "one of SPED 480, LTEC 414 , or LTEC 442 .",
+      "status": "partial"
+    },
+    {
+      "code": "SPED 625",
+      "raw": "either SPED 485 or SPED 630 , and either SPED 611 or SPED 614 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "SPED 655",
+      "raw": "SPED 421B or SPED 421C or SPED 421D, and SPED 423 .",
+      "status": "clean"
+    },
+    {
+      "code": "STE 321",
+      "raw": "STE 417 , and STE 315 (or concurrent) or SPED 315 (or concurrent).",
+      "status": "clean"
+    },
+    {
+      "code": "SUST 309",
+      "raw": "one of BIOL 101 , BIOL 123 , or GEO 101 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "SUST 311",
+      "raw": "( NREM 251 / TPSS 251 or NREM 210 / TPSS 210 ; CHEM 151 or higher; and BIOL 172 ) with a minimum grade of C-; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "SUST 312",
+      "raw": "NREM 210 / PEPS 210 / SUST 210 or NREM 251 / SOCS 251 / TPSS 251 or ( BIOL 101 or higher) or GEO 101 or ( ERTH 101 or higher); and NREM 220 / SUST 220 or one ECON course or two DS courses.",
+      "status": "partial"
+    },
+    {
+      "code": "SW 791",
+      "raw": "SW 790 and; SW 718 (or concurrent); or SW 723 (or concurrent); or SW 725 (or concurrent); or SW 727 (or concurrent) (all with a minimum grade of B-).",
+      "status": "partial"
+    },
+    {
+      "code": "TAHT 459",
+      "raw": "TAHT 401 or TAHT 458 , and consent.",
+      "status": "clean"
+    },
+    {
+      "code": "THAI 201",
+      "raw": "THAI 104 and THAI 106, or THAI 102 .",
+      "status": "clean"
+    },
+    {
+      "code": "THAI 462B",
+      "raw": "THAI 402 , THAI 461B , or THAI 461C , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "THAI 462C",
+      "raw": "THAI 402 , THAI 461B or THAI 461C , or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 400B",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); THEA 200C for (C); THEA 200D for (D); THEA 200E for (E); THEA 200B or THEA 200C or THEA 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 400C",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); THEA 200C for (C); THEA 200D for (D); THEA 200E for (E); THEA 200B or THEA 200C or THEA 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 400D",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); THEA 200C for (C); THEA 200D for (D); THEA 200E for (E); THEA 200B or THEA 200C or THEA 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 400E",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); THEA 200C for (C); THEA 200D for (D); THEA 200E for (E); THEA 200B or THEA 200C or THEA 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 400F",
+      "raw": "audition and performance of role in a Department of Theatre and Dance production for (B); THEA 200C for (C); THEA 200D for (D); THEA 200E for (E); THEA 200B or THEA 200C or THEA 200F , and consent for (F).",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 693",
+      "raw": "one of THEA 470 , THEA 476 , or DNCE 490 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "THEA 779",
+      "raw": "one of THEA 470 , THEA 474 , THEA 475 , THEA 476 , THEA 477 , or DNCE 490 .",
+      "status": "partial"
+    },
+    {
+      "code": "TIM 302",
+      "raw": "TIM 101 ; and either ICS 101 , or both LTEC 112 and LTEC 113 .",
+      "status": "partial"
+    },
+    {
+      "code": "TIM 305",
+      "raw": "TIM 101 , ACC 200 and ACC 210 ; and NREM 203 , MATH 203 , MATH 215 , MATH 241 , or BUS 250 .",
+      "status": "partial"
+    },
+    {
+      "code": "TIM 402",
+      "raw": "TIM 313 or TIM 369 ; and TIM 314 . Recommended: TIM 333 and TIM 401 .",
+      "status": "partial"
+    },
+    {
+      "code": "TPSS 429",
+      "raw": "ECON 130 or NREM 220 / SUST 220 , and ECON 321 or NREM 310 ; or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "TPSS 473",
+      "raw": "TPSS 200 / SUST 211 , BIOL 171 , or BOT 201 ; CHEM 152 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "TPSS 480L",
+      "raw": "BIOL 171L and BIOL 172L , or MICR 351L , or consent.",
+      "status": "clean"
+    },
+    {
+      "code": "WGSS 245",
+      "raw": "ENG 100 , ENG 100A , or ESL 100 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 257",
+      "raw": "ENG 100 , ENG 100A , or ESL 100 .",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 304",
+      "raw": "one of WGSS 151 , WGSS 362 , WGSS 375 or SOC 362 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 306",
+      "raw": "one of WGSS 151 , WGSS 202 , WGSS 305 ; or HWST 107 , HWST 270 or HWST 285 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 339",
+      "raw": "one ES or WGSS course in the 100, 200 or 300 level; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 392",
+      "raw": "one of WGSS 151 , WGSS 202 , WGSS 315 or WGSS 350 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 456",
+      "raw": "one of WGSS 151 , WGSS 175 , WGSS 176 , or WGSS 202 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 481",
+      "raw": "one of WGSS 151 , WGSS 175 , WGSS 176 , or THEA 201 ; or consent.",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 753M",
+      "raw": "WGSS 613 , WGSS 615 , WGSS 650 , or EALL 611 ; or consent for (M); CHN 612 or consent for (T).",
+      "status": "partial"
+    },
+    {
+      "code": "WGSS 753T",
+      "raw": "WGSS 613 , WGSS 615 , WGSS 650 , or EALL 611 ; or consent for (M); CHN 612 or consent for (T).",
+      "status": "partial"
+    },
+    {
+      "code": "ZOOL 432",
+      "raw": "BIOL 171 and BIOL 172 , and MBBE 402 (or concurrent) or BIOC 441 (or concurrent); or consent.",
+      "status": "clean"
+    }
+  ],
+  "coreq": []
+}
