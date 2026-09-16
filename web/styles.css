@@ -24,11 +24,29 @@ body {
   padding: 12px 20px;
   background: var(--uh-green-dark);
   color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 18px;
+}
+
+.viz-link {
+  margin-left: auto;
+  color: var(--uh-gold);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.viz-link:hover,
+.viz-link:focus-visible {
+  text-decoration: underline;
 }
 
 .instructions {
