@@ -1,12 +1,13 @@
 === UH Manoa Catalog -- Prereq Graph Report ===
-Nodes: 8881 (in-catalog: 8770, external/unresolved: 111)
-Edges: 7423 (prereq: 7083, coreq: 340)
+Nodes: 8884 (in-catalog: 8770, external/unresolved: 114)
+Edges: 7512 (prereq: 7172, coreq: 340)
 
-Cycles detected (prereq edges only): 2
+Cycles detected (prereq edges only): 3
   ['GEO 400', 'GEO 401', 'GEO 402', 'GEO 405']
+  ['BIOL 301', 'BIOL 301L']
   ['REL 661B', 'REL 661C']
 
-Dangling references (mentioned but not in dataset): 111 distinct codes
+Dangling references (mentioned but not in dataset): 114 distinct codes
   MED 531: referenced by 30 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MED 545B']
   PED 531: referenced by 24 course(s), e.g. ['ANAT 545C', 'MDED 541', 'PED 545B']
   PSTY 531: referenced by 19 course(s), e.g. ['ANAT 545C', 'MDED 541', 'PSTY 545B']
@@ -29,22 +30,22 @@ Dangling references (mentioned but not in dataset): 111 distinct codes
   BIOM 555: referenced by 5 course(s), e.g. ['PATH 545B', 'PATH 545C', 'PATH 545D']
 
 Depth status breakdown (all graph nodes):
-  ok: 4973
+  ok: 4977
   no_prereq: 3482
-  unresolved_prereq: 310
+  unresolved_prereq: 306
   cycle: 5
-  external: 105
+  external: 108
 
 Depth distribution (in-catalog courses with a resolvable depth, n=8765):
-  min=0 max=10 mean=0.99
-  depth 0: 5126 courses
-  depth 1: 1704 courses
-  depth 2: 592 courses
-  depth 3: 471 courses
-  depth 4: 404 courses
-  depth 5: 214 courses
-  depth 6: 157 courses
-  depth 7: 53 courses
+  min=0 max=10 mean=1.01
+  depth 0: 5115 courses
+  depth 1: 1689 courses
+  depth 2: 580 courses
+  depth 3: 472 courses
+  depth 4: 415 courses
+  depth 5: 235 courses
+  depth 6: 159 courses
+  depth 7: 56 courses
   depth 8: 31 courses
   depth 9: 12 courses
   depth 10: 1 courses

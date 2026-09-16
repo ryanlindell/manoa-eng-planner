@@ -36,26 +36,30 @@ REAL_CODES_CATEGORY = {
 }
 
 # code -> (title, credits) for slots the check sheet leaves student-choice
-# dependent. Never a stand-in for a specific real course.
+# dependent. Never a stand-in for a specific real course. Codes use the
+# check sheet's own short labels -- a "#N" suffix is added only where a
+# label genuinely repeats (the app needs each slot independently placeable
+# and gradeable, e.g. the 3 separate Group I slots need 3 different real
+# courses, not the same one three times), never as a naming style choice.
 PLACEHOLDERS = {
-    "REQ-FOCUS-H": ("H Focus — Hawaiian, Asian & Pacific Issues (any qualifying course)", 1),
-    "REQ-FOCUS-E": ("E Focus — Contemporary Ethical Issues (any qualifying course)", 1),
-    "REQ-FOCUS-O": ("O Focus — Oral Communication (any qualifying course)", 1),
-    "REQ-FOCUS-W": ("W Focus — Writing Intensive (5 courses total across the degree, min. 2 upper-division)", 5),
-    "REQ-FG-1": ("Foundation: Global & Multicultural (FG)", 3),
-    "REQ-FG-2": ("Foundation: Global & Multicultural (FG)", 3),
-    "REQ-EB": ("Engineering Breadth — CEE/ME/OE/BE 300+, CEE 270, or an approved 300+ science course", 3),
-    "REQ-TE-1": ("Technical Elective — ECE 300+ or department-approved (see check sheet notes)", 3),
-    "REQ-TE-2": ("Technical Elective — ECE 300+ or department-approved (see check sheet notes)", 3),
-    "REQ-MAJOR1-1": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
-    "REQ-MAJOR1-2": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
-    "REQ-MAJOR1-3": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
-    "REQ-MAJOR1LAB-1": ("Major Track — Group I lab", 1),
-    "REQ-MAJOR1LAB-2": ("Major Track — Group I lab", 1),
-    "REQ-MAJOR2-1": ("Major Track — Group II course", 3),
-    "REQ-MAJOR2-2": ("Major Track — Group II course", 3),
-    "REQ-DHDL": ("Diversification: DH or DL", 3),
-    "REQ-DS": ("Diversification: DS", 3),
+    "H Focus": ("Hawaiian, Asian & Pacific Issues — any qualifying course", 1),
+    "E Focus": ("Contemporary Ethical Issues — any qualifying course", 1),
+    "O Focus": ("Oral Communication — any qualifying course", 1),
+    "W Focus": ("Writing Intensive — 5 courses total across the degree, min. 2 upper-division", 5),
+    "FG #1": ("Foundation: Global & Multicultural", 3),
+    "FG #2": ("Foundation: Global & Multicultural", 3),
+    "EB": ("Engineering Breadth — CEE/ME/OE/BE 300+, CEE 270, or an approved 300+ science course", 3),
+    "TE ECE #1": ("Technical Elective — ECE 300+ or department-approved (see check sheet notes)", 3),
+    "TE ECE #2": ("Technical Elective — ECE 300+ or department-approved (see check sheet notes)", 3),
+    "Major ECE (Group I) #1": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
+    "Major ECE (Group I) #2": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
+    "Major ECE (Group I) #3": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
+    "(Lab) ECE (Group I) #1": ("Major Track — Group I lab", 1),
+    "(Lab) ECE (Group I) #2": ("Major Track — Group I lab", 1),
+    "Major ECE (Group II) #1": ("Major Track — Group II course", 3),
+    "Major ECE (Group II) #2": ("Major Track — Group II course", 3),
+    "DH or DL": ("Diversification: Humanities or Literature", 3),
+    "DS": ("Diversification: Social Science", 3),
 }
 
 

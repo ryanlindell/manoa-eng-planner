@@ -243,6 +243,26 @@ body {
   padding-bottom: 4px;
 }
 
+/* A cluster of real either/or alternatives (e.g. "ECE 160 or ECE 110") --
+   grouped with a dashed boundary and "or" dividers so it reads as one
+   choice, not two separate requirements stacked in the row. */
+.or-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.or-group-divider {
+  font-size: 11px;
+  font-style: italic;
+  color: #888;
+  flex: 0 0 auto;
+}
+
 .tile {
   position: relative;
   flex: 0 0 auto;

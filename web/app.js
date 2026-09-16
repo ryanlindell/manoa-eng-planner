@@ -23,11 +23,15 @@ const INITIAL_SEMESTERS = [
 // Your Plan. Independent of Your Plan's semester list.
 //
 // Slots the check sheet itself leaves student-choice-dependent (Major Track
-// Group I/II, Technical Electives, EB, FG, Focus designations, DH-or-DL) are
-// REQ-*/-placeholder codes, not real specific courses — see
-// scripts/build_ece_fixture.py for what each one means. Two real either/or
-// choices on the sheet (ECE 160 or ECE 110; ECE 345 or MATH 307) are shown as
-// both alternatives so you can place whichever one applies.
+// Group I/II, Technical Electives, EB, FG, Focus designations, DH-or-DL) use
+// the check sheet's own short labels as their code, not a real specific
+// course — see scripts/build_ece_fixture.py for what each one means.
+//
+// A plan entry is either a course code (string) or an array of course codes
+// that are real either/or alternatives on the sheet (ECE 160 or ECE 110;
+// ECE 345 or MATH 307; Econ 120, 130, or 131) — rendered as one grouped tile
+// cluster, and placing any one of them greys out the whole group, since only
+// one is actually required.
 const TEMPLATE_SEMESTER_LABELS = [
   "Freshman Fall", "Freshman Spring",
   "Sophomore Fall", "Sophomore Spring",
@@ -35,14 +39,14 @@ const TEMPLATE_SEMESTER_LABELS = [
   "Senior Fall", "Senior Spring",
 ];
 const TEMPLATE_PLAN = {
-  "Freshman Fall": ["ENG 100", "MATH 241", "CHEM 161", "CHEM 161L", "ECE 160", "ECE 110", "REQ-FOCUS-H"],
-  "Freshman Spring": ["MATH 242", "PHYS 170", "PHYS 170L", "CHEM 162", "REQ-FG-1", "REQ-FOCUS-E"],
-  "Sophomore Fall": ["ECE 211", "ECE 260", "MATH 243", "PHYS 272", "PHYS 272L", "REQ-FOCUS-O"],
-  "Sophomore Spring": ["ECE 213", "MATH 244", "PHYS 274", "ECE 296", "COMG 251", "REQ-FG-2", "REQ-FOCUS-W"],
-  "Junior Fall": ["ECE 315", "ECE 324", "ECE 371", "ECE 345", "MATH 307", "REQ-EB"],
-  "Junior Spring": ["ECE 323", "ECE 323L", "ECE 342", "REQ-TE-1", "REQ-MAJOR1-1", "REQ-MAJOR1LAB-1", "ECE 396"],
-  "Senior Fall": ["REQ-MAJOR1-2", "REQ-MAJOR1LAB-2", "REQ-MAJOR1-3", "REQ-TE-2", "REQ-DHDL"],
-  "Senior Spring": ["ECE 496", "ECE 495", "REQ-MAJOR2-1", "REQ-MAJOR2-2", "ECON 120", "ECON 130", "ECON 131", "REQ-DS"],
+  "Freshman Fall": ["ENG 100", "MATH 241", "CHEM 161", "CHEM 161L", ["ECE 160", "ECE 110"], "H Focus"],
+  "Freshman Spring": ["MATH 242", "PHYS 170", "PHYS 170L", "CHEM 162", "FG #1", "E Focus"],
+  "Sophomore Fall": ["ECE 211", "ECE 260", "MATH 243", "PHYS 272", "PHYS 272L", "O Focus"],
+  "Sophomore Spring": ["ECE 213", "MATH 244", "PHYS 274", "ECE 296", "COMG 251", "FG #2", "W Focus"],
+  "Junior Fall": ["ECE 315", "ECE 324", "ECE 371", ["ECE 345", "MATH 307"], "EB"],
+  "Junior Spring": ["ECE 323", "ECE 323L", "ECE 342", "TE ECE #1", "Major ECE (Group I) #1", "(Lab) ECE (Group I) #1", "ECE 396"],
+  "Senior Fall": ["Major ECE (Group I) #2", "(Lab) ECE (Group I) #2", "Major ECE (Group I) #3", "TE ECE #2", "DH or DL"],
+  "Senior Spring": ["ECE 496", "ECE 495", "Major ECE (Group II) #1", "Major ECE (Group II) #2", ["ECON 120", "ECON 130", "ECON 131"], "DS"],
 };
 
 let coursesByCode = new Map();
@@ -331,6 +335,13 @@ function isCourseScheduled(code) {
   return false;
 }
 
+// True if any member of an either/or alternative group is already scheduled
+// — satisfying one alternative means the group's requirement is met, so the
+// rest should grey out too, not just the one actually placed.
+function isAnyScheduled(codes) {
+  return codes.some(isCourseScheduled);
+}
+
 function renderEmptyTile(slotKey) {
   const tile = document.createElement("div");
   tile.className = "tile empty";
@@ -403,16 +414,16 @@ function renderPlanTile(course, slotKey) {
   return tile;
 }
 
-// Normal Schedule tile: read-only reference. Greys out once that course is
-// scheduled anywhere in Your Plan, otherwise click places it in the
-// selected Your Plan slot.
-function renderTemplateTile(course) {
+// Normal Schedule tile: read-only reference. Greys out once that course (or,
+// for an either/or group, ANY alternative in it) is scheduled anywhere in
+// Your Plan; otherwise click places it in the selected Your Plan slot.
+function renderTemplateTile(course, { greyed = false } = {}) {
   const tile = document.createElement("div");
   tile.className = `tile filled template-tile category-${course.category || "unknown"}`;
   if (course.prereq_parse_status === "failed") {
     tile.classList.add("flagged");
   }
-  if (isCourseScheduled(course.code)) {
+  if (greyed || isCourseScheduled(course.code)) {
     tile.classList.add("scheduled");
   }
   tile.title = "Click to place in the selected Your Plan slot";
@@ -427,6 +438,30 @@ function renderTemplateTile(course) {
   tile.addEventListener("click", () => handleTemplateTileClick(course));
 
   return tile;
+}
+
+// A cluster of real either/or alternatives from the check sheet (e.g.
+// "ECE 160 or ECE 110") — rendered together with "or" dividers so it reads
+// as one choice, not two separate requirements. Placing any one alternative
+// greys out the whole cluster.
+function renderOrGroup(codes) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "or-group";
+  const satisfied = isAnyScheduled(codes);
+
+  codes.forEach((code, i) => {
+    const course = coursesByCode.get(code);
+    if (!course) return;
+    if (i > 0) {
+      const orLabel = document.createElement("span");
+      orLabel.className = "or-group-divider";
+      orLabel.textContent = "or";
+      wrapper.appendChild(orLabel);
+    }
+    wrapper.appendChild(renderTemplateTile(course, { greyed: satisfied }));
+  });
+
+  return wrapper;
 }
 
 function renderLeftSlot(slotKey, container) {
@@ -549,9 +584,13 @@ function renderTemplateBox(label) {
 
   const row = document.createElement("div");
   row.className = "tile-row";
-  const codes = TEMPLATE_PLAN[label] || [];
-  codes.forEach((code) => {
-    const course = coursesByCode.get(code);
+  const entries = TEMPLATE_PLAN[label] || [];
+  entries.forEach((entry) => {
+    if (Array.isArray(entry)) {
+      row.appendChild(renderOrGroup(entry));
+      return;
+    }
+    const course = coursesByCode.get(entry);
     if (!course) return;
     row.appendChild(renderTemplateTile(course));
   });

@@ -36,7 +36,15 @@ Token = namedtuple("Token", ["kind", "value", "groups"])
 _TOKEN_SPEC = [
     ("NOFHEADER", r"^\s*(?P<nof_n>one|two|three|four|five|six|\d+)\s+of\s+the\s+following:?"),
     ("CONCURRENT", r"\(\s*or\s+concurrent\s*\)"),
-    ("GRADE", r"with\s+an?\s*(?:minimum\s+)?grade\s+of\s+(?P<grade_letter>[A-D][+-]?)(?:\s*or\s*(?:better|higher))?"),
+    # Three real phrasings seen in the catalog, all case-sensitive on the
+    # grade letter itself (like subject codes, real grade letters are always
+    # uppercase in the source -- avoids a bare lowercase "a"/"b" matching):
+    #   "with a minimum grade of C" / "with a grade of C or better"
+    #   "with a C- or better" / "with C- or better" (no "grade of")
+    #   "C (not C-) or better in X" (no "with" at all)
+    ("GRADE", r"with\s+(?:an?\s+)?(?:minimum\s+)?grade\s+of\s+(?-i:(?P<grade_a>[A-D][+-]?))(?:\s*or\s*(?:better|higher))?"
+              r"|with\s+(?:an?\s+)?(?-i:(?P<grade_b>[A-D][+-]?))\s*or\s*(?:better|higher)\b"
+              r"|(?-i:(?P<grade_c>[A-D][+-]?))\s*(?:\(\s*not\s+(?-i:[A-D][+-]?)\s*\)\s*)?or\s+better\b"),
     ("ORHIGHER", r"\bor\s+higher\b"),
     ("FORALPHA", r"\bfor\s*\(\s*(?P<alpha_letter>[A-Z])\s*\)"),
     ("CONSENT", r"\b(?:(?:departmental|instructor|faculty|program|chair|department)\s+)?"
@@ -81,7 +89,7 @@ def _extract_groups(kind, m):
     if kind == "NOFHEADER":
         return (m.group("nof_n"),)
     if kind == "GRADE":
-        return (m.group("grade_letter"),)
+        return (m.group("grade_a") or m.group("grade_b") or m.group("grade_c"),)
     if kind == "FORALPHA":
         return (m.group("alpha_letter").upper(),)
     if kind == "STANDING":
@@ -203,6 +211,17 @@ class Parser:
                 if nxt.kind == "OR":
                     self.pos = save  # this comma belongs to the OR level; let it consume
                     break
+                if nxt.kind in ("GRADE", "ORHIGHER"):
+                    # "ACC 323 and ACC 409, both with C- or better" -- this
+                    # comma introduces a trailing modifier for the whole
+                    # expression, not another atom to AND in. Let the
+                    # top-level trailing-modifier pass in parse_prereq()
+                    # handle it instead of swallowing it as unparsed text.
+                    self.pos = save
+                    break
+                if nxt.kind == "WORD" and nxt.value.lower() in ("both", "each"):
+                    self.pos = save
+                    break
                 if nxt.kind == "AND":
                     self.advance()
                     nodes.append(self.atom())
@@ -222,6 +241,19 @@ class Parser:
         if tok.kind == "EITHER":
             self.advance()
             return self.atom()
+
+        if tok.kind == "GRADE":
+            # "C (not C-) or better in BIOL 171 / BIOL 171L, BIOL 172 ..." --
+            # the grade leads here rather than trailing the course(s) it
+            # modifies. Consume it, skip a literal "in" if present, parse
+            # whatever follows as its own (possibly and/or/slash) group, and
+            # apply the grade recursively to that whole group.
+            self.advance()
+            if self.peek() and self.peek().kind == "WORD" and self.peek().value.lower() == "in":
+                self.advance()
+            sub = self.or_expr()
+            self._apply_recursive(sub, "min_grade", tok.groups[0])
+            return sub
 
         if tok.kind == "LPAREN":
             self.advance()
@@ -263,54 +295,60 @@ class Parser:
         node = variants[0] if len(variants) == 1 else {"op": "OR", "children": variants}
         return self._apply_leaf_modifiers(node) if len(variants) == 1 else self._apply_group_modifiers(node)
 
+    # A modifier can trail an atom bare ("ACC 200 with a C- or better") or
+    # wrapped in its own parens ("ACC 200 (with a C- or better)") -- the
+    # latter is common enough in the catalog that both forms need handling.
+    # Returns the modifier token and advances past it (and its wrapping
+    # parens, if any); returns None and consumes nothing otherwise.
+    def _take_modifier_token(self, kinds):
+        tok = self.peek()
+        if tok is not None and tok.kind in kinds:
+            self.advance()
+            return tok
+        if tok is not None and tok.kind == "LPAREN":
+            inner = self.tokens[self.pos + 1] if self.pos + 1 < len(self.tokens) else None
+            after = self.tokens[self.pos + 2] if self.pos + 2 < len(self.tokens) else None
+            if inner is not None and inner.kind in kinds and after is not None and after.kind == "RPAREN":
+                self.advance()
+                self.advance()
+                self.advance()
+                return inner
+        return None
+
     def _apply_leaf_modifiers(self, leaf):
+        kinds = ("CONCURRENT", "GRADE", "ORHIGHER", "FORALPHA")
         while True:
-            tok = self.peek()
+            tok = self._take_modifier_token(kinds)
             if tok is None:
                 break
             if tok.kind == "CONCURRENT":
-                self.advance()
                 leaf["concurrent"] = True
             elif tok.kind == "GRADE":
-                self.advance()
                 leaf["min_grade"] = tok.groups[0]
             elif tok.kind == "ORHIGHER":
-                self.advance()
                 leaf["or_higher"] = True
             elif tok.kind == "FORALPHA":
-                self.advance()
                 leaf["applies_to_alpha"] = tok.groups[0]
-            else:
-                break
         return leaf
 
     def _apply_group_modifiers(self, node):
+        kinds = ("GRADE", "ORHIGHER", "FORALPHA", "CONCURRENT")
         while True:
-            tok = self.peek()
+            tok = self._take_modifier_token(kinds)
             if tok is None:
                 break
             if tok.kind == "GRADE":
-                self.advance()
                 self._apply_recursive(node, "min_grade", tok.groups[0])
             elif tok.kind == "ORHIGHER":
-                self.advance()
                 self._apply_recursive(node, "or_higher", True)
             elif tok.kind == "FORALPHA":
-                self.advance()
                 node["applies_to_alpha"] = tok.groups[0]
             elif tok.kind == "CONCURRENT":
-                self.advance()
                 node["concurrent"] = True
-            else:
-                break
         return node
 
     def _apply_recursive(self, node, key, value):
-        if "course" in node:
-            node[key] = value
-        elif "children" in node:
-            for child in node["children"]:
-                self._apply_recursive(child, key, value)
+        _apply_recursive(node, key, value)
 
     def _unparsed_atom(self):
         stop_kinds = ("AND", "OR", "SEMI", "COMMA", "RPAREN")
@@ -320,6 +358,14 @@ class Parser:
         self.result.has_unparsed = True
         text = " ".join(parts).strip(" .")
         return {"type": "unparsed", "text": text}
+
+
+def _apply_recursive(node, key, value):
+    if "course" in node:
+        node[key] = value
+    elif "children" in node:
+        for child in node["children"]:
+            _apply_recursive(child, key, value)
 
 
 def _has_any_unparsed(node) -> bool:
@@ -348,6 +394,39 @@ def parse_prereq(raw: str, own_subject: str) -> tuple[dict, str]:
     result = ParseResult()
     parser = Parser(tokens, own_subject, result)
     tree = parser.parse()
+
+    # A grade/or-higher modifier can trail the WHOLE expression rather than a
+    # single parenthesized group -- "ACC 323 and ACC 409, both with C- or
+    # better." Look past filler (comma, "both") for one; if found, consume
+    # it and apply recursively to the whole tree. If not, revert entirely
+    # (don't eat real content on a failed guess) and let the safety net below
+    # carry it as unparsed instead.
+    _FILLER_WORDS = {"both", "each"}
+    save_pos = parser.pos
+    applied_trailing = False
+    while True:
+        tok = parser.peek()
+        if tok is None:
+            break
+        if tok.kind in ("COMMA", "DOT"):
+            parser.advance()
+            continue
+        if tok.kind == "WORD" and tok.value.lower() in _FILLER_WORDS:
+            parser.advance()
+            continue
+        if tok.kind == "GRADE":
+            parser.advance()
+            _apply_recursive(tree, "min_grade", tok.groups[0])
+            applied_trailing = True
+            continue
+        if tok.kind == "ORHIGHER":
+            parser.advance()
+            _apply_recursive(tree, "or_higher", True)
+            applied_trailing = True
+            continue
+        break
+    if not applied_trailing:
+        parser.pos = save_pos
 
     # Safety net: whatever the grammar didn't anticipate, never let it vanish.
     # Any tokens left unconsumed become a sibling unparsed leaf.

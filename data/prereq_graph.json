@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-09-16T02:56:07.520332+00:00",
- "node_count": 8881,
- "edge_count": 7423,
+ "generated_at": "2026-09-16T09:38:21.525442+00:00",
+ "node_count": 8884,
+ "edge_count": 7512,
  "nodes": {
   "ACC 200": {
    "title": "Introduction to Accounting I",
@@ -1944,7 +1944,7 @@
    "gened": [
     "DS"
    ],
-   "description": "Sports as reflected in literature, films, and TV.",
+   "description": "Sports as reflected in literature, films, and TV. Focus on ethical dimensions of sports and sporting cultures; writing emphasis.",
    "prereq_raw": null,
    "coreq_raw": null,
    "restrictions_raw": null,
@@ -16036,8 +16036,8 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68400",
    "in_catalog": true,
-   "depth": 0,
-   "depth_status": "unresolved_prereq"
+   "depth": 4,
+   "depth_status": "ok"
   },
   "BIOL 275": {
    "title": "Cell and Molecular Biology",
@@ -16072,7 +16072,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68401",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 295": {
@@ -16106,7 +16106,7 @@
    "restrictions_raw": "Major Restrictions: MBIO majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68348",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 0,
    "depth_status": "ok"
   },
   "BIOL 301L": {
@@ -16124,8 +16124,8 @@
    "restrictions_raw": "Major Restrictions: MBIO majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68402",
    "in_catalog": true,
-   "depth": 0,
-   "depth_status": "unresolved_prereq"
+   "depth": null,
+   "depth_status": "cycle"
   },
   "BIOL 304": {
    "title": "Biotechnology: Science and Ethical Issues",
@@ -16356,7 +16356,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 375": {
@@ -16474,7 +16474,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68366",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 401L": {
@@ -16492,7 +16492,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68406",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 402": {
@@ -16510,7 +16510,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68367",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 403": {
@@ -16528,7 +16528,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 1,
    "depth_status": "ok"
   },
   "BIOL 404": {
@@ -16546,7 +16546,7 @@
    "restrictions_raw": "Major Restrictions: MBIO majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 1,
    "depth_status": "ok"
   },
   "BIOL 406": {
@@ -16582,7 +16582,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68371",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 408": {
@@ -16600,7 +16600,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68372",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 5,
    "depth_status": "ok"
   },
   "BIOL 408L": {
@@ -16618,7 +16618,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68407",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 5,
    "depth_status": "ok"
   },
   "BIOL 410": {
@@ -16652,7 +16652,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 1,
    "depth_status": "ok"
   },
   "BIOL 425": {
@@ -16670,7 +16670,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 430": {
@@ -16830,7 +16830,7 @@
    "restrictions_raw": "Major Restrictions: MCB or BIOL majors only. Class Standing Restrictions: Senior standing or higher.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68382",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 6,
    "depth_status": "ok"
   },
   "BIOL 472L": {
@@ -17080,7 +17080,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "BIOL 650": {
@@ -17160,7 +17160,7 @@
    "restrictions_raw": "Class Standing Restrictions: Graduate students only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=BIOM&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 1,
    "depth_status": "ok"
   },
   "BIOM 641": {
@@ -17877,7 +17877,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68453",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 1,
    "depth_status": "ok"
   },
   "BOT 446": {
@@ -19948,7 +19948,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68595",
    "in_catalog": true,
-   "depth": 5,
+   "depth": 3,
    "depth_status": "ok"
   },
   "CEE 424": {
@@ -20310,7 +20310,7 @@
    "restrictions_raw": "Major Restrictions: CEE or CNST majors only. Class Standing Restrictions: Senior standing.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CEE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 4,
    "depth_status": "ok"
   },
   "CEE 490": {
@@ -20758,7 +20758,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CEE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 6,
+   "depth": 7,
    "depth_status": "ok"
   },
   "CEE 652": {
@@ -20774,7 +20774,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CEE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 6,
+   "depth": 7,
    "depth_status": "ok"
   },
   "CEE 653": {
@@ -20838,7 +20838,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CEE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 6,
+   "depth": 7,
    "depth_status": "ok"
   },
   "CEE 660": {
@@ -21394,7 +21394,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68678",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "CHEM 152L": {
@@ -21466,8 +21466,8 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68680",
    "in_catalog": true,
-   "depth": 0,
-   "depth_status": "unresolved_prereq"
+   "depth": 1,
+   "depth_status": "ok"
   },
   "CHEM 162L": {
    "title": "General Chemistry Lab II",
@@ -21484,7 +21484,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68735",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "CHEM 171": {
@@ -21610,8 +21610,8 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68683",
    "in_catalog": true,
-   "depth": 0,
-   "depth_status": "unresolved_prereq"
+   "depth": 3,
+   "depth_status": "ok"
   },
   "CHEM 273L": {
    "title": "Organic Chemistry II Lab",
@@ -21628,7 +21628,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68740",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "CHEM 274": {
@@ -21736,7 +21736,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68687",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "CHEM 380": {
@@ -21872,7 +21872,7 @@
    "restrictions_raw": "Major Restrictions: CHEM or BIOC majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68693",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "CHEM 445L": {
@@ -21890,7 +21890,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CHEM&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "CHEM 461": {
@@ -21924,7 +21924,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68695",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "CHEM 462L": {
@@ -21942,7 +21942,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CHEM&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 6,
    "depth_status": "ok"
   },
   "CHEM 600": {
@@ -25598,7 +25598,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68930",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 5,
    "depth_status": "ok"
   },
   "CMB 622": {
@@ -25614,7 +25614,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=68931",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "CMB 625": {
@@ -25662,7 +25662,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=CMB&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 6,
    "depth_status": "ok"
   },
   "CMB 640": {
@@ -40174,8 +40174,8 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=EDEP&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": null,
-   "depth_status": "cycle"
+   "depth": 0,
+   "depth_status": "ok"
   },
   "EDEP 613": {
    "title": "Qualitative Research Methods in Education",
@@ -45345,7 +45345,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=70085",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "ERTH 333": {
@@ -45600,7 +45600,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=70099",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "ERTH 440": {
@@ -46138,7 +46138,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ERTH&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "ERTH 630": {
@@ -46234,7 +46234,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ERTH&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "ERTH 640": {
@@ -46298,7 +46298,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=70140",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "ERTH 651": {
@@ -46394,7 +46394,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ERTH&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "ERTH 671B": {
@@ -50836,8 +50836,8 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=70415",
    "in_catalog": true,
-   "depth": 0,
-   "depth_status": "unresolved_prereq"
+   "depth": 1,
+   "depth_status": "ok"
   },
   "FSHN 381": {
    "title": "Experimental Foods",
@@ -50888,7 +50888,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=70417",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "FSHN 403": {
@@ -51666,7 +51666,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=70459",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "FSHN 687": {
@@ -64198,7 +64198,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ICS&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=2&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "ICS 675": {
@@ -67334,7 +67334,7 @@
    "restrictions_raw": "Major Restrictions: MIS & MSIS majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ITM&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "ITM 660": {
@@ -84352,7 +84352,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72435",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "MBBE 401": {
@@ -84370,7 +84370,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72436",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MBBE 401L": {
@@ -84388,7 +84388,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72469",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MBBE 402": {
@@ -84406,7 +84406,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72437",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MBBE 402L": {
@@ -84424,7 +84424,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72470",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MBBE 405": {
@@ -84458,7 +84458,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72439",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MBBE 411": {
@@ -84494,7 +84494,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72441",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "MBBE 422": {
@@ -84562,7 +84562,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72444",
    "in_catalog": true,
-   "depth": 5,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MBBE 461": {
@@ -84658,7 +84658,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72450",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MBBE 607": {
@@ -84722,7 +84722,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72454",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MBBE 621": {
@@ -84850,7 +84850,7 @@
    "restrictions_raw": "Class Standing Restrictions: Graduate students only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MBBE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MBBE 680": {
@@ -84866,7 +84866,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MBBE&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MBBE 683": {
@@ -85528,7 +85528,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72502",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MCB 408": {
@@ -85546,7 +85546,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72503",
    "in_catalog": true,
-   "depth": 0,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MCB 408L": {
@@ -85564,7 +85564,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MCB&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MCB 461": {
@@ -85616,7 +85616,7 @@
    "restrictions_raw": "Major Restrictions: MCB or BIOL majors only. Class Standing Restrictions: Senior standing or higher.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72505",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 6,
    "depth_status": "ok"
   },
   "MCB 475": {
@@ -87116,7 +87116,7 @@
    "restrictions_raw": "Major Restrictions: ENGR majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=ME&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 5,
    "depth_status": "ok"
   },
   "ME 450": {
@@ -88874,7 +88874,7 @@
    "restrictions_raw": "Major Restrictions: MEDT majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72707",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 4,
    "depth_status": "ok"
   },
   "MEDT 472": {
@@ -88890,7 +88890,7 @@
    "restrictions_raw": "Major Restrictions: MEDT majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MEDT&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MEDT 477": {
@@ -88906,7 +88906,7 @@
    "restrictions_raw": "Major Restrictions: MEDT majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72709",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MEDT 478": {
@@ -88922,7 +88922,7 @@
    "restrictions_raw": "Major Restrictions: MEDT majors only.",
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MEDT&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 3,
+   "depth": 6,
    "depth_status": "ok"
   },
   "MEDT 481": {
@@ -89816,7 +89816,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MICR&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MICR 401": {
@@ -89888,7 +89888,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=MICR&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MICR 461": {
@@ -90136,7 +90136,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=72772",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 5,
    "depth_status": "ok"
   },
   "MICR 614": {
@@ -98606,7 +98606,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=76270",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "NREM 420": {
@@ -99176,7 +99176,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=NREM&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "NREM 665": {
@@ -107460,7 +107460,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=73820",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "PEPS 486": {
@@ -107638,7 +107638,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=83796",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "PEPS 627": {
@@ -109100,7 +109100,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=73920",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "PH 688": {
@@ -112158,8 +112158,8 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=PHYL&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 3,
-   "depth_status": "ok"
+   "depth": 0,
+   "depth_status": "unresolved_prereq"
   },
   "PHYL 499": {
    "title": "Directed Reading or Research",
@@ -132835,7 +132835,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=75374",
    "in_catalog": true,
-   "depth": 1,
+   "depth": 2,
    "depth_status": "ok"
   },
   "SUST 426": {
@@ -132989,7 +132989,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=75384",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 1,
    "depth_status": "ok"
   },
   "SUST 446": {
@@ -141118,7 +141118,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=75873",
    "in_catalog": true,
-   "depth": 2,
+   "depth": 3,
    "depth_status": "ok"
   },
   "TPSS 484": {
@@ -141294,7 +141294,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=TPSS&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "TPSS 615": {
@@ -141326,7 +141326,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/preview_course_nopop.php?catoid=4&coid=83798",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "TPSS 634": {
@@ -141518,7 +141518,7 @@
    "restrictions_raw": null,
    "source_url": "https://catalog.manoa.hawaii.edu/content.php?catoid=4&navoid=949&cur_cat_oid=4&filter%5B27%5D=TPSS&filter%5B29%5D=&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&search_database=Filter&expand=1&print=",
    "in_catalog": true,
-   "depth": 4,
+   "depth": 5,
    "depth_status": "ok"
   },
   "TPSS 680": {
@@ -145545,6 +145545,11 @@
    "depth": 0,
    "depth_status": "external"
   },
+  "ZOOL 141": {
+   "in_catalog": false,
+   "depth": 0,
+   "depth_status": "external"
+  },
   "CHEM 333": {
    "in_catalog": false,
    "depth": 0,
@@ -145645,6 +145650,11 @@
    "depth": 0,
    "depth_status": "external"
   },
+  "BIOC 241": {
+   "in_catalog": false,
+   "depth": 0,
+   "depth_status": "external"
+  },
   "PEPS 402": {
    "in_catalog": false,
    "depth": 0,
@@ -145741,6 +145751,11 @@
    "depth_status": "external"
   },
   "MUS 311": {
+   "in_catalog": false,
+   "depth": 0,
+   "depth_status": "external"
+  },
+  "NURS 742": {
    "in_catalog": false,
    "depth": 0,
    "depth_status": "external"
@@ -149333,6 +149348,11 @@
    "type": "prereq"
   },
   {
+   "from": "BE 373",
+   "to": "MBBE 460",
+   "type": "prereq"
+  },
+  {
    "from": "BE 437",
    "to": "BE 470",
    "type": "prereq"
@@ -149519,6 +149539,16 @@
   },
   {
    "from": "BIOL 171",
+   "to": "BIOL 265",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
+   "to": "BIOL 275",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
    "to": "BIOL 304",
    "type": "prereq"
   },
@@ -149535,6 +149565,16 @@
   {
    "from": "BIOL 171",
    "to": "BIOL 325",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
+   "to": "BIOL 331",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
+   "to": "BIOL 390",
    "type": "prereq"
   },
   {
@@ -149619,12 +149659,22 @@
   },
   {
    "from": "BIOL 171",
+   "to": "CAAM 415",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
    "to": "FSHN 411",
    "type": "prereq"
   },
   {
    "from": "BIOL 171",
    "to": "FSHN 440",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
+   "to": "FSHN 475",
    "type": "prereq"
   },
   {
@@ -149655,6 +149705,11 @@
   {
    "from": "BIOL 171",
    "to": "MBBE 483",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
+   "to": "MCB 275",
    "type": "prereq"
   },
   {
@@ -149710,6 +149765,11 @@
   {
    "from": "BIOL 171",
    "to": "NREM 410",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171",
+   "to": "NREM 601",
    "type": "prereq"
   },
   {
@@ -149809,7 +149869,27 @@
   },
   {
    "from": "BIOL 171L",
+   "to": "BIOL 265",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171L",
+   "to": "BIOL 275",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171L",
    "to": "BIOL 306",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171L",
+   "to": "BIOL 331",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171L",
+   "to": "BIOL 390",
    "type": "prereq"
   },
   {
@@ -149850,6 +149930,11 @@
   {
    "from": "BIOL 171L",
    "to": "KRS 353",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 171L",
+   "to": "MCB 275",
    "type": "prereq"
   },
   {
@@ -150158,8 +150243,23 @@
    "type": "prereq"
   },
   {
+   "from": "BIOL 220",
+   "to": "FISH 615",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 265",
+   "to": "BIOL 265L",
+   "type": "prereq"
+  },
+  {
    "from": "BIOL 265",
    "to": "BIOL 295",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 265",
+   "to": "BIOL 301",
    "type": "prereq"
   },
   {
@@ -150169,7 +150269,17 @@
   },
   {
    "from": "BIOL 265",
+   "to": "BIOL 363",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 265",
    "to": "BIOL 411",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 265",
+   "to": "BIOL 425",
    "type": "prereq"
   },
   {
@@ -150229,7 +150339,22 @@
   },
   {
    "from": "BIOL 265L",
+   "to": "BIOL 363",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 265L",
+   "to": "BIOL 425",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 265L",
    "to": "BIOL 603",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
+   "to": "BIOL 275L",
    "type": "prereq"
   },
   {
@@ -150254,6 +150379,21 @@
   },
   {
    "from": "BIOL 275",
+   "to": "BIOL 401",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
+   "to": "BIOL 402",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
+   "to": "BIOL 407",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
    "to": "BIOL 472L",
    "type": "prereq"
   },
@@ -150264,7 +150404,22 @@
   },
   {
    "from": "BIOL 275",
+   "to": "MBBE 401",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
+   "to": "MBBE 402",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
    "to": "MBBE 621",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275",
+   "to": "MCB 407",
    "type": "prereq"
   },
   {
@@ -150344,6 +150499,16 @@
   },
   {
    "from": "BIOL 275L",
+   "to": "BIOL 402",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275L",
+   "to": "BIOL 407",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275L",
    "to": "BIOL 472L",
    "type": "prereq"
   },
@@ -150355,6 +150520,16 @@
   {
    "from": "BIOL 275L",
    "to": "MBBE 401L",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275L",
+   "to": "MBBE 402",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 275L",
+   "to": "MCB 407",
    "type": "prereq"
   },
   {
@@ -150380,6 +150555,21 @@
   {
    "from": "BIOL 275L",
    "to": "MICR 490L",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 301",
+   "to": "BIOL 301L",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 301",
+   "to": "BIOL 403",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 301",
+   "to": "BIOL 404",
    "type": "prereq"
   },
   {
@@ -150410,6 +150600,16 @@
   {
    "from": "BIOL 301L",
    "to": "BIOL 301",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 301L",
+   "to": "BIOL 403",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 301L",
+   "to": "BIOL 404",
    "type": "prereq"
   },
   {
@@ -150579,12 +150779,22 @@
   },
   {
    "from": "BIOL 407",
+   "to": "BIOL 408",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 407",
    "to": "BIOL 408L",
    "type": "prereq"
   },
   {
    "from": "BIOL 407",
    "to": "BIOL 472",
+   "type": "prereq"
+  },
+  {
+   "from": "BIOL 407",
+   "to": "MBBE 408",
    "type": "prereq"
   },
   {
@@ -151608,6 +151818,11 @@
    "type": "prereq"
   },
   {
+   "from": "CEE 250",
+   "to": "CEE 489",
+   "type": "prereq"
+  },
+  {
    "from": "CEE 270",
    "to": "BE 350",
    "type": "prereq"
@@ -151615,6 +151830,16 @@
   {
    "from": "CEE 270",
    "to": "BE 373",
+   "type": "prereq"
+  },
+  {
+   "from": "CEE 270",
+   "to": "CEE 271",
+   "type": "prereq"
+  },
+  {
+   "from": "CEE 270",
+   "to": "ME 271",
    "type": "prereq"
   },
   {
@@ -151668,6 +151893,11 @@
    "type": "prereq"
   },
   {
+   "from": "CEE 305",
+   "to": "CEE 489",
+   "type": "prereq"
+  },
+  {
    "from": "CEE 320",
    "to": "BE 437",
    "type": "prereq"
@@ -151700,6 +151930,11 @@
   {
    "from": "CEE 320",
    "to": "CEE 424",
+   "type": "prereq"
+  },
+  {
+   "from": "CEE 320",
+   "to": "MBBE 460",
    "type": "prereq"
   },
   {
@@ -151863,6 +152098,21 @@
    "type": "prereq"
   },
   {
+   "from": "CEE 455",
+   "to": "CEE 651",
+   "type": "prereq"
+  },
+  {
+   "from": "CEE 455",
+   "to": "CEE 652",
+   "type": "prereq"
+  },
+  {
+   "from": "CEE 455",
+   "to": "CEE 658",
+   "type": "prereq"
+  },
+  {
    "from": "CEE 464",
    "to": "CEE 660",
    "type": "prereq"
@@ -151885,6 +152135,11 @@
   {
    "from": "CEE 474",
    "to": "CEE 604",
+   "type": "prereq"
+  },
+  {
+   "from": "CEE 474",
+   "to": "CEE 612",
    "type": "prereq"
   },
   {
@@ -152104,6 +152359,11 @@
   },
   {
    "from": "CHEM 161",
+   "to": "CHEM 162",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 161",
    "to": "DH 231",
    "type": "prereq"
   },
@@ -152140,6 +152400,11 @@
   {
    "from": "CHEM 161",
    "to": "FSHN 244",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 161",
+   "to": "FSHN 370",
    "type": "prereq"
   },
   {
@@ -152254,7 +152519,17 @@
   },
   {
    "from": "CHEM 161L",
+   "to": "CHEM 162L",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 161L",
    "to": "FSHN 244",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 161L",
+   "to": "FSHN 370",
    "type": "prereq"
   },
   {
@@ -152335,6 +152610,16 @@
   {
    "from": "CHEM 162",
    "to": "CHEM 162L",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 162",
+   "to": "CHEM 272",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 162",
+   "to": "CHEM 274",
    "type": "prereq"
   },
   {
@@ -152425,6 +152710,16 @@
   {
    "from": "CHEM 162L",
    "to": "CHEM 152L",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 162L",
+   "to": "CHEM 272L",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 162L",
+   "to": "CHEM 274L",
    "type": "prereq"
   },
   {
@@ -152674,6 +152969,16 @@
   },
   {
    "from": "CHEM 272",
+   "to": "CHEM 272L",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 272",
+   "to": "CHEM 273",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 272",
    "to": "FSHN 440",
    "type": "prereq"
   },
@@ -152710,6 +153015,11 @@
   {
    "from": "CHEM 272",
    "to": "MICR 485",
+   "type": "prereq"
+  },
+  {
+   "from": "CHEM 272L",
+   "to": "CHEM 273L",
    "type": "prereq"
   },
   {
@@ -156774,12 +157084,22 @@
   },
   {
    "from": "ECON 130",
+   "to": "BE 405",
+   "type": "prereq"
+  },
+  {
+   "from": "ECON 130",
    "to": "BUS 313",
    "type": "prereq"
   },
   {
    "from": "ECON 130",
    "to": "BUS 314",
+   "type": "prereq"
+  },
+  {
+   "from": "ECON 130",
+   "to": "CEE 405",
    "type": "prereq"
   },
   {
@@ -156895,6 +157215,11 @@
   {
    "from": "ECON 130",
    "to": "NREM 429",
+   "type": "prereq"
+  },
+  {
+   "from": "ECON 130",
+   "to": "NREM 601",
    "type": "prereq"
   },
   {
@@ -159118,6 +159443,11 @@
    "type": "prereq"
   },
   {
+   "from": "FISH 600",
+   "to": "FISH 750",
+   "type": "prereq"
+  },
+  {
    "from": "FISH 601",
    "to": "FISH 602",
    "type": "prereq"
@@ -159670,6 +160000,11 @@
   {
    "from": "FSHN 185",
    "to": "FSHN 360",
+   "type": "prereq"
+  },
+  {
+   "from": "FSHN 185",
+   "to": "FSHN 370",
    "type": "prereq"
   },
   {
@@ -160950,6 +161285,11 @@
   {
    "from": "HAW 302",
    "to": "HWST 648",
+   "type": "prereq"
+  },
+  {
+   "from": "HAW 302",
+   "to": "HWST 675",
    "type": "prereq"
   },
   {
@@ -162708,6 +163048,11 @@
    "type": "prereq"
   },
   {
+   "from": "ICS 241",
+   "to": "ICS 674",
+   "type": "prereq"
+  },
+  {
    "from": "ICS 311",
    "to": "DATA 422",
    "type": "prereq"
@@ -163550,6 +163895,11 @@
   {
    "from": "ITM 353",
    "to": "ITM 366",
+   "type": "prereq"
+  },
+  {
+   "from": "ITM 353",
+   "to": "ITM 654",
    "type": "prereq"
   },
   {
@@ -166578,6 +166928,11 @@
    "type": "prereq"
   },
   {
+   "from": "LTEC 668",
+   "to": "LTEC 782",
+   "type": "prereq"
+  },
+  {
    "from": "LTEC 673",
    "to": "LTEC 632",
    "type": "prereq"
@@ -167264,6 +167619,11 @@
   },
   {
    "from": "MATH 241",
+   "to": "MATH 252A",
+   "type": "prereq"
+  },
+  {
+   "from": "MATH 241",
    "to": "MBBE 447",
    "type": "prereq"
   },
@@ -167325,6 +167685,11 @@
   {
    "from": "MATH 242",
    "to": "BE 260",
+   "type": "prereq"
+  },
+  {
+   "from": "MATH 242",
+   "to": "CEE 220",
    "type": "prereq"
   },
   {
@@ -167664,6 +168029,11 @@
   },
   {
    "from": "MATH 244",
+   "to": "CEE 422",
+   "type": "prereq"
+  },
+  {
+   "from": "MATH 244",
    "to": "CHEM 658",
    "type": "prereq"
   },
@@ -167725,6 +168095,11 @@
   {
    "from": "MATH 244",
    "to": "ME 371",
+   "type": "prereq"
+  },
+  {
+   "from": "MATH 244",
+   "to": "ME 374",
    "type": "prereq"
   },
   {
@@ -168095,6 +168470,11 @@
   {
    "from": "MATH 253A",
    "to": "CEE 370",
+   "type": "prereq"
+  },
+  {
+   "from": "MATH 253A",
+   "to": "CEE 422",
    "type": "prereq"
   },
   {
@@ -168978,6 +169358,11 @@
    "type": "coreq"
   },
   {
+   "from": "MCB 407",
+   "to": "MCB 408",
+   "type": "prereq"
+  },
+  {
    "from": "MCB 461",
    "to": "MCB 461L",
    "type": "prereq"
@@ -169690,6 +170075,11 @@
   {
    "from": "ME 375",
    "to": "ME 408",
+   "type": "prereq"
+  },
+  {
+   "from": "ME 375",
+   "to": "ME 448",
    "type": "prereq"
   },
   {
@@ -171514,6 +171904,11 @@
   },
   {
    "from": "NREM 220",
+   "to": "NREM 601",
+   "type": "prereq"
+  },
+  {
+   "from": "NREM 220",
    "to": "NREM 611",
    "type": "prereq"
   },
@@ -172838,6 +173233,11 @@
    "type": "prereq"
   },
   {
+   "from": "NURS 751",
+   "to": "NURS 777",
+   "type": "prereq"
+  },
+  {
    "from": "NURS 752",
    "to": "NURS 753",
    "type": "prereq"
@@ -173155,6 +173555,16 @@
   {
    "from": "OCN 620",
    "to": "ATMO 704",
+   "type": "prereq"
+  },
+  {
+   "from": "OCN 620",
+   "to": "FISH 660",
+   "type": "prereq"
+  },
+  {
+   "from": "OCN 620",
+   "to": "OCN 632",
    "type": "prereq"
   },
   {
@@ -174329,12 +174739,27 @@
   },
   {
    "from": "PHYL 141",
+   "to": "BIOM 615",
+   "type": "prereq"
+  },
+  {
+   "from": "PHYL 141",
+   "to": "CAAM 415",
+   "type": "prereq"
+  },
+  {
+   "from": "PHYL 141",
    "to": "DH 231",
    "type": "prereq"
   },
   {
    "from": "PHYL 141",
    "to": "DH 231L",
+   "type": "prereq"
+  },
+  {
+   "from": "PHYL 141",
+   "to": "FSHN 475",
    "type": "prereq"
   },
   {
@@ -174389,6 +174814,11 @@
   },
   {
    "from": "PHYL 142",
+   "to": "FSHN 370",
+   "type": "prereq"
+  },
+  {
+   "from": "PHYL 142",
    "to": "FSHN 485",
    "type": "prereq"
   },
@@ -174420,6 +174850,11 @@
   {
    "from": "PHYL 142L",
    "to": "DH 231L",
+   "type": "prereq"
+  },
+  {
+   "from": "PHYL 142L",
+   "to": "FSHN 370",
    "type": "prereq"
   },
   {
@@ -174469,6 +174904,11 @@
   },
   {
    "from": "PHYL 301",
+   "to": "PHYL 302",
+   "type": "prereq"
+  },
+  {
+   "from": "PHYL 301",
    "to": "PHYL 401",
    "type": "prereq"
   },
@@ -174493,13 +174933,13 @@
    "type": "coreq"
   },
   {
-   "from": "PHYL 302L",
-   "to": "FSHN 485",
+   "from": "PHYL 302",
+   "to": "PHYL 401",
    "type": "prereq"
   },
   {
-   "from": "PHYL 401",
-   "to": "PHYL 402",
+   "from": "PHYL 302L",
+   "to": "FSHN 485",
    "type": "prereq"
   },
   {
@@ -178209,6 +178649,11 @@
   },
   {
    "from": "SUST 220",
+   "to": "NREM 601",
+   "type": "prereq"
+  },
+  {
+   "from": "SUST 220",
    "to": "NREM 611",
    "type": "prereq"
   },
@@ -181863,6 +182308,11 @@
    "type": "prereq"
   },
   {
+   "from": "ZOOL 141",
+   "to": "BIOM 615",
+   "type": "prereq"
+  },
+  {
    "from": "CHEM 333",
    "to": "CHEM 631",
    "type": "prereq"
@@ -182283,6 +182733,11 @@
    "type": "prereq"
   },
   {
+   "from": "BIOC 241",
+   "to": "FSHN 475",
+   "type": "prereq"
+  },
+  {
    "from": "PEPS 402",
    "to": "FSHN 477",
    "type": "prereq"
@@ -182590,6 +183045,11 @@
   {
    "from": "MUS 311",
    "to": "MUS 411J",
+   "type": "prereq"
+  },
+  {
+   "from": "NURS 742",
+   "to": "NURS 777",
    "type": "prereq"
   },
   {

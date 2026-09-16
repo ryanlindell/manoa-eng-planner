@@ -91,6 +91,11 @@ def _parse_fields(rest: str) -> dict:
             )
         elif label in FIELD_MAP:
             fields[FIELD_MAP[label]] = value
+        elif label.startswith("general education designation"):
+            # Already extracted into `gened` by the dedicated regex in
+            # parse_course_block -- would otherwise be duplicated here on
+            # every gened-bearing course.
+            continue
         else:
             other_notes[strip_tags(label_raw)] = value
     if other_notes:
@@ -110,7 +115,16 @@ def _failed_block(block: str, raw_heading: str | None) -> dict:
     }
 
 
+_EMPTY_STRONG_RE = re.compile(r"<strong>\s*(?:&nbsp;|\s)*</strong>", re.I)
+
+
 def parse_course_block(block: str) -> dict:
+    # Rare catalog markup quirk (seen once, in AMST 459): a stray empty
+    # <strong>&nbsp;</strong> mid-description gets mistaken for the start of
+    # the labeled-fields section, truncating the description and misfiling
+    # the rest of it as a nameless "other_notes" entry. Strip before parsing.
+    block = _EMPTY_STRONG_RE.sub("", block)
+
     heading_match = HEADING_RE.search(block)
     if not heading_match:
         return _failed_block(block, None)
