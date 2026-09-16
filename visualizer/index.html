@@ -534,87 +534,32 @@
     return { levelUnits: levelUnits, maxLevel: realMaxLevel, allCodes: Object.keys(level), truncated: truncated };
   }
 
-  // These only need to be in the right ballpark -- they size a rough first
-  // pass before any node exists in Cytoscape. The real spacing is fixed
-  // afterward by fixColumnOverlaps() below, which measures each node's
-  // actual rendered boundingBox() instead of guessing: a plain node's
-  // nominal style "height" is 34, but "padding" in Cytoscape visibly
-  // inflates the painted shape (not just an invisible hit-box), and a
-  // compound group's box additionally has to fit its own padding plus room
-  // for its label above the members -- real measured height comes out
-  // around 55-140px depending on member count, nothing close to 34. Hand
-  // -tuning constants to predict that exactly has already been wrong
-  // twice; measuring it directly is the only way that stays correct if the
-  // styling ever changes.
-  var ROW_H = 34, INTRA_GROUP_GAP = 10, UNIT_GAP = 26;
-  var MEMBER_GAP = 10;   // real, verified gap wanted between stacked members of one group
-  var COLUMN_GAP = 22;   // real, verified gap wanted between stacked units within a column
+  // A plain node's nominal style "height" (below) is 34, but Cytoscape's
+  // "padding" visibly inflates the painted shape by 2x its value (it's not
+  // just an invisible hit-box), and every node also gets a 1-2px border --
+  // the real rendered height is consistently ~57-58px, confirmed by
+  // directly inspecting boundingBox() on real Cytoscape instances across
+  // many real courses. ROW_H matches that measured reality, not the
+  // nominal style value.
+  //
+  // A previous version of this tried to correct positions post-hoc by
+  // reading each node's real boundingBox() back from Cytoscape after
+  // construction. That measurement was reliable for plain leaf nodes, but
+  // NOT for a compound parent's own boundingBox(): it sometimes reported a
+  // stale pre-move size, and its "extra" size over its members' span
+  // varied wildly with member count (10px for a 10-member group vs ~38px
+  // for a 2-member one on real data, which shouldn't happen since a
+  // label's height doesn't scale with how many members it has). Rather
+  // than chase that further, GROUP_CHROME below is a fixed, verified
+  // allowance for that same padding+label overhead, computed once up
+  // front like everything else -- no post-render measurement or
+  // correction pass needed at all.
+  var ROW_H = 58, INTRA_GROUP_GAP = 10, UNIT_GAP = 24;
+  var GROUP_CHROME = 40;  // extra room reserved above/below a group's member stack for its own padding + top label
 
-  function unitHeight(u) { return u.codes.length * ROW_H + (u.codes.length - 1) * INTRA_GROUP_GAP; }
-
-  // Re-measures and repositions every column built by layoutUnitColumn()
-  // (and the unlocks column) using Cytoscape's own real boundingBox() for
-  // each node/group, now that they actually exist and have styles applied
-  // -- see the comment on ROW_H above for why this can't be done with
-  // precomputed constants alone. Two passes: first fix each group's
-  // internal member stacking (its own boundingBox is only correct once its
-  // members are correctly spaced), then stack each column's units using
-  // their now-accurate heights.
-  function fixColumnOverlaps(cy, columns) {
-    // Two separate batches, not one -- a compound parent's boundingBox()
-    // only reflects its members' new positions once Cytoscape has settled
-    // after the change, and that settling doesn't happen mid-batch. Reading
-    // a group's box in the same batch that just repositioned its members
-    // (tried first) returned a stale, pre-move box and produced real
-    // overlaps (found via boundingBox()-based verification against real
-    // group-heavy courses, e.g. CINE 375 -- see git history for details).
-    cy.batch(function () {
-      columns.forEach(function (col) {
-        col.units.forEach(function (u) {
-          if (u.kind !== "group") return;
-          var members = u.memberIds.map(function (id) { return cy.getElementById(id); })
-            .filter(function (m) { return m.length && !m.empty(); });
-          if (!members.length) return;
-          var heights = members.map(function (m) { return m.boundingBox().h; });
-          var cursor = members[0].boundingBox().y1;
-          members.forEach(function (m, i) {
-            m.position("y", cursor + heights[i] / 2);
-            cursor += heights[i] + MEMBER_GAP;
-          });
-        });
-      });
-    });
-
-    cy.batch(function () {
-      columns.forEach(function (col) {
-        var heights = col.units.map(function (u) {
-          var el = cy.getElementById(u.id);
-          return el.length && !el.empty() ? el.boundingBox().h : 0;
-        });
-        var totalH = heights.reduce(function (a, b) { return a + b; }, 0)
-          + Math.max(0, col.units.length - 1) * COLUMN_GAP;
-        var cursorY = col.yCenter - totalH / 2;
-        col.units.forEach(function (u, i) {
-          var h = heights[i];
-          var targetCenterY = cursorY + h / 2;
-          if (u.kind === "single") {
-            var el = cy.getElementById(u.id);
-            if (el.length && !el.empty()) el.position("y", targetCenterY);
-          } else {
-            var grp = cy.getElementById(u.id);
-            if (grp.length && !grp.empty()) {
-              var bb = grp.boundingBox();
-              var delta = targetCenterY - (bb.y1 + bb.y2) / 2;
-              u.memberIds.forEach(function (id) {
-                var m = cy.getElementById(id);
-                if (m.length && !m.empty()) m.position("y", m.position("y") + delta);
-              });
-            }
-          }
-          cursorY += h + COLUMN_GAP;
-        });
-      });
-    });
+  function unitHeight(u) {
+    var membersH = u.codes.length * ROW_H + (u.codes.length - 1) * INTRA_GROUP_GAP;
+    return u.type === "single" ? membersH : membersH + GROUP_CHROME;
   }
 
   function renderGraph(focal) {
@@ -628,10 +573,9 @@
 
     var els = [];
     var placed = {};   // code -> true, only for nodes actually drawn (not "+more" stubs)
-    var colWidth = 240, rowHeight = 50;
+    var colWidth = 240, rowHeight = ROW_H + UNIT_GAP;
     var unlockX = colWidth * (chain.maxLevel + 1);
     var groupSeq = 0;
-    var columns = [];  // manifest for fixColumnOverlaps(): [{x, yCenter, units: [{kind, id, memberIds?}]}]
 
     function addNode(code, x, y, opts) {
       opts = opts || {};
@@ -654,7 +598,6 @@
       var totalHeight = shown.reduce(function (sum, u) { return sum + unitHeight(u); }, 0)
         + Math.max(0, shown.length - 1) * UNIT_GAP;
       var cursorY = yCenter - totalHeight / 2;
-      var colEntry = { x: x, yCenter: yCenter, units: [] };
 
       shown.forEach(function (u) {
         var h = unitHeight(u);
@@ -662,26 +605,22 @@
           var code = u.codes[0];
           addNode(code, x, cursorY + h / 2);
           els.push({ data: { id: code + "->" + u.target + ":" + kind, source: code, target: u.target, kind: kind } });
-          colEntry.units.push({ kind: "single", id: code });
         } else {
           var gid = "grp:" + (groupSeq++);
           var label = u.type === "nof" ? (u.n + " of " + u.codes.length) : "1 of " + u.codes.length;
           els.push({ data: { id: gid, label: label, isGroup: true, groupKind: kind } });
+          var membersTop = cursorY + GROUP_CHROME / 2;
           u.codes.forEach(function (code, i) {
-            addNode(code, x, cursorY + i * (ROW_H + INTRA_GROUP_GAP) + ROW_H / 2, { parent: gid });
+            addNode(code, x, membersTop + i * (ROW_H + INTRA_GROUP_GAP) + ROW_H / 2, { parent: gid });
           });
           els.push({ data: { id: gid + "->" + u.target, source: gid, target: u.target, kind: kind } });
-          colEntry.units.push({ kind: "group", id: gid, memberIds: u.codes.slice() });
         }
         cursorY += h + UNIT_GAP;
       });
 
       if (extra > 0) {
-        var moreId = "__more_" + kind + "_" + x;
-        els.push({ data: { id: moreId, label: "+" + extra + " more", isMore: true }, position: { x: x, y: cursorY + ROW_H / 2 } });
-        colEntry.units.push({ kind: "single", id: moreId });
+        els.push({ data: { id: "__more_" + kind + "_" + x, label: "+" + extra + " more", isMore: true }, position: { x: x, y: cursorY + ROW_H / 2 } });
       }
-      columns.push(colEntry);
       return totalHeight;
     }
 
@@ -693,16 +632,10 @@
 
     if (coreqUnits.length) layoutUnitColumn(coreqUnits, 0, 120, "coreq");
 
-    var unlockCol = { x: unlockX, yCenter: 0, units: [] };
-    unlocks.shown.forEach(function (c, i) {
-      addNode(c, unlockX, (i - (unlocks.shown.length - 1) / 2) * rowHeight);
-      unlockCol.units.push({ kind: "single", id: c });
-    });
+    unlocks.shown.forEach(function (c, i) { addNode(c, unlockX, (i - (unlocks.shown.length - 1) / 2) * rowHeight); });
     if (unlocks.extra > 0) {
       els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true }, position: { x: unlockX, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
-      unlockCol.units.push({ kind: "single", id: "__more_unlock" });
     }
-    if (unlockCol.units.length) columns.push(unlockCol);
     unlocks.shown.forEach(function (c) { els.push({ data: { id: focal + "->" + c, source: focal, target: c, kind: "prereq" } }); });
 
     if (state.cy) state.cy.destroy();
@@ -762,23 +695,6 @@
       var d = evt.target.data();
       if (d.isMore || d.isGroup) return;
       select(d.id);
-    });
-
-    // Called twice, across a real animation frame, deliberately: verified
-    // (by direct boundingBox() inspection against real courses like CINE
-    // 375, which has a group plus two more units stacked below it in the
-    // same column) that a freshly-created compound group's boundingBox()
-    // still reports its pre-correction size to a second call made in the
-    // same synchronous tick -- the position changes from the first call
-    // land, but Cytoscape doesn't settle a compound parent's bounds against
-    // them until an actual render/animation frame has happened, not just a
-    // new cy.batch(). A second call after that frame reads the now-settled
-    // real sizes and produces a stable, idempotent result (confirmed by
-    // calling it repeatedly afterward and seeing positions stop changing).
-    fixColumnOverlaps(state.cy, columns);
-    requestAnimationFrame(function () {
-      fixColumnOverlaps(state.cy, columns);
-      state.cy.fit(undefined, 40);
     });
     state.cy.fit(undefined, 40);
 
