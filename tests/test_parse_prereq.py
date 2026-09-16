@@ -71,3 +71,44 @@ def test_n_of_pattern():
     assert tree["op"] == "N_OF"
     assert tree["n"] == 2
     assert len(tree["children"]) == 4
+
+
+def test_either_scopes_over_the_whole_or_chain_not_one_atom():
+    """"X and either Y or Z" means X AND (Y OR Z) -- "either" has to scope
+    over the entire Y-or-Z-or-... chain that follows it, not just the one
+    atom immediately after "either". Regression test for a real bug: this
+    used to parse as OR[AND(X, Y), Z] (Z landing as a bare top-level
+    alternative to X-and-Y, instead of inside the Y/Z alternative pair) --
+    found via the prereq-graph visualizer showing X, Y, and Z as three
+    equal "pick one of" alternatives when only Y and Z actually are."""
+    tree, status = parse_prereq.parse_prereq(
+        "ECE 315 (or concurrent) and either MATH 244 or MATH 253A ; or consent.", "ECE"
+    )
+    assert status == "clean"
+    assert tree == {
+        "op": "OR",
+        "children": [
+            {
+                "op": "AND",
+                "children": [
+                    {"course": "ECE 315", "concurrent": True},
+                    {"op": "OR", "children": [{"course": "MATH 244"}, {"course": "MATH 253A"}]},
+                ],
+            },
+            {"type": "consent"},
+        ],
+    }
+
+
+def test_either_chain_stops_at_semicolon():
+    """The "either" chain must not swallow a later "; or X" -- that
+    semicolon always introduces a new top-level alternative, never part of
+    what "either" was scoping over."""
+    tree, status = parse_prereq.parse_prereq("either AB 100 or AB 200; or consent.", "AB")
+    assert tree == {
+        "op": "OR",
+        "children": [
+            {"op": "OR", "children": [{"course": "AB 100"}, {"course": "AB 200"}]},
+            {"type": "consent"},
+        ],
+    }

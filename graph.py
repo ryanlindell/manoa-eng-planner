@@ -80,6 +80,11 @@ def build_graph(courses: dict[str, dict]) -> nx.DiGraph:
             gened=c["gened"],
             description=c["description"],
             prereq_raw=c["prereq_raw"],
+            # The structured tree, not just the flattened edge list below --
+            # needed so a consumer can tell "pick one of these" (OR) apart
+            # from "all of these separately" (AND). The edge list alone
+            # can't carry that distinction.
+            prereq_tree=c.get("prereq_tree"),
             coreq_raw=c["coreq_raw"],
             restrictions_raw=c["restrictions_raw"],
             source_url=c["source_url"],

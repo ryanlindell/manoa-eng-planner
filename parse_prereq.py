@@ -193,6 +193,34 @@ class Parser:
                 break
         return nodes[0] if len(nodes) == 1 else {"op": "OR", "children": nodes}
 
+    # Same OR-with-comma-handoff logic as or_expr, but stops at a SEMI
+    # (leaving it for the caller) instead of consuming it -- a semicolon
+    # always introduces a new top-level alternative ("; or consent"), never
+    # part of what "either" was scoping over.
+    def _or_chain_no_semi(self):
+        nodes = [self.and_expr()]
+        while True:
+            tok = self.peek()
+            if tok is None:
+                break
+            if tok.kind == "COMMA":
+                save = self.pos
+                self.advance()
+                if self.peek() and self.peek().kind == "OR":
+                    self.advance()
+                    self._skip(("EITHER",))
+                    nodes.append(self.and_expr())
+                    continue
+                self.pos = save
+                break
+            if tok.kind == "OR":
+                self.advance()
+                self._skip(("EITHER",))
+                nodes.append(self.and_expr())
+            else:
+                break
+        return nodes[0] if len(nodes) == 1 else {"op": "OR", "children": nodes}
+
     def and_expr(self):
         nodes = [self.atom()]
         while True:
@@ -239,8 +267,16 @@ class Parser:
             return {"type": "unparsed", "text": ""}
 
         if tok.kind == "EITHER":
+            # "X and either Y or Z" means X AND (Y OR Z) -- "either" scopes
+            # over the whole Y-or-Z-or-... chain that follows it, not just
+            # the single atom immediately after it. Consuming only one atom
+            # here (the old behavior) let a later "and_expr" swallow just Y
+            # into the same AND as X, leaving Z dangling as a bare top-level
+            # OR-sibling -- "ECE 315 and either MATH 244 or MATH 253A" was
+            # parsing as OR[AND(ECE315, MATH244), MATH253A] instead of the
+            # correct AND(ECE315, OR(MATH244, MATH253A)).
             self.advance()
-            return self.atom()
+            return self._or_chain_no_semi()
 
         if tok.kind == "GRADE":
             # "C (not C-) or better in BIOL 171 / BIOL 171L, BIOL 172 ..." --

@@ -75,12 +75,13 @@
               "concurrent": true
             },
             {
-              "course": "MATH 244"
+              "op": "OR",
+              "children": [
+                { "course": "MATH 244" },
+                { "course": "MATH 253A" }
+              ]
             }
           ]
-        },
-        {
-          "course": "MATH 253A"
         },
         {
           "type": "consent"

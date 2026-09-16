@@ -39,14 +39,14 @@ Depth status breakdown (all graph nodes):
 Depth distribution (in-catalog courses with a resolvable depth, n=8765):
   min=0 max=10 mean=1.01
   depth 0: 5115 courses
-  depth 1: 1689 courses
-  depth 2: 580 courses
-  depth 3: 472 courses
-  depth 4: 415 courses
-  depth 5: 235 courses
-  depth 6: 159 courses
-  depth 7: 56 courses
-  depth 8: 31 courses
+  depth 1: 1687 courses
+  depth 2: 581 courses
+  depth 3: 466 courses
+  depth 4: 402 courses
+  depth 5: 236 courses
+  depth 6: 167 courses
+  depth 7: 58 courses
+  depth 8: 40 courses
   depth 9: 12 courses
   depth 10: 1 courses
 
@@ -65,4 +65,4 @@ Deepest courses:
   KOR 652: depth 9 -- Major Authors in Modern Korean Literature
   KOR 664: depth 9 -- Topics and Issues in Modern Korean Literature
   KOR 494: depth 8 -- Introduction to Modern Korean Literature
-  DH 480: depth 8 -- Advanced Clinical Dental Hygiene II
+  ATMO 601: depth 8 -- Atmospheric Dynamics II
