@@ -1,0 +1,527 @@
+<title>Mānoa Prereq Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --page:        #f9f9f7;
+    --surface:     #fcfcfb;
+    --surface-2:   #f1f0eb;
+    --ink:         #0b0b0b;
+    --ink-2:       #52514e;
+    --ink-muted:   #898781;
+    --hairline:    #e1e0d9;
+    --border:      rgba(11,11,11,0.10);
+
+    --accent:      #1c5c3f;   /* UH green -- branding, focal node, primary actions */
+    --accent-ink:  #ffffff;
+    --accent-wash: #e5efe8;
+
+    --edge-prereq: #a6a49a;   /* recessive: the default, expected relationship */
+    --edge-coreq:  #4a3aa7;   /* violet: the minority, concurrent relationship */
+    --status-critical: #d03b3b; /* cycle-involved courses */
+    --status-warning:  #eda100; /* unresolved-prereq courses */
+
+    /* sequential blue ramp, depth 0 (lightest) -> depth 7+ (darkest) */
+    --depth-0: #e4eefb; --depth-1: #cde2fb; --depth-2: #9ec5f4; --depth-3: #6da7ec;
+    --depth-4: #3987e5; --depth-5: #256abf; --depth-6: #184f95; --depth-7: #0d366b;
+
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232320;
+      --ink: #ffffff; --ink-2: #c3c2b7; --ink-muted: #8f8d86;
+      --hairline: #2c2c2a; --border: rgba(255,255,255,0.12);
+      --accent: #4fae83; --accent-ink: #06170f; --accent-wash: #163326;
+      --edge-prereq: #55534c; --edge-coreq: #9085e9;
+      --status-critical: #e66767; --status-warning: #c98500;
+      --depth-0: #17324f; --depth-1: #184f95; --depth-2: #1c5cab; --depth-3: #256abf;
+      --depth-4: #3987e5; --depth-5: #5598e7; --depth-6: #86b6ef; --depth-7: #cde2fb;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232320;
+    --ink: #ffffff; --ink-2: #c3c2b7; --ink-muted: #8f8d86;
+    --hairline: #2c2c2a; --border: rgba(255,255,255,0.12);
+    --accent: #4fae83; --accent-ink: #06170f; --accent-wash: #163326;
+    --edge-prereq: #55534c; --edge-coreq: #9085e9;
+    --status-critical: #e66767; --status-warning: #c98500;
+    --depth-0: #17324f; --depth-1: #184f95; --depth-2: #1c5cab; --depth-3: #256abf;
+    --depth-4: #3987e5; --depth-5: #5598e7; --depth-6: #86b6ef; --depth-7: #cde2fb;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font-family: var(--sans); font-size: 14px; line-height: 1.5;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  a { color: var(--accent); }
+
+  .app {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "header header" "sidebar stage";
+    height: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; grid-template-areas: "header" "sidebar" "stage"; height: auto; min-height: 100vh; }
+    #sidebar { max-height: 46vh; }
+  }
+
+  header {
+    grid-area: header;
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding: 18px 20px 14px; border-bottom: 1px solid var(--hairline);
+  }
+  header h1 { font-size: 1.5rem; letter-spacing: -0.01em; }
+  header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: auto; }
+
+  #sidebar {
+    grid-area: sidebar; border-right: 1px solid var(--hairline);
+    overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 18px;
+  }
+  .search-box { position: relative; }
+  .search-box input {
+    width: 100%; padding: 10px 12px; font: inherit; font-size: 0.95rem;
+    border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink);
+  }
+  .search-box input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .search-results {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 20;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18); max-height: 320px; overflow-y: auto;
+  }
+  .search-results button {
+    display: block; width: 100%; text-align: left; padding: 8px 12px; border: 0; background: none;
+    font: inherit; color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--hairline);
+  }
+  .search-results button:hover, .search-results button:focus-visible { background: var(--surface-2); }
+  .search-results .code { font-family: var(--mono); font-weight: 600; font-size: 0.8rem; color: var(--accent); }
+
+  .panel-title {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
+    margin: 0 0 8px;
+  }
+  .rank-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .rank-list li { border-bottom: 1px solid var(--hairline); }
+  .rank-list button {
+    display: flex; align-items: baseline; gap: 8px; width: 100%; padding: 7px 4px;
+    border: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; border-radius: 4px;
+  }
+  .rank-list button:hover, .rank-list button:focus-visible { background: var(--surface-2); }
+  .rank-list .code { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; flex: 0 0 auto; color: var(--accent); }
+  .rank-list .title { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); font-size: 0.82rem; }
+  .rank-list .value { flex: 0 0 auto; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-muted); }
+
+  .highlight-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+  .highlight-tabs button {
+    font: inherit; font-size: 0.72rem; padding: 5px 9px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--ink-2); cursor: pointer;
+  }
+  .highlight-tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .highlight-pane[hidden] { display: none; }
+
+  #stage {
+    grid-area: stage; position: relative; display: flex; flex-direction: column; min-width: 0;
+  }
+  #cy { flex: 1 1 auto; min-height: 340px; background: var(--surface); }
+  .col-labels {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center;
+    padding: 10px 6px 0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
+    border-top: 1px solid var(--hairline);
+  }
+
+  #detail {
+    border-top: 1px solid var(--hairline); background: var(--surface); padding: 16px 20px 20px;
+    max-height: 40vh; overflow-y: auto;
+  }
+  #detail .code { font-family: var(--mono); color: var(--accent); font-weight: 600; font-size: 0.85rem; }
+  #detail h2 { font-size: 1.25rem; margin-top: 2px; }
+  #detail .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--ink-2); font-size: 0.8rem; margin: 6px 0 10px; }
+  #detail .meta .mono { color: var(--ink-muted); }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 600; border: 1px solid transparent;
+  }
+  .badge.critical { background: color-mix(in srgb, var(--status-critical) 16%, transparent); color: var(--status-critical); border-color: color-mix(in srgb, var(--status-critical) 40%, transparent); }
+  .badge.warning { background: color-mix(in srgb, var(--status-warning) 16%, transparent); color: var(--status-warning); border-color: color-mix(in srgb, var(--status-warning) 40%, transparent); }
+  .badge.gened { background: var(--accent-wash); color: var(--accent); }
+  #detail .field-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); margin: 12px 0 3px; }
+  #detail .field-value { font-size: 0.88rem; }
+
+  #loading {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: var(--surface); color: var(--ink-muted); font-family: var(--mono); font-size: 0.85rem;
+  }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 8px 20px; font-size: 0.72rem; color: var(--ink-2); border-top: 1px solid var(--hairline); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend .swatch { width: 14px; height: 3px; border-radius: 2px; }
+</style>
+
+<div class="app">
+  <header>
+    <h1>Mānoa Prereq Map</h1>
+    <div class="tagline">8,770 courses &middot; every dependency traced from the catalog's own prose</div>
+  </header>
+
+  <aside id="sidebar">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search a course, e.g. ECE 213 or Circuits" autocomplete="off" aria-label="Search courses">
+      <div class="search-results" id="search-results" hidden></div>
+    </div>
+
+    <div>
+      <p class="panel-title">Worth a look</p>
+      <div class="highlight-tabs" role="tablist" id="tabs"></div>
+      <div id="highlight-panes"></div>
+    </div>
+  </aside>
+
+  <div id="stage">
+    <div id="cy"></div>
+    <div id="loading">loading catalog graph&hellip;</div>
+    <div class="col-labels"><span>requires</span><span>selected course</span><span>unlocks</span></div>
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--edge-prereq)"></span> prerequisite</span>
+      <span><span class="swatch" style="background:var(--edge-coreq); background-image:repeating-linear-gradient(90deg,var(--edge-coreq) 0 4px,transparent 4px 7px)"></span> corequisite</span>
+      <span><span class="swatch" style="background:var(--depth-6)"></span> node shade = depth (darker = more semesters deep)</span>
+    </div>
+    <div id="detail"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js" integrity="sha512-EY3U1MWdgKx0P1dqTE4inlKz2cpXtWpsR1YUyD855Hs6RL/A0cyvrKh60EpE8wDZ814cTe1KgRK+sG0Rn792vQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function () {
+  "use strict";
+
+  var GRAPH_URL = "prereq_graph.json";
+  var MAX_PER_COLUMN = 9;
+
+  var state = { graph: null, index: null, cy: null, focal: null };
+
+  fetch(GRAPH_URL).then(function (r) { return r.json(); }).then(function (graph) {
+    state.graph = graph;
+    state.index = buildIndex(graph);
+    document.getElementById("loading").hidden = true;
+    buildHighlights(graph, state.index);
+    // Open on a genuinely deep, real course rather than an empty shell.
+    var opener = pickOpener(graph);
+    select(opener);
+  }).catch(function (err) {
+    document.getElementById("loading").textContent = "couldn't load prereq_graph.json (" + err + ")";
+  });
+
+  function buildIndex(graph) {
+    var byCode = graph.nodes;
+    var prereqOf = {};   // code -> [codes required BY code]  (incoming prereq edges' source... wait see below)
+    var unlocks = {};    // code -> [codes that require code directly]
+    var coreqs = {};     // code -> [codes coreq'd with code]
+    Object.keys(byCode).forEach(function (c) { prereqOf[c] = []; unlocks[c] = []; coreqs[c] = []; });
+    graph.edges.forEach(function (e) {
+      if (!(e.from in prereqOf)) prereqOf[e.from] = [];
+      if (!(e.to in prereqOf)) prereqOf[e.to] = [];
+      if (!(e.from in unlocks)) unlocks[e.from] = [];
+      if (!(e.to in unlocks)) unlocks[e.to] = [];
+      if (e.type === "prereq") {
+        prereqOf[e.to].push(e.from);   // e.to requires e.from
+        unlocks[e.from].push(e.to);    // e.from unlocks e.to
+      } else if (e.type === "coreq") {
+        if (!(e.from in coreqs)) coreqs[e.from] = [];
+        if (!(e.to in coreqs)) coreqs[e.to] = [];
+        coreqs[e.from].push(e.to);
+        coreqs[e.to].push(e.from);
+      }
+    });
+    return { prereqOf: prereqOf, unlocks: unlocks, coreqs: coreqs };
+  }
+
+  function pickOpener(graph) {
+    var best = null, bestDepth = -1;
+    Object.keys(graph.nodes).forEach(function (c) {
+      var n = graph.nodes[c];
+      if (n.in_catalog && typeof n.depth === "number" && n.depth > bestDepth) { bestDepth = n.depth; best = c; }
+    });
+    return best;
+  }
+
+  // ---------- highlights ----------
+  function buildHighlights(graph, index) {
+    var nodes = graph.nodes;
+    var codes = Object.keys(nodes).filter(function (c) { return nodes[c].in_catalog; });
+
+    var deepest = codes.filter(function (c) { return typeof nodes[c].depth === "number"; })
+      .sort(function (a, b) { return nodes[b].depth - nodes[a].depth; }).slice(0, 12)
+      .map(function (c) { return { code: c, value: nodes[c].depth + (nodes[c].depth === 1 ? " semester deep" : " semesters deep") }; });
+
+    var mostPrereqs = codes.map(function (c) { return { code: c, n: index.prereqOf[c].length }; })
+      .filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 12)
+      .map(function (x) { return { code: x.code, value: x.n + " direct prereqs" }; });
+
+    var mostUnlocks = codes.map(function (c) { return { code: c, n: index.unlocks[c].length }; })
+      .filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 12)
+      .map(function (x) { return { code: x.code, value: "unlocks " + x.n } ; });
+
+    var cyclic = codes.filter(function (c) { return nodes[c].depth_status === "cycle"; })
+      .sort().map(function (c) { return { code: c, value: "circular" }; });
+
+    var tabs = [
+      { id: "deepest", label: "Deepest chains", items: deepest },
+      { id: "prereqs", label: "Most direct prereqs", items: mostPrereqs },
+      { id: "unlocks", label: "Most far-reaching", items: mostUnlocks },
+      { id: "cycles", label: "Circular (" + cyclic.length + ")", items: cyclic }
+    ];
+
+    var tabsEl = document.getElementById("tabs");
+    var panesEl = document.getElementById("highlight-panes");
+    tabs.forEach(function (tab, i) {
+      var btn = document.createElement("button");
+      btn.textContent = tab.label; btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", i === 0 ? "true" : "false");
+      btn.addEventListener("click", function () {
+        tabsEl.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-selected", "false"); });
+        panesEl.querySelectorAll(".highlight-pane").forEach(function (p) { p.hidden = true; });
+        btn.setAttribute("aria-selected", "true");
+        document.getElementById("pane-" + tab.id).hidden = false;
+      });
+      tabsEl.appendChild(btn);
+
+      var pane = document.createElement("div");
+      pane.className = "highlight-pane"; pane.id = "pane-" + tab.id; pane.hidden = i !== 0;
+      var ul = document.createElement("ul"); ul.className = "rank-list";
+      if (tab.items.length === 0) {
+        var li0 = document.createElement("li"); li0.style.padding = "8px 4px"; li0.style.color = "var(--ink-muted)";
+        li0.textContent = "none found"; ul.appendChild(li0);
+      }
+      tab.items.forEach(function (item) {
+        var li = document.createElement("li");
+        var b = document.createElement("button");
+        var codeSpan = document.createElement("span"); codeSpan.className = "code"; codeSpan.textContent = item.code;
+        var titleSpan = document.createElement("span"); titleSpan.className = "title"; titleSpan.textContent = nodes[item.code] ? nodes[item.code].title || "" : "";
+        var valueSpan = document.createElement("span"); valueSpan.className = "value"; valueSpan.textContent = item.value;
+        b.appendChild(codeSpan); b.appendChild(titleSpan); b.appendChild(valueSpan);
+        b.addEventListener("click", function () { select(item.code); });
+        li.appendChild(b); ul.appendChild(li);
+      });
+      pane.appendChild(ul);
+      panesEl.appendChild(pane);
+    });
+  }
+
+  // ---------- search ----------
+  var searchInput = document.getElementById("search");
+  var resultsEl = document.getElementById("search-results");
+  searchInput.addEventListener("input", function () {
+    var q = searchInput.value.trim().toLowerCase();
+    resultsEl.innerHTML = "";
+    if (!q || !state.graph) { resultsEl.hidden = true; return; }
+    var nodes = state.graph.nodes;
+    var matches = Object.keys(nodes).filter(function (c) {
+      return nodes[c].in_catalog && (c.toLowerCase().indexOf(q) !== -1 || (nodes[c].title || "").toLowerCase().indexOf(q) !== -1);
+    }).slice(0, 8);
+    if (matches.length === 0) { resultsEl.hidden = true; return; }
+    matches.forEach(function (c) {
+      var b = document.createElement("button");
+      var codeSpan = document.createElement("span"); codeSpan.className = "code"; codeSpan.textContent = c + " ";
+      var rest = document.createTextNode(nodes[c].title || "");
+      b.appendChild(codeSpan); b.appendChild(rest);
+      b.addEventListener("click", function () { select(c); resultsEl.hidden = true; searchInput.value = c; });
+      resultsEl.appendChild(b);
+    });
+    resultsEl.hidden = false;
+  });
+  document.addEventListener("click", function (e) {
+    if (!resultsEl.contains(e.target) && e.target !== searchInput) resultsEl.hidden = true;
+  });
+
+  // ---------- graph rendering ----------
+  function tokens() {
+    var s = getComputedStyle(document.documentElement);
+    function v(name) { return s.getPropertyValue(name).trim(); }
+    return {
+      ink: v("--ink"), ink2: v("--ink-2"), surface: v("--surface"), hairline: v("--hairline"),
+      accent: v("--accent"), accentInk: v("--accent-ink"),
+      edgePrereq: v("--edge-prereq"), edgeCoreq: v("--edge-coreq"),
+      critical: v("--status-critical"), warning: v("--status-warning"),
+      depth: [v("--depth-0"), v("--depth-1"), v("--depth-2"), v("--depth-3"), v("--depth-4"), v("--depth-5"), v("--depth-6"), v("--depth-7")]
+    };
+  }
+
+  function depthColor(t, depth, inCatalog) {
+    // External/dangling refs get a cached depth of 0 as a side effect of
+    // dependency resolution (see graph.py's compute_depths) -- that's not a
+    // real "0 prereqs deep" claim, so they stay unshaded regardless.
+    if (!inCatalog || typeof depth !== "number") return t.surface;
+    var i = Math.max(0, Math.min(t.depth.length - 1, depth));
+    return t.depth[i];
+  }
+
+  function select(code) {
+    var nodes = state.graph.nodes;
+    if (!nodes[code]) return;
+    state.focal = code;
+    renderDetail(code);
+    renderGraph(code);
+  }
+
+  function capped(list) {
+    var shown = list.slice(0, MAX_PER_COLUMN);
+    var extra = list.length - shown.length;
+    return { shown: shown, extra: extra };
+  }
+
+  function renderGraph(focal) {
+    var nodes = state.graph.nodes;
+    var idx = state.index;
+    var t = tokens();
+
+    var prereqs = capped(idx.prereqOf[focal] || []);
+    var unlocks = capped(idx.unlocks[focal] || []);
+    var coreqs = (idx.coreqs[focal] || []).slice(0, MAX_PER_COLUMN);
+
+    var els = [];
+    var colWidth = 260, rowHeight = 56;
+
+    function addNode(code, x, y, isFocal) {
+      var n = nodes[code] || { title: "(not in dataset)", in_catalog: false };
+      els.push({
+        data: { id: code, label: code, title: n.title || "", depth: n.depth, status: n.depth_status, inCatalog: !!n.in_catalog, focal: !!isFocal },
+        position: { x: x, y: y }
+      });
+    }
+
+    addNode(focal, 0, 0, true);
+    prereqs.shown.forEach(function (c, i) { addNode(c, -colWidth, (i - (prereqs.shown.length - 1) / 2) * rowHeight); });
+    unlocks.shown.forEach(function (c, i) { addNode(c, colWidth, (i - (unlocks.shown.length - 1) / 2) * rowHeight); });
+    coreqs.forEach(function (c, i) { addNode(c, 0, (i + 1) * rowHeight + (prereqs.shown.length ? Math.max(prereqs.shown.length, unlocks.shown.length) * rowHeight / 2 : rowHeight)); });
+
+    if (prereqs.extra > 0) els.push({ data: { id: "__more_prereq", label: "+" + prereqs.extra + " more", isMore: true }, position: { x: -colWidth, y: (prereqs.shown.length / 2 + 0.7) * rowHeight } });
+    if (unlocks.extra > 0) els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true }, position: { x: colWidth, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
+
+    prereqs.shown.forEach(function (c) { els.push({ data: { id: c + "->" + focal, source: c, target: focal, kind: "prereq" } }); });
+    unlocks.shown.forEach(function (c) { els.push({ data: { id: focal + "->" + c, source: focal, target: c, kind: "prereq" } }); });
+    coreqs.forEach(function (c) { els.push({ data: { id: "coreq:" + focal + ":" + c, source: focal, target: c, kind: "coreq" } }); });
+
+    if (state.cy) state.cy.destroy();
+    state.cy = cytoscape({
+      container: document.getElementById("cy"),
+      elements: els,
+      layout: { name: "preset" },
+      userZoomingEnabled: true, userPanningEnabled: true, boxSelectionEnabled: false,
+      style: [
+        { selector: "node", style: {
+          "shape": "round-rectangle", "width": "label", "height": 34, "padding": "10px",
+          "background-color": function (ele) { return depthColor(t, ele.data("depth"), ele.data("inCatalog")); },
+          "label": "data(label)", "color": t.ink, "font-family": "IBM Plex Mono, monospace",
+          "font-size": 12, "font-weight": 600, "text-valign": "center", "text-halign": "center",
+          "border-width": 1, "border-color": t.hairline
+        }},
+        { selector: "node[?focal]", style: { "background-color": t.accent, "color": t.accentInk, "border-width": 2, "border-color": t.accent, "font-weight": 700 } },
+        { selector: "node[status = 'cycle']", style: { "border-width": 2, "border-color": t.critical } },
+        { selector: "node[status = 'unresolved_prereq']", style: { "border-style": "dashed", "border-width": 2, "border-color": t.warning } },
+        { selector: "node[inCatalog = false]", style: { "border-style": "dashed", "background-opacity": 0.5, "color": t.ink2 } },
+        { selector: "node[?isMore]", style: {
+          "shape": "round-rectangle", "background-color": "transparent", "border-width": 1, "border-style": "dashed",
+          "border-color": t.hairline, "color": t.ink2, "font-family": "Public Sans, sans-serif", "font-size": 11, "font-weight": 500
+        }},
+        { selector: "edge", style: {
+          "curve-style": "bezier", "width": 1.6, "target-arrow-shape": "triangle", "arrow-scale": 0.9,
+          "line-color": t.edgePrereq, "target-arrow-color": t.edgePrereq
+        }},
+        { selector: "edge[kind = 'coreq']", style: {
+          "line-color": t.edgeCoreq, "target-arrow-color": t.edgeCoreq, "target-arrow-shape": "none",
+          "line-style": "dashed", "curve-style": "bezier", "control-point-step-size": 30
+        }}
+      ]
+    });
+
+    state.cy.on("tap", "node", function (evt) {
+      var d = evt.target.data();
+      if (d.isMore) return;
+      select(d.id);
+    });
+    state.cy.fit(undefined, 40);
+  }
+
+  function fmtCredits(n) {
+    if (!n) return "";
+    if (n.credits_min == null) return n.credits_raw ? n.credits_raw + " cr" : "";
+    if (n.credits_min === n.credits_max) return n.credits_min + " cr";
+    return n.credits_min + "–" + n.credits_max + " cr";
+  }
+
+  function renderDetail(code) {
+    var n = state.graph.nodes[code];
+    var el = document.getElementById("detail");
+    el.innerHTML = "";
+    if (!n) return;
+
+    var codeEl = document.createElement("div"); codeEl.className = "code"; codeEl.textContent = code;
+    var h2 = document.createElement("h2"); h2.textContent = n.title || "(untitled)";
+    var meta = document.createElement("div"); meta.className = "meta";
+
+    var credits = document.createElement("span"); credits.className = "mono"; credits.textContent = fmtCredits(n);
+    meta.appendChild(credits);
+
+    if (typeof n.depth === "number") {
+      var depthSpan = document.createElement("span"); depthSpan.className = "mono";
+      depthSpan.textContent = "depth " + n.depth;
+      meta.appendChild(depthSpan);
+    }
+    if (n.depth_status === "cycle") {
+      var b1 = document.createElement("span"); b1.className = "badge critical"; b1.textContent = "circular dependency";
+      meta.appendChild(b1);
+    }
+    if (n.depth_status === "unresolved_prereq") {
+      var b2 = document.createElement("span"); b2.className = "badge warning"; b2.textContent = "prereq text not fully parsed";
+      meta.appendChild(b2);
+    }
+    if (!n.in_catalog) {
+      var b3 = document.createElement("span"); b3.className = "badge warning"; b3.textContent = "referenced, not in current catalog";
+      meta.appendChild(b3);
+    }
+    (n.gened || []).forEach(function (g) {
+      var bg = document.createElement("span"); bg.className = "badge gened"; bg.textContent = g;
+      meta.appendChild(bg);
+    });
+
+    el.appendChild(codeEl); el.appendChild(h2); el.appendChild(meta);
+
+    function field(label, value) {
+      if (!value) return;
+      var l = document.createElement("div"); l.className = "field-label"; l.textContent = label;
+      var v = document.createElement("div"); v.className = "field-value"; v.textContent = value;
+      el.appendChild(l); el.appendChild(v);
+    }
+    field("Description", n.description);
+    field("Prerequisites", n.prereq_raw);
+    field("Corequisites", n.coreq_raw);
+    field("Restrictions", n.restrictions_raw);
+
+    if (n.source_url) {
+      var l = document.createElement("div"); l.className = "field-label"; l.textContent = "Source";
+      var a = document.createElement("a"); a.href = n.source_url; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = "catalog.manoa.hawaii.edu ↗"; a.style.fontSize = "0.82rem";
+      el.appendChild(l); el.appendChild(a);
+    }
+  }
+
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+      if (state.focal) renderGraph(state.focal);
+    });
+  }
+})();
+</script>

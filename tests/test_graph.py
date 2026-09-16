@@ -12,8 +12,11 @@ def _course(code, prereq_tree=None, prereq_status="ok", coreq_tree=None):
         "code": code,
         "subject": subject,
         "title": f"Title {code}",
+        "credits_raw": "3",
         "credits_min": 3,
         "credits_max": 3,
+        "gened": [],
+        "description": "",
         "parse_status": "ok",
         "is_alpha_parent": False,
         "prereq_raw": "x" if prereq_tree is not None else None,
@@ -21,6 +24,8 @@ def _course(code, prereq_tree=None, prereq_status="ok", coreq_tree=None):
         "prereq_parse_status": prereq_status,
         "coreq_raw": "x" if coreq_tree is not None else None,
         "coreq_tree": coreq_tree,
+        "restrictions_raw": None,
+        "source_url": f"https://example.invalid/{code}",
     }
 
 

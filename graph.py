@@ -68,8 +68,15 @@ def build_graph(courses: dict[str, dict]) -> nx.DiGraph:
             code,
             title=c["title"],
             subject=c["subject"],
+            credits_raw=c["credits_raw"],
             credits_min=c["credits_min"],
             credits_max=c["credits_max"],
+            gened=c["gened"],
+            description=c["description"],
+            prereq_raw=c["prereq_raw"],
+            coreq_raw=c["coreq_raw"],
+            restrictions_raw=c["restrictions_raw"],
+            source_url=c["source_url"],
             in_catalog=True,
         )
 
