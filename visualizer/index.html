@@ -138,8 +138,8 @@
   }
   #cy { flex: 1 1 auto; min-height: 340px; background: var(--surface); }
   .col-labels {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center;
-    padding: 10px 6px 0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 10px 14px 0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
     border-top: 1px solid var(--hairline);
   }
 
@@ -192,7 +192,7 @@
   <div id="stage">
     <div id="cy"></div>
     <div id="loading">loading catalog graph&hellip;</div>
-    <div class="col-labels"><span>requires</span><span>selected course</span><span>unlocks</span></div>
+    <div class="col-labels"><span id="chain-label">&larr; full prerequisite chain</span><span>selected course</span><span>directly unlocks &rarr;</span></div>
     <div class="legend">
       <span><span class="swatch" style="background:var(--edge-prereq)"></span> prerequisite</span>
       <span><span class="swatch" style="background:var(--edge-coreq); background-image:repeating-linear-gradient(90deg,var(--edge-coreq) 0 4px,transparent 4px 7px)"></span> corequisite</span>
@@ -382,20 +382,67 @@
     return { shown: shown, extra: extra };
   }
 
+  var ANCESTOR_CAP = 200;       // total safety cap (worst real case in the catalog is 42)
+  var MAX_PER_LEVEL = 14;
+
+  // The *entire* prerequisite chain, not just one hop -- a language sequence
+  // like KOR 101 -> 102 -> ... -> 496 should render as the full series of
+  // courses, not just KOR 496's immediate prereq. BFS backward through
+  // prereq edges, one column per hop-distance from the focal course.
+  // (Unlocks go the other way and are NOT expanded like this -- a foundational
+  // course like MATH 161 transitively unlocks 900+ courses, so that side
+  // stays immediate-neighbors-only; see idx.unlocks usage below.)
+  function computeAncestorChain(focal, idx) {
+    var level = {};
+    level[focal] = 0;
+    var frontier = [focal];
+    var lvl = 0;
+    var truncated = false;
+    while (frontier.length && Object.keys(level).length < ANCESTOR_CAP) {
+      lvl++;
+      var next = [];
+      frontier.forEach(function (code) {
+        (idx.prereqOf[code] || []).forEach(function (p) {
+          if (!(p in level)) {
+            if (Object.keys(level).length >= ANCESTOR_CAP) { truncated = true; return; }
+            level[p] = lvl;
+            next.push(p);
+          }
+        });
+      });
+      frontier = next;
+    }
+    var byLevel = {};
+    Object.keys(level).forEach(function (code) {
+      var l = level[code];
+      if (l === 0) return;
+      (byLevel[l] = byLevel[l] || []).push(code);
+    });
+    // lvl over-counts by one whenever the last expansion finds nothing new
+    // (the while-condition isn't checked until after lvl is incremented) --
+    // report the highest level that actually has a course in it.
+    var realMaxLevel = 0;
+    Object.keys(byLevel).forEach(function (l) { realMaxLevel = Math.max(realMaxLevel, Number(l)); });
+    return { byLevel: byLevel, maxLevel: realMaxLevel, allCodes: Object.keys(level), truncated: truncated };
+  }
+
   function renderGraph(focal) {
     var nodes = state.graph.nodes;
     var idx = state.index;
     var t = tokens();
 
-    var prereqs = capped(idx.prereqOf[focal] || []);
+    var chain = computeAncestorChain(focal, idx);
     var unlocks = capped(idx.unlocks[focal] || []);
     var coreqs = (idx.coreqs[focal] || []).slice(0, MAX_PER_COLUMN);
 
     var els = [];
-    var colWidth = 260, rowHeight = 56;
+    var placed = {};   // code -> true, only for nodes actually drawn (not "+more" stubs)
+    var colWidth = 220, rowHeight = 50;
+    var unlockX = colWidth * (chain.maxLevel + 1);
 
     function addNode(code, x, y, isFocal) {
       var n = nodes[code] || { title: "(not in dataset)", in_catalog: false };
+      placed[code] = true;
       els.push({
         data: { id: code, label: code, title: n.title || "", depth: n.depth, status: n.depth_status, inCatalog: !!n.in_catalog, focal: !!isFocal },
         position: { x: x, y: y }
@@ -403,16 +450,36 @@
     }
 
     addNode(focal, 0, 0, true);
-    prereqs.shown.forEach(function (c, i) { addNode(c, -colWidth, (i - (prereqs.shown.length - 1) / 2) * rowHeight); });
-    unlocks.shown.forEach(function (c, i) { addNode(c, colWidth, (i - (unlocks.shown.length - 1) / 2) * rowHeight); });
-    coreqs.forEach(function (c, i) { addNode(c, 0, (i + 1) * rowHeight + (prereqs.shown.length ? Math.max(prereqs.shown.length, unlocks.shown.length) * rowHeight / 2 : rowHeight)); });
 
-    if (prereqs.extra > 0) els.push({ data: { id: "__more_prereq", label: "+" + prereqs.extra + " more", isMore: true }, position: { x: -colWidth, y: (prereqs.shown.length / 2 + 0.7) * rowHeight } });
-    if (unlocks.extra > 0) els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true }, position: { x: colWidth, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
+    for (var l = 1; l <= chain.maxLevel; l++) {
+      var atLevel = (chain.byLevel[l] || []).sort();
+      var shown = atLevel.slice(0, MAX_PER_LEVEL);
+      var extra = atLevel.length - shown.length;
+      var x = -colWidth * l;
+      shown.forEach(function (c, i) { addNode(c, x, (i - (shown.length - 1) / 2) * rowHeight); });
+      if (extra > 0) {
+        els.push({ data: { id: "__more_L" + l, label: "+" + extra + " more", isMore: true }, position: { x: x, y: (shown.length / 2 + 0.7) * rowHeight } });
+      }
+    }
 
-    prereqs.shown.forEach(function (c) { els.push({ data: { id: c + "->" + focal, source: c, target: focal, kind: "prereq" } }); });
-    unlocks.shown.forEach(function (c) { els.push({ data: { id: focal + "->" + c, source: focal, target: c, kind: "prereq" } }); });
-    coreqs.forEach(function (c) { els.push({ data: { id: "coreq:" + focal + ":" + c, source: focal, target: c, kind: "coreq" } }); });
+    unlocks.shown.forEach(function (c, i) { addNode(c, unlockX, (i - (unlocks.shown.length - 1) / 2) * rowHeight); });
+    coreqs.forEach(function (c, i) { addNode(c, 0, (i + 1) * rowHeight + (unlocks.shown.length ? unlocks.shown.length * rowHeight / 2 : rowHeight)); });
+
+    if (unlocks.extra > 0) els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true }, position: { x: unlockX, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
+
+    // Edges: every prereq/coreq relationship in the full dataset where BOTH
+    // endpoints ended up placed -- correct regardless of how levels were
+    // assigned (a node's shortest path can skip levels relative to some of
+    // its other real edges, so deriving edges from level-adjacency alone
+    // would silently miss real relationships).
+    var edgeIds = {};
+    state.graph.edges.forEach(function (e) {
+      if (!placed[e.from] || !placed[e.to]) return;
+      var id = e.from + "->" + e.to + ":" + e.type;
+      if (edgeIds[id]) return;
+      edgeIds[id] = true;
+      els.push({ data: { id: id, source: e.from, target: e.to, kind: e.type } });
+    });
 
     if (state.cy) state.cy.destroy();
     state.cy = cytoscape({
@@ -453,6 +520,16 @@
       select(d.id);
     });
     state.cy.fit(undefined, 40);
+
+    var chainLabel = document.getElementById("chain-label");
+    var ancestorCount = chain.allCodes.length - 1;
+    if (ancestorCount === 0) {
+      chainLabel.textContent = "no prerequisites";
+    } else {
+      chainLabel.textContent = "← full prerequisite chain (" + ancestorCount + " course" + (ancestorCount === 1 ? "" : "s") +
+        ", " + chain.maxLevel + " semester" + (chain.maxLevel === 1 ? "" : "s") + " back" +
+        (chain.truncated ? ", truncated" : "") + ")";
+    }
   }
 
   function fmtCredits(n) {
