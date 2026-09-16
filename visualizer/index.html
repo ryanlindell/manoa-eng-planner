@@ -207,22 +207,43 @@
 (function () {
   "use strict";
 
-  var GRAPH_URL = "../data/prereq_graph.json";
+  // Published as an Artifact, files are served relative to index.html
+  // itself with no parent to go up to -- a "../" path 404s there even
+  // though it's the right relative path for local static-file serving
+  // (where visualizer/ and data/ are real sibling folders on disk). Using
+  // "data/prereq_graph.json" here (matching the Artifact's published path)
+  // means a local copy has to live at visualizer/data/prereq_graph.json too
+  // -- see graph.py, which writes both copies together so they can't drift.
+  var GRAPH_URL = "data/prereq_graph.json";
   var MAX_PER_COLUMN = 9;
 
   var state = { graph: null, index: null, cy: null, focal: null };
 
-  fetch(GRAPH_URL).then(function (r) { return r.json(); }).then(function (graph) {
-    state.graph = graph;
-    state.index = buildIndex(graph);
-    document.getElementById("loading").hidden = true;
-    buildHighlights(graph, state.index);
-    // Open on a genuinely deep, real course rather than an empty shell.
-    var opener = pickOpener(graph);
-    select(opener);
-  }).catch(function (err) {
-    document.getElementById("loading").textContent = "couldn't load prereq_graph.json (" + err + ")";
-  });
+  fetch(GRAPH_URL)
+    .then(function (r) {
+      if (!r.ok) {
+        throw new Error("HTTP " + r.status + " fetching " + GRAPH_URL);
+      }
+      return r.json();
+    })
+    .then(function (graph) {
+      state.graph = graph;
+      state.index = buildIndex(graph);
+      document.getElementById("loading").hidden = true;
+      buildHighlights(graph, state.index);
+      // Open on a genuinely deep, real course rather than an empty shell.
+      var opener = pickOpener(graph);
+      select(opener);
+    })
+    .catch(function (err) {
+      console.error(err);
+      document.getElementById("loading").textContent =
+        "Couldn't load " + GRAPH_URL + ": " + err.message +
+        ". If you're viewing this from disk (a file:// URL), browsers block " +
+        "loading local JSON that way -- serve this repo with a static server " +
+        "(e.g. `python -m http.server` from the repo root) and open " +
+        "/visualizer/index.html instead.";
+    });
 
   function buildIndex(graph) {
     var byCode = graph.nodes;

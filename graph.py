@@ -22,6 +22,12 @@ IN_JSONL = DATA_PATH / "courses.jsonl"
 OUT_PICKLE = DATA_PATH / "prereq_graph.gpickle"
 OUT_JSON = DATA_PATH / "prereq_graph.json"
 OUT_REPORT = DATA_PATH / "graph_report.txt"
+# The visualizer fetches "data/prereq_graph.json" relative to its own
+# index.html, matching how the published Artifact serves supporting files
+# (relative to the page, no parent directory to go up to) -- so a second
+# copy has to live under visualizer/ for local static-file serving to work
+# the same way. Written together so they can't drift out of sync.
+VISUALIZER_JSON = Path(__file__).resolve().parent / "visualizer" / "data" / "prereq_graph.json"
 
 NON_COURSE_LEAF_TYPES = {"consent", "standing", "major_restriction", "unparsed"}
 
@@ -207,7 +213,10 @@ def export_json(g: nx.DiGraph, depths, depth_status):
         "nodes": nodes,
         "edges": edges,
     }
-    OUT_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+    text = json.dumps(payload, ensure_ascii=False, indent=1)
+    OUT_JSON.write_text(text, encoding="utf-8")
+    VISUALIZER_JSON.parent.mkdir(parents=True, exist_ok=True)
+    VISUALIZER_JSON.write_text(text, encoding="utf-8")
 
 
 def build_report(g, courses, cycles, dangling, depths, depth_status) -> str:
