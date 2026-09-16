@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EE Degree Planner</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>EE Degree Planner</h1>
+  </header>
+
+  <p class="instructions">
+    Click an empty box in <strong>Your Plan</strong> to select it, then click a course in
+    <strong>Normal Schedule</strong> to place it there. Click the same empty box a second time
+    to enter a course manually. Drag a semester by its <strong>⠿</strong> handle to reorder it,
+    rename it inline, or mark it as a gap or transfer semester.
+  </p>
+
+  <main class="layout">
+    <section class="plan-panel">
+      <h2 class="panel-title">Your Plan</h2>
+      <div class="semester-toolbar">
+        <button id="add-semester-btn">+ Add Semester</button>
+        <button id="add-transfer-btn">+ Add Transfer Semester</button>
+      </div>
+      <section class="semester-column" id="semester-column">
+        <!-- Semester boxes are rendered by app.js -->
+      </section>
+    </section>
+
+    <section class="template-panel">
+      <h2 class="panel-title">Normal Schedule</h2>
+      <section class="semester-column" id="template-column">
+        <!-- Template semester boxes are rendered by app.js -->
+      </section>
+    </section>
+  </main>
+
+  <div id="manual-entry-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Fill Course Details</h3>
+      <label>
+        Course Number:
+        <input type="text" id="manual-course-number" placeholder="e.g. CAS PY 123">
+      </label>
+      <label>
+        Name:
+        <input type="text" id="manual-course-name" placeholder="e.g. Calculus">
+      </label>
+      <label>
+        Credits:
+        <input type="number" id="manual-course-credits" min="0" step="1" value="4">
+      </label>
+      <label>
+        Hub Units (comma-separated):
+        <input type="text" id="manual-course-gened" placeholder="e.g. WR, DH">
+      </label>
+      <div class="modal-actions">
+        <button id="manual-entry-save">Save</button>
+        <button id="manual-entry-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

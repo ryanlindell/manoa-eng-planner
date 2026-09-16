@@ -1,0 +1,17 @@
+[
+  { "code": "CAS MA 123", "title": "Calculus I", "credits": 4, "gened": [], "category": "core", "prereq_parse_status": "clean" },
+  { "code": "CAS MA 124", "title": "Calculus II", "credits": 4, "gened": [], "category": "core", "prereq_parse_status": "clean" },
+  { "code": "CAS MA 225", "title": "Multivariate Calculus", "credits": 4, "gened": [], "category": "core", "prereq_parse_status": "clean" },
+  { "code": "CAS PY 211", "title": "General Physics I", "credits": 4, "gened": [], "category": "core", "prereq_parse_status": "clean" },
+  { "code": "CAS PY 212", "title": "General Physics II", "credits": 4, "gened": [], "category": "core", "prereq_parse_status": "clean" },
+  { "code": "CAS WR 120", "title": "Writing Seminar", "credits": 4, "gened": ["WR"], "category": "hub", "prereq_parse_status": "clean" },
+  { "code": "CAS EN 101", "title": "Introduction to Literature", "credits": 4, "gened": ["HUM"], "category": "hub", "prereq_parse_status": "clean" },
+  { "code": "EE 101", "title": "Introduction to Electrical Engineering", "credits": 4, "gened": [], "category": "technical", "prereq_parse_status": "clean" },
+  { "code": "EE 211", "title": "Basic Circuit Analysis I", "credits": 3, "gened": [], "category": "technical", "prereq_parse_status": "clean" },
+  { "code": "EE 212", "title": "Basic Circuit Analysis II", "credits": 4, "gened": [], "category": "technical", "prereq_parse_status": "clean" },
+  { "code": "EE 302", "title": "Signals and Systems", "credits": 4, "gened": [], "category": "technical", "prereq_parse_status": "failed" },
+  { "code": "EE 341", "title": "Electronics I", "credits": 4, "gened": [], "category": "technical", "prereq_parse_status": "clean" },
+  { "code": "ENG EK 125", "title": "Introduction to Engineering Design", "credits": 4, "gened": [], "category": "technical", "prereq_parse_status": "clean" },
+  { "code": "CAS SO 100", "title": "Introductory Sociology", "credits": 4, "gened": ["SS"], "category": "elective", "prereq_parse_status": "clean" },
+  { "code": "CAS HI 108", "title": "The Making of the Modern World", "credits": 4, "gened": ["HUM", "DH"], "category": "hub", "prereq_parse_status": "clean" }
+]
