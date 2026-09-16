@@ -161,6 +161,10 @@ def parse_course_block(block: str) -> dict:
         "credits_min": credits_min,
         "credits_max": credits_max,
         "gened": gened,
+        # Focus designations (WI/OC/ETH/HAP) are section-level, set per semester
+        # in Banner Browse Classes, not in the catalog -- always null in phase 1.
+        # Integration seam for phase 2: join on (subject, number).
+        "focus": None,
         "prereq_raw": fields.get("prereq_raw"),
         "coreq_raw": fields.get("coreq_raw"),
         "restrictions_raw": fields.get("restrictions_raw"),

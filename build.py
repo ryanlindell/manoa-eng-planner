@@ -24,7 +24,7 @@ OUT_REPORT = DATA_PATH / "coverage_report.txt"
 
 DB_COLUMNS = [
     "code", "subject", "number", "alpha_suffix", "title", "is_alpha_parent",
-    "description", "credits_raw", "credits_min", "credits_max", "gened",
+    "description", "credits_raw", "credits_min", "credits_max", "gened", "focus",
     "prereq_raw", "prereq_tree", "prereq_parse_status", "coreq_raw", "coreq_tree",
     "coreq_parse_status", "restrictions_raw", "crosslisted_raw", "repeatable_raw",
     "grade_option_raw", "other_notes", "coid", "catoid", "source_url", "scraped_at",
