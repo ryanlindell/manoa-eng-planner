@@ -86,6 +86,13 @@ def build_graph(courses: dict[str, dict]) -> nx.DiGraph:
             # can't carry that distinction.
             prereq_tree=c.get("prereq_tree"),
             coreq_raw=c["coreq_raw"],
+            # Same reasoning as prereq_tree above -- without this, every
+            # node's coreq_tree silently comes out as undefined in the
+            # exported JSON (build_graph never set it, though the edges
+            # below were always built from the real tree), so the
+            # visualizer's coreq column rendered as empty for every course,
+            # not just ones with unusual coreqs.
+            coreq_tree=c.get("coreq_tree"),
             restrictions_raw=c["restrictions_raw"],
             source_url=c["source_url"],
             in_catalog=True,

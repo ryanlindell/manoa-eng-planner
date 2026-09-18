@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Mānoa Prereq Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,9 +24,15 @@
     --status-critical: #d03b3b; /* cycle-involved courses */
     --status-warning:  #eda100; /* unresolved-prereq courses */
 
-    /* sequential blue ramp, depth 0 (lightest) -> depth 7+ (darkest) */
-    --depth-0: #e4eefb; --depth-1: #cde2fb; --depth-2: #9ec5f4; --depth-3: #6da7ec;
-    --depth-4: #3987e5; --depth-5: #256abf; --depth-6: #184f95; --depth-7: #0d366b;
+    /* Sequential blue ramp, depth 0 (lightest) -> depth 7+ (darkest, most
+       semesters deep). The dark end is capped rather than running to a
+       near-black navy: node text is a single fixed ink color (not adapted
+       per node), so depth-7 still has to hold reasonable contrast against
+       near-black --ink text, the same way depth-0 needs to stay light
+       enough. See the dark-theme block below for the mirrored cap against
+       white text there. */
+    --depth-0: #eef4fc; --depth-1: #dce8fa; --depth-2: #c2d9f6; --depth-3: #a3c5f0;
+    --depth-4: #82ade8; --depth-5: #6396dd; --depth-6: #4a80cf; --depth-7: #386dbd;
 
     --serif: "Newsreader", Georgia, "Times New Roman", serif;
     --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -40,8 +47,15 @@
       --accent: #4fae83; --accent-ink: #06170f; --accent-wash: #163326;
       --edge-prereq: #55534c; --edge-coreq: #9085e9;
       --status-critical: #e66767; --status-warning: #c98500;
-      --depth-0: #17324f; --depth-1: #184f95; --depth-2: #1c5cab; --depth-3: #256abf;
-      --depth-4: #3987e5; --depth-5: #5598e7; --depth-6: #86b6ef; --depth-7: #cde2fb;
+      /* Same depth-0 (lightest) -> depth-7 (darkest) direction as the light
+         theme above -- this used to run the other way (depth-0 darkest,
+         depth-7 near-white), which both read backwards against the "darker
+         = more semesters deep" legend and, worse, put the *lightest* color
+         at depth-7 under white --ink text, right where nodes are most
+         common in any single course's chain. Capped light end for the same
+         reason the light theme's dark end is capped, just mirrored. */
+      --depth-0: #3f7dc4; --depth-1: #366dae; --depth-2: #2d5d98; --depth-3: #244d82;
+      --depth-4: #1c3e6c; --depth-5: #152f56; --depth-6: #0f2140; --depth-7: #09142a;
     }
   }
   :root[data-theme="dark"] {
@@ -52,8 +66,11 @@
     --accent: #4fae83; --accent-ink: #06170f; --accent-wash: #163326;
     --edge-prereq: #55534c; --edge-coreq: #9085e9;
     --status-critical: #e66767; --status-warning: #c98500;
-    --depth-0: #17324f; --depth-1: #184f95; --depth-2: #1c5cab; --depth-3: #256abf;
-    --depth-4: #3987e5; --depth-5: #5598e7; --depth-6: #86b6ef; --depth-7: #cde2fb;
+    /* Mirrors the @media dark block above (same reasoning, duplicated here
+       for the explicit data-theme="dark" toggle rather than the OS-level
+       media query). */
+    --depth-0: #3f7dc4; --depth-1: #366dae; --depth-2: #2d5d98; --depth-3: #244d82;
+    --depth-4: #1c3e6c; --depth-5: #152f56; --depth-6: #0f2140; --depth-7: #09142a;
   }
 
   * { box-sizing: border-box; }
@@ -87,6 +104,14 @@
   }
   header h1 { font-size: 1.5rem; letter-spacing: -0.01em; }
   header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: auto; }
+  .nav-history { display: flex; gap: 6px; }
+  .nav-btn {
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    font: inherit; font-size: 1rem; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--surface); color: var(--ink); cursor: pointer;
+  }
+  .nav-btn:disabled { color: var(--ink-muted); cursor: default; opacity: 0.5; }
+  .nav-btn:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
 
   #sidebar {
     grid-area: sidebar; border-right: 1px solid var(--hairline);
@@ -173,6 +198,10 @@
 <div class="app">
   <header>
     <h1>Mānoa Prereq Map</h1>
+    <div class="nav-history">
+      <button id="nav-back" class="nav-btn" type="button" title="Back to previous course" disabled aria-label="Back">&larr;</button>
+      <button id="nav-forward" class="nav-btn" type="button" title="Forward to next course" disabled aria-label="Forward">&rarr;</button>
+    </div>
     <div class="tagline">8,770 courses &middot; every dependency traced from the catalog's own prose</div>
   </header>
 
@@ -192,12 +221,13 @@
   <div id="stage">
     <div id="cy"></div>
     <div id="loading">loading catalog graph&hellip;</div>
-    <div class="col-labels"><span id="chain-label">&larr; full prerequisite chain</span><span>selected course</span><span>directly unlocks &rarr;</span></div>
+    <div class="col-labels"><span id="chain-label">&larr; full prerequisite chain</span><span>selected course</span><span>required by these &rarr;</span></div>
     <div class="legend">
       <span><span class="swatch" style="background:var(--edge-prereq)"></span> prerequisite</span>
       <span><span class="swatch" style="background:var(--edge-coreq); background-image:repeating-linear-gradient(90deg,var(--edge-coreq) 0 4px,transparent 4px 7px)"></span> corequisite</span>
       <span><span class="swatch" style="background:var(--depth-6)"></span> node shade = depth (darker = more semesters deep)</span>
       <span><span class="swatch" style="border:1px dashed var(--edge-prereq); background:transparent; height:10px"></span> dashed box = pick one (or N) of these, not all required</span>
+      <span>click a course to reveal (or hide) its own prereqs &middot; double-click to go there &middot; drag a course to move it</span>
     </div>
     <div id="detail"></div>
   </div>
@@ -218,7 +248,26 @@
   var GRAPH_URL = "data/prereq_graph.json";
   var MAX_PER_COLUMN = 9;
 
-  var state = { graph: null, index: null, cy: null, focal: null };
+  // expandedMore: keys are "<focal>|unlock", "<focal>|coreq", or
+  // "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
+  // clicked to fully expand for that specific focal course.
+  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {} };
+
+  // Click-vs-double-click disambiguation for graph nodes, done by hand:
+  // a single click's toggle re-renders the graph immediately (a new
+  // Cytoscape instance replaces the old one), which was destroying the
+  // in-progress gesture the browser's own double-click detection relies
+  // on right as the second click arrived -- so a real double-click almost
+  // never actually registered, making it feel impossible to navigate.
+  // Waiting out this short window before acting on a single click keeps
+  // both clicks of a real double-click landing on the same still-alive
+  // instance.
+  var clickTimer = null;
+  var CLICK_DELAY_MS = 400;
+
+  function cancelPendingClick() {
+    if (clickTimer) { clearTimeout(clickTimer.timeout); clickTimer = null; }
+  }
 
   fetch(GRAPH_URL)
     .then(function (r) {
@@ -294,13 +343,18 @@
       .sort(function (a, b) { return nodes[b].depth - nodes[a].depth; }).slice(0, 12)
       .map(function (c) { return { code: c, value: nodes[c].depth + (nodes[c].depth === 1 ? " semester deep" : " semesters deep") }; });
 
-    var mostPrereqs = codes.map(function (c) { return { code: c, n: index.prereqOf[c].length }; })
+    // Requirement UNITS, not flat edges -- "A or B or C" is one choice, not
+    // three separate prereqs. index.prereqOf[c].length (used pre-fix) counts
+    // every OR alternative as its own prereq, so a course like HWST 491 with
+    // three "pick one of several" groups showed as "17 direct prereqs"
+    // instead of the ~5 actual requirements (2 required courses + 3 groups).
+    var mostPrereqs = codes.map(function (c) { return { code: c, n: computeRequirementUnits(c, "prereq_tree").length }; })
       .filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 12)
       .map(function (x) { return { code: x.code, value: x.n + " direct prereqs" }; });
 
     var mostUnlocks = codes.map(function (c) { return { code: c, n: index.unlocks[c].length }; })
       .filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 12)
-      .map(function (x) { return { code: x.code, value: "unlocks " + x.n } ; });
+      .map(function (x) { return { code: x.code, value: "required by " + x.n } ; });
 
     var cyclic = codes.filter(function (c) { return nodes[c].depth_status === "cycle"; })
       .sort().map(function (c) { return { code: c, value: "circular" }; });
@@ -396,12 +450,45 @@
     return t.depth[i];
   }
 
-  function select(code) {
+  // Renders a course without touching the visit history -- used both by
+  // select() below (after it records the visit) and by back/forward, which
+  // must move through history without appending a new detour into it.
+  function goTo(code) {
     var nodes = state.graph.nodes;
     if (!nodes[code]) return;
+    cancelPendingClick();
     state.focal = code;
     renderDetail(code);
     renderGraph(code);
+    updateNavButtons();
+  }
+
+  // A fresh navigation (search, click, graph tap): truncates any forward
+  // history past the current point -- same convention as a browser tab --
+  // so a back-back-click-forward sequence can't "forward" into a course you
+  // never actually visited after that click.
+  function select(code) {
+    if (!state.graph.nodes[code]) return;
+    if (state.history[state.historyIndex] !== code) {
+      state.history = state.history.slice(0, state.historyIndex + 1);
+      state.history.push(code);
+      state.historyIndex = state.history.length - 1;
+    }
+    goTo(code);
+  }
+
+  function navigateHistory(delta) {
+    var i = state.historyIndex + delta;
+    if (i < 0 || i >= state.history.length) return;
+    state.historyIndex = i;
+    goTo(state.history[i]);
+  }
+
+  function updateNavButtons() {
+    var backBtn = document.getElementById("nav-back");
+    var fwdBtn = document.getElementById("nav-forward");
+    backBtn.disabled = state.historyIndex <= 0;
+    fwdBtn.disabled = state.historyIndex >= state.history.length - 1;
   }
 
   function capped(list) {
@@ -521,8 +608,28 @@
           var alreadyPlaced = unit.codes.some(function (c) { return c in level; });
           if (alreadyPlaced) return;
           if (placedCount + unit.codes.length > ANCESTOR_CAP) { truncated = true; return; }
-          unit.codes.forEach(function (c) { level[c] = lvl; next.push(c); placedCount++; });
-          unitsThisLevel.push({ type: unit.type, n: unit.n, codes: unit.codes.slice(), target: targetCode });
+          // A real alternative group ("pick one of these") only needs ONE
+          // path continued backward -- expanding every alternative's own
+          // chain by default buries the single path you'll actually take
+          // under however many others you won't. All alternatives still
+          // get drawn at this level either way; only whether their OWN
+          // prereqs cascade into the next level is gated. altKey is a
+          // content-derived (not render-order-derived) id so it survives
+          // a re-render even as other expansions shift things around.
+          var altKey = null;
+          if (unit.codes.length > 1) {
+            var othersHaveDeeper = unit.codes.slice(1).some(function (c) {
+              return computeRequirementUnits(c, "prereq_tree").length > 0;
+            });
+            if (othersHaveDeeper) altKey = focal + "|alt|" + targetCode + "|" + unit.codes.join(",");
+          }
+          var expanded = !altKey || state.expandedMore[altKey];
+          unit.codes.forEach(function (c, i) {
+            level[c] = lvl;
+            placedCount++;
+            if (i === 0 || expanded) next.push(c);
+          });
+          unitsThisLevel.push({ type: unit.type, n: unit.n, codes: unit.codes.slice(), target: targetCode, altKey: altKey });
         });
       });
       levelUnits[lvl] = unitsThisLevel;
@@ -557,33 +664,315 @@
   var ROW_H = 58, INTRA_GROUP_GAP = 10, UNIT_GAP = 24;
   var GROUP_CHROME = 40;  // extra room reserved above/below a group's member stack for its own padding + top label
 
-  function unitHeight(u) {
-    var membersH = u.codes.length * ROW_H + (u.codes.length - 1) * INTRA_GROUP_GAP;
-    return u.type === "single" ? membersH : membersH + GROUP_CHROME;
+  // Matches the "width" style function below exactly, so a group's grid
+  // packing (next) reserves the real space each member will actually take.
+  function nodeWidthEstimate(label) {
+    return Math.max(50, String(label || "").length * 8 + 24);
   }
 
-  function renderGraph(focal) {
+  // Packs a group's member courses into whichever grid (rows x cols) gives
+  // the smallest bounding-box AREA, rather than always stacking them in
+  // one tall column -- a "pick 1 of 6" group used to be a narrow 6-row
+  // tower; this tries every column count from 1 to N and keeps whichever
+  // is most square-ish for that many members, with no member touching the
+  // next (INTRA_GROUP_GAP still separates every cell). Cached on the unit
+  // itself since both unitHeight and the actual layout below need it and
+  // it's the same answer both times.
+  function groupPacking(u) {
+    if (u._grid) return u._grid;
+    var cellW = 0;
+    u.codes.forEach(function (code) { cellW = Math.max(cellW, nodeWidthEstimate(code)); });
+    var n = u.codes.length;
+    var best = null;
+    for (var cols = 1; cols <= n; cols++) {
+      var rows = Math.ceil(n / cols);
+      var w = cols * cellW + (cols - 1) * INTRA_GROUP_GAP;
+      var h = rows * ROW_H + (rows - 1) * INTRA_GROUP_GAP;
+      var area = w * h;
+      // Minimizing raw area alone has a degenerate case: for a count with
+      // few small factors (e.g. 11), a single flat row wastes zero grid
+      // cells and can win on area despite being absurdly elongated (a
+      // 1068x98 strip, confirmed on an 11-member group) -- not remotely
+      // "the square formed by the dashed box" that was asked for. Scoring
+      // by the side of the smallest *enclosing square* instead reliably
+      // prefers the near-sqrt(n) layout; area only breaks a tie between
+      // two options with the same square side.
+      var squareSide = Math.max(w, h);
+      if (!best || squareSide < best.squareSide || (squareSide === best.squareSide && area < best.area)) {
+        best = { cols: cols, rows: rows, w: w, h: h, cellW: cellW, area: area, squareSide: squareSide };
+      }
+    }
+    u._grid = best;
+    return best;
+  }
+
+  function unitHeight(u) {
+    if (u.type === "single") return ROW_H;
+    return groupPacking(u).h + GROUP_CHROME;
+  }
+
+  // ---------- physics ----------
+  // A small, self-contained force simulation layered on top of the
+  // deterministic column layout below: renderGraph still computes a
+  // "home" x for every node with the exact same math as always (prereq
+  // depth to the left, unlocks to the right, one column per level), but
+  // instead of pinning nodes there, this nudges them into an organic
+  // arrangement -- repelling each other like like charges, pulled
+  // together along real edges, and only weakly drawn back toward their
+  // home column on the x axis (y is entirely free) so "closer to
+  // 100-level on the left, more depth on the right" still holds without
+  // every node being rigidly stacked in fixed rows.
+  var PHYSICS = {
+    repulsion: 9000,     // pairwise push, ~k / distance^2
+    minDistance: 40,     // repulsion is capped below this so it can't blow up near distance 0
+    springEdge: 0.012,   // pulls courses connected by a real edge toward edgeLength apart
+    edgeLength: 150,
+    springHomeX: 0.012,  // pull back toward the depth column's x
+    // A long stack of mutually-repelling nodes with *no* y restoring force
+    // at all has no real equilibrium to settle into -- each pushes the
+    // next a little further out forever, so the whole column just spreads
+    // apart in slow motion and the sim never actually comes to rest (this
+    // was confirmed: individual nodes drifted tens of px/sec indefinitely,
+    // not oscillating, genuinely never converging). A pull this much
+    // weaker than the x one still lets nodes wander well off their
+    // original row -- it only stops that wander from being unbounded.
+    springHomeY: 0.004,
+    damping: 0.8,
+    settleEnergy: 0.6,    // total |velocity| below this pauses the sim until something wakes it
+    groupRepulsion: 9000, // same strength as a regular node's push, but from the whole box's edge, not its center
+    groupPad: 20           // extra clearance beyond the box's own drawn border
+  };
+  var physics = { bodies: {}, edges: [], groups: [], running: false, rafId: null };
+
+  // (Re)builds the physics bodies from whatever's currently in state.cy --
+  // called after every render. A body that already existed (by course
+  // code) keeps its live velocity, so a redraw triggered by expanding or
+  // collapsing a node doesn't reset the motion of everything already on
+  // screen, only seeds newly-added bodies fresh.
+  function physicsBuild() {
+    var cy = state.cy;
+    var bodies = {};
+    cy.nodes().forEach(function (n) {
+      if (n.data("isGroup")) return; // compound boxes follow their children automatically
+      var id = n.id();
+      var pos = n.position();
+      var prev = physics.bodies[id];
+      var homeX = n.data("homeX");
+      var homeY = n.data("homeY");
+      bodies[id] = {
+        x: pos.x, y: pos.y,
+        vx: prev ? prev.vx : 0, vy: prev ? prev.vy : 0,
+        homeX: typeof homeX === "number" ? homeX : pos.x,
+        homeY: typeof homeY === "number" ? homeY : pos.y,
+        grabbed: false,
+        fixed: !!n.data("focal")
+      };
+    });
+    physics.bodies = bodies;
+
+    // A group's own edge (its dashed "pick one of N" box -> its target)
+    // has no body of its own to pull -- redirect it to pull each of the
+    // group's real member courses instead, so the box still drifts toward
+    // whatever it actually requires instead of just floating on
+    // repulsion alone.
+    var edges = [];
+    cy.edges().forEach(function (e) {
+      var srcNode = e.source(), tgtNode = e.target();
+      var srcIds = srcNode.data("isGroup") ? srcNode.children().map(function (c) { return c.id(); }) : [srcNode.id()];
+      var tgtIds = tgtNode.data("isGroup") ? tgtNode.children().map(function (c) { return c.id(); }) : [tgtNode.id()];
+      srcIds.forEach(function (a) {
+        tgtIds.forEach(function (b) {
+          if (bodies[a] && bodies[b]) edges.push([a, b]);
+        });
+      });
+    });
+    physics.edges = edges;
+
+    // Every group's whole box (not just its individual member courses)
+    // repels other nodes too, approximated as a circle around the box's
+    // member centroid sized to its half-diagonal -- a conservative but
+    // simple stand-in for true rectangle-vs-point collision, so nothing
+    // outside the group ever has to actually touch its dashed border to
+    // get pushed away.
+    var groups = [];
+    cy.nodes('[?isGroup]').forEach(function (g) {
+      var memberIds = g.children().map(function (c) { return c.id(); });
+      if (!memberIds.length) return;
+      var w = (g.data("boxWidth") || 100) + PHYSICS.groupPad * 2;
+      var h = (g.data("boxHeight") || 60) + PHYSICS.groupPad * 2;
+      groups.push({ memberIds: memberIds, radius: Math.sqrt(w * w + h * h) / 2 });
+    });
+    physics.groups = groups;
+
+    physicsWake();
+  }
+
+  function physicsWake() {
+    if (physics.running) return;
+    physics.running = true;
+    physics.rafId = requestAnimationFrame(physicsTick);
+  }
+
+  function physicsTick() {
+    var bodies = physics.bodies;
+    var ids = Object.keys(bodies);
+    var forces = {};
+    ids.forEach(function (id) { forces[id] = { x: 0, y: 0 }; });
+
+    for (var i = 0; i < ids.length; i++) {
+      var a = bodies[ids[i]];
+      for (var j = i + 1; j < ids.length; j++) {
+        var b = bodies[ids[j]];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+        var d = Math.max(dist, PHYSICS.minDistance);
+        var f = PHYSICS.repulsion / (d * d);
+        var fx = (dx / dist) * f, fy = (dy / dist) * f;
+        forces[ids[i]].x += fx; forces[ids[i]].y += fy;
+        forces[ids[j]].x -= fx; forces[ids[j]].y -= fy;
+      }
+    }
+
+    physics.edges.forEach(function (pair) {
+      var a = bodies[pair[0]], b = bodies[pair[1]];
+      if (!a || !b) return;
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+      var f = PHYSICS.springEdge * (dist - PHYSICS.edgeLength);
+      var fx = (dx / dist) * f, fy = (dy / dist) * f;
+      forces[pair[0]].x += fx; forces[pair[0]].y += fy;
+      forces[pair[1]].x -= fx; forces[pair[1]].y -= fy;
+    });
+
+    // Group boxes repel like an oversized node: push outsiders away from
+    // the box's centroid at its effective radius (not distance 0), and
+    // split the equal-and-opposite reaction across the box's own members
+    // so the box visibly nudges away too instead of acting like an
+    // immovable wall.
+    physics.groups.forEach(function (grp) {
+      var cx = 0, cy = 0, cnt = 0;
+      grp.memberIds.forEach(function (id) {
+        var b = bodies[id];
+        if (b) { cx += b.x; cy += b.y; cnt++; }
+      });
+      if (!cnt) return;
+      cx /= cnt; cy /= cnt;
+      var memberSet = {};
+      grp.memberIds.forEach(function (id) { memberSet[id] = true; });
+      ids.forEach(function (id) {
+        if (memberSet[id]) return; // a group's own members don't repel from their own box
+        var b = bodies[id];
+        var dx = b.x - cx, dy = b.y - cy;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+        var d = Math.max(dist - grp.radius, PHYSICS.minDistance);
+        var f = PHYSICS.groupRepulsion / (d * d);
+        var fx = (dx / dist) * f, fy = (dy / dist) * f;
+        forces[id].x += fx; forces[id].y += fy;
+        grp.memberIds.forEach(function (mid) {
+          if (forces[mid]) { forces[mid].x -= fx / cnt; forces[mid].y -= fy / cnt; }
+        });
+      });
+    });
+
+    ids.forEach(function (id) {
+      forces[id].x += (bodies[id].homeX - bodies[id].x) * PHYSICS.springHomeX;
+      forces[id].y += (bodies[id].homeY - bodies[id].y) * PHYSICS.springHomeY;
+    });
+
+    var totalSpeed = 0;
+    ids.forEach(function (id) {
+      var body = bodies[id];
+      if (body.grabbed || body.fixed) { body.vx = 0; body.vy = 0; return; }
+      body.vx = (body.vx + forces[id].x) * PHYSICS.damping;
+      body.vy = (body.vy + forces[id].y) * PHYSICS.damping;
+      body.x += body.vx;
+      body.y += body.vy;
+      totalSpeed += Math.abs(body.vx) + Math.abs(body.vy);
+    });
+
+    state.cy.batch(function () {
+      ids.forEach(function (id) {
+        var body = bodies[id];
+        if (body.grabbed) { state.nodePositions[id] = { x: body.x, y: body.y }; return; }
+        if (body.fixed) { body.x = body.homeX; body.y = body.homeY; }
+        var n = state.cy.getElementById(id);
+        if (n.length) n.position({ x: body.x, y: body.y });
+        state.nodePositions[id] = { x: body.x, y: body.y };
+      });
+    });
+
+    if (totalSpeed < PHYSICS.settleEnergy) {
+      physics.running = false;
+      return;
+    }
+    physics.rafId = requestAnimationFrame(physicsTick);
+  }
+
+  function renderGraph(focal, opts) {
+    opts = opts || {};
     var nodes = state.graph.nodes;
     var idx = state.index;
     var t = tokens();
+    // Toggling a "+more"/alt-group/node expansion re-renders the whole
+    // Cytoscape instance (no incremental update API is in use), which
+    // would otherwise auto-fit the camera to the new element set every
+    // time -- jarring, and it made newly-revealed nodes easy to miss since
+    // the whole view rescales around them instead of staying put. Only a
+    // real navigation (a different focal course entirely) re-fits.
+    var savedPan = opts.preserveViewport && state.cy ? state.cy.pan() : null;
+    var savedZoom = opts.preserveViewport && state.cy ? state.cy.zoom() : null;
+    // A real navigation starts the physics simulation fresh from the
+    // deterministic layout -- reusing cached live positions across two
+    // unrelated courses' graphs would seed a shared prerequisite at some
+    // arbitrary leftover spot from the last course instead of its own
+    // sensible column. A toggle (preserveViewport) keeps the cache, which
+    // is exactly what lets existing nodes stay put instead of resetting
+    // every time something is expanded or collapsed.
+    if (!opts.preserveViewport) state.nodePositions = {};
 
     var chain = computeAncestorChain(focal);
-    var unlocks = capped(idx.unlocks[focal] || []);
+    var allUnlocks = idx.unlocks[focal] || [];
+    var unlockKey = focal + "|unlock";
+    var unlocks = state.expandedMore[unlockKey] ? { shown: allUnlocks, extra: 0 } : capped(allUnlocks);
     var coreqUnits = computeRequirementUnits(focal, "coreq_tree");
 
     var els = [];
-    var placed = {};   // code -> true, only for nodes actually drawn (not "+more" stubs)
+    var placed = {};      // code -> true, only for nodes actually drawn (not "+more" stubs)
+    var positions = {};   // code -> {x, y} of wherever it actually landed, for hanging a click-revealed expansion off of it
+    var edgeSeen = {};    // "source->target:kind" -> true, so the same relationship is never drawn as two separately-id'd edges
+    function edgeExists(source, target, kind) { return !!edgeSeen[source + "->" + target + ":" + kind]; }
+    function markEdge(source, target, kind) { edgeSeen[source + "->" + target + ":" + kind] = true; }
     var colWidth = 240, rowHeight = ROW_H + UNIT_GAP;
-    var unlockX = colWidth * (chain.maxLevel + 1);
+    // Unlocks are always exactly one direct hop from the focal course, same
+    // as prereq level 1 -- their column shouldn't drift outward with the
+    // *prereq* chain's depth (that's an unrelated, opposite-direction axis).
+    var unlockX = colWidth;
     var groupSeq = 0;
 
+    // Skips re-adding a course already drawn elsewhere this render (e.g. a
+    // click-revealed expansion reaching a course that's also directly
+    // visible as a prereq/coreq/unlock) -- Cytoscape element ids must be
+    // unique, and there's no value in a duplicate copy of the same node
+    // anyway. An edge pointing at `code` still resolves fine to wherever it
+    // was first placed, so callers don't need to check the return value.
     function addNode(code, x, y, opts) {
       opts = opts || {};
+      if (placed[code]) return;
       var n = nodes[code] || { title: "(not in dataset)", in_catalog: false };
       placed[code] = true;
-      var data = { id: code, label: code, title: n.title || "", depth: n.depth, status: n.depth_status, inCatalog: !!n.in_catalog, focal: !!opts.isFocal };
+      positions[code] = { x: x, y: y };
+      // homeX is the physics simulation's spring target (see the physics
+      // module above) -- the deterministic column x computed here, kept
+      // even though the node's actual live position will drift off it.
+      var data = { id: code, label: code, title: n.title || "", depth: n.depth, status: n.depth_status, inCatalog: !!n.in_catalog, focal: !!opts.isFocal, homeX: x, homeY: y };
       if (opts.parent) data.parent = opts.parent;
-      els.push({ data: data, position: { x: x, y: y } });
+      // Seed at wherever physics last settled this course, if anywhere --
+      // otherwise this course is new to the graph and starts at its home
+      // column, same as before physics existed.
+      var seed = state.nodePositions[code] || { x: x, y: y };
+      var el = { data: data, position: seed };
+      if (opts.isFocal) el.grabbable = false; // stays a stable anchor for the rest of the graph to organize around
+      els.push(el);
     }
 
     // Lays out a list of requirement units in a vertical column centered on
@@ -592,34 +981,89 @@
     // courses as children, with ONE edge from the group into its target --
     // "pick one (or N) of these", not "all of these are separately
     // required". Returns the total pixel height the column used.
-    function layoutUnitColumn(units, x, yCenter, kind) {
-      var shown = units.slice(0, MAX_UNITS_PER_LEVEL);
-      var extra = units.length - shown.length;
-      var totalHeight = shown.reduce(function (sum, u) { return sum + unitHeight(u); }, 0)
+    // defaultTarget is for callers whose units don't each carry their own
+    // "target" (only computeAncestorChain's ancestor-level units do, one
+    // per originating course) -- coreqUnits comes straight from
+    // computeRequirementUnits with no target at all, since every coreq unit
+    // targets the same place: the focal course itself.
+    // expandKey identifies this specific column in state.expandedMore --
+    // once a viewer clicks its "+N more" stub, this column (for this focal
+    // course) renders in full on every subsequent redraw instead of
+    // re-truncating.
+    // The height layoutUnitColumn below will use for a given unit list --
+    // pulled out on its own so a click-revealed expansion (see below) can
+    // ask "how tall will this column be" before it's actually drawn, in
+    // order to claim vertical room for it up front.
+    function columnHeight(units, expandKey) {
+      var shown = state.expandedMore[expandKey] ? units : units.slice(0, MAX_UNITS_PER_LEVEL);
+      return shown.reduce(function (sum, u) { return sum + unitHeight(u); }, 0)
         + Math.max(0, shown.length - 1) * UNIT_GAP;
+    }
+
+    function layoutUnitColumn(units, x, yCenter, kind, defaultTarget, expandKey) {
+      var shown = state.expandedMore[expandKey] ? units : units.slice(0, MAX_UNITS_PER_LEVEL);
+      var extra = units.length - shown.length;
+      var totalHeight = columnHeight(units, expandKey);
       var cursorY = yCenter - totalHeight / 2;
 
       shown.forEach(function (u) {
         var h = unitHeight(u);
-        if (u.type === "single") {
+        var target = u.target || defaultTarget;
+        if (u.type === "single" && edgeExists(u.codes[0], target, kind)) {
+          // This exact relationship is already drawn (common when a
+          // click-revealed expansion reaches back to a course whose only
+          // prerequisite is the focal course itself -- the focal-to-this
+          // edge already exists in the unlocks column). Drawing it again
+          // under a different element id wouldn't be caught as a
+          // duplicate by Cytoscape, so two arrows would render for the
+          // same relationship; skip the whole unit instead, since there's
+          // nothing new to show.
+        } else if (u.type === "single") {
           var code = u.codes[0];
           addNode(code, x, cursorY + h / 2);
-          els.push({ data: { id: code + "->" + u.target + ":" + kind, source: code, target: u.target, kind: kind } });
+          els.push({ data: { id: code + "->" + target + ":" + kind, source: code, target: target, kind: kind } });
+          markEdge(code, target, kind);
+        } else if (u.codes.every(function (code) { return placed[code]; })) {
+          // Every member is already drawn elsewhere (common once a
+          // click-revealed expansion's own chain overlaps the courses it's
+          // already sitting among) -- a compound box with no actual
+          // children of its own is just an empty dashed rectangle, so skip
+          // the whole unit rather than draw one.
         } else {
           var gid = "grp:" + (groupSeq++);
-          var label = u.type === "nof" ? (u.n + " of " + u.codes.length) : "1 of " + u.codes.length;
-          els.push({ data: { id: gid, label: label, isGroup: true, groupKind: kind } });
+          var collapsed = u.altKey && !state.expandedMore[u.altKey];
+          var label = (u.type === "nof" ? (u.n + " of " + u.codes.length) : "1 of " + u.codes.length) + (collapsed ? "  ⋯" : "");
+          var grid = groupPacking(u);
+          // boxWidth/boxHeight are read back by the physics module so an
+          // outside course repels off the whole box, not just its members.
+          var gdata = { id: gid, label: label, isGroup: true, groupKind: kind, boxWidth: grid.w, boxHeight: grid.h + GROUP_CHROME };
+          if (collapsed) { gdata.altKey = u.altKey; gdata.expandable = true; }
+          els.push({ data: gdata });
           var membersTop = cursorY + GROUP_CHROME / 2;
           u.codes.forEach(function (code, i) {
-            addNode(code, x, membersTop + i * (ROW_H + INTRA_GROUP_GAP) + ROW_H / 2, { parent: gid });
+            var col = i % grid.cols, row = Math.floor(i / grid.cols);
+            var memberX = x + (col - (grid.cols - 1) / 2) * (grid.cellW + INTRA_GROUP_GAP);
+            var memberY = membersTop + row * (ROW_H + INTRA_GROUP_GAP) + ROW_H / 2;
+            addNode(code, memberX, memberY, { parent: gid });
           });
-          els.push({ data: { id: gid + "->" + u.target, source: gid, target: u.target, kind: kind } });
+          els.push({ data: { id: gid + "->" + target, source: gid, target: target, kind: kind } });
         }
         cursorY += h + UNIT_GAP;
       });
 
       if (extra > 0) {
-        els.push({ data: { id: "__more_" + kind + "_" + x, label: "+" + extra + " more", isMore: true }, position: { x: x, y: cursorY + ROW_H / 2 } });
+        var moreId = "__more_" + kind + "_" + x;
+        els.push({ data: { id: moreId, label: "+" + extra + " more", isMore: true, moreKey: expandKey, expandable: true }, position: { x: x, y: cursorY + ROW_H / 2 } });
+        // Tie the stub to whatever it's actually hiding via a muted edge --
+        // without this it's just a floating box once physics nudges it
+        // around, with nothing showing what "+N more" belongs to. The
+        // hidden units can (rarely) target more than one course at this
+        // level, so draw one edge per distinct target rather than guessing.
+        var extraTargets = {};
+        units.slice(shown.length).forEach(function (u) { extraTargets[u.target || defaultTarget] = true; });
+        Object.keys(extraTargets).forEach(function (tgt) {
+          els.push({ data: { id: moreId + "->" + tgt + ":" + kind, source: moreId, target: tgt, kind: kind, isMoreEdge: true } });
+        });
       }
       return totalHeight;
     }
@@ -627,16 +1071,90 @@
     addNode(focal, 0, 0, { isFocal: true });
 
     for (var l = 1; l <= chain.maxLevel; l++) {
-      layoutUnitColumn(chain.levelUnits[l] || [], -colWidth * l, 0, "prereq");
+      layoutUnitColumn(chain.levelUnits[l] || [], -colWidth * l, 0, "prereq", undefined, focal + "|prereq|" + l);
     }
 
-    if (coreqUnits.length) layoutUnitColumn(coreqUnits, 0, 120, "coreq");
+    var coreqHeight = coreqUnits.length ? layoutUnitColumn(coreqUnits, 0, 120, "coreq", focal, focal + "|coreq") : 0;
 
     unlocks.shown.forEach(function (c, i) { addNode(c, unlockX, (i - (unlocks.shown.length - 1) / 2) * rowHeight); });
     if (unlocks.extra > 0) {
-      els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true }, position: { x: unlockX, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
+      els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true, moreKey: unlockKey, expandable: true }, position: { x: unlockX, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
+      els.push({ data: { id: focal + "->__more_unlock", source: focal, target: "__more_unlock", kind: "prereq", isMoreEdge: true } });
     }
-    unlocks.shown.forEach(function (c) { els.push({ data: { id: focal + "->" + c, source: focal, target: c, kind: "prereq" } }); });
+    unlocks.shown.forEach(function (c) {
+      els.push({ data: { id: focal + "->" + c, source: focal, target: c, kind: "prereq" } });
+      markEdge(focal, c, "prereq");
+    });
+
+    // Click-revealed expansions: a viewer can click any course node (a
+    // coreq, an unlock, an alt-group member whose own chain wasn't
+    // auto-expanded, even a course revealed by an earlier expansion) to
+    // graft *its own* full prerequisite chain onto the graph, without
+    // treating it as a real visit -- focal/history/detail panel don't
+    // change (see the tap handler below). Positioned like the focal
+    // course's own chain -- columns extending left, one per level --
+    // centered as close as possible to the clicked node's actual height,
+    // so it reads as "this is what would show up if this were the
+    // selected course" rather than a disconnected side panel.
+    //
+    // Every unlock lives at the same x (unlockX), and every coreq at x=0,
+    // so *any* unlock's or coreq's own level-1 column would otherwise land
+    // at x <= 0 -- squarely on top of the focal node's own column (and, if
+    // two are expanded at once, on top of each other). A small 1D slot
+    // packer nudges only these collision-prone expansions up or down just
+    // far enough to clear whatever's already claimed, defaulting to no
+    // nudge at all when the desired row is already free. Prereq-chain-node
+    // expansions extend further left of an already-negative x, away from
+    // this shared area, so they're left alone (occasional overlap there is
+    // an accepted tradeoff -- see the git history for the fuller
+    // force-directed-layout discussion).
+    var nodeExpandPrefix = focal + "|node|";
+    var claimedYRanges = [[-ROW_H, ROW_H]]; // the focal node's own footprint
+    if (coreqUnits.length) claimedYRanges.push([120 - coreqHeight / 2 - UNIT_GAP, 120 + coreqHeight / 2 + UNIT_GAP]);
+
+    function claimYSlot(desiredY, halfHeight) {
+      function overlaps(a, b) { return a[0] < b[1] && b[0] < a[1]; }
+      function fits(center) {
+        var range = [center - halfHeight, center + halfHeight];
+        return !claimedYRanges.some(function (r) { return overlaps(r, range); });
+      }
+      var y = desiredY;
+      if (!fits(y)) {
+        var step = 24, found = false;
+        for (var d = step; d < 8000; d += step) {
+          if (fits(desiredY + d)) { y = desiredY + d; found = true; break; }
+          if (fits(desiredY - d)) { y = desiredY - d; found = true; break; }
+        }
+        if (!found) y = desiredY; // pathological case -- fall back rather than loop forever
+      }
+      claimedYRanges.push([y - halfHeight, y + halfHeight]);
+      return y;
+    }
+
+    Object.keys(state.expandedMore).forEach(function (key) {
+      if (!state.expandedMore[key]) return;
+      if (key.indexOf(nodeExpandPrefix) !== 0) return;
+      var code = key.slice(nodeExpandPrefix.length);
+      var origin = positions[code];
+      if (!origin) return; // not currently visible -- nothing to hang it off of
+      var subChain = computeAncestorChain(code);
+      if (subChain.maxLevel === 0) return; // nothing to actually reveal
+
+      var levelKeys = [];
+      var maxLevelHeight = 0;
+      for (var sl = 1; sl <= subChain.maxLevel; sl++) {
+        var levelKey = key + "|" + sl;
+        levelKeys.push(levelKey);
+        maxLevelHeight = Math.max(maxLevelHeight, columnHeight(subChain.levelUnits[sl] || [], levelKey));
+      }
+
+      var risksCenterCollision = origin.x <= colWidth;
+      var y = risksCenterCollision ? claimYSlot(origin.y, maxLevelHeight / 2 + UNIT_GAP) : origin.y;
+
+      for (var sl2 = 1; sl2 <= subChain.maxLevel; sl2++) {
+        layoutUnitColumn(subChain.levelUnits[sl2] || [], origin.x - colWidth * sl2, y, "prereq", undefined, levelKeys[sl2 - 1]);
+      }
+    });
 
     if (state.cy) state.cy.destroy();
     state.cy = cytoscape({
@@ -687,16 +1205,79 @@
         { selector: "edge[kind = 'coreq']", style: {
           "line-color": t.edgeCoreq, "target-arrow-color": t.edgeCoreq, "target-arrow-shape": "none",
           "line-style": "dashed", "curve-style": "bezier", "control-point-step-size": 30
-        }}
+        }},
+        // A "+N more" stub's link to whatever it's hiding -- muted so it
+        // still reads as "these belong together" without looking like a
+        // real prereq/coreq relationship.
+        { selector: "edge[?isMoreEdge]", style: { "line-style": "dashed", "opacity": 0.5, "width": 1.1 } }
       ]
     });
 
+    physicsBuild();
+
+    // Dragging a node (or a whole "pick one of N" group box, which drags
+    // its members together) hands that course's position to Cytoscape's
+    // own native drag for as long as it's held -- physics stops writing
+    // to it, but it still repels/pulls everything else in real time, same
+    // as the rest of the graph. Releasing it hands it back to physics.
+    function dragBodyIds(n) {
+      return n.data("isGroup") ? n.children().map(function (c) { return c.id(); }) : [n.id()];
+    }
+    state.cy.on("grab", "node", function (evt) {
+      dragBodyIds(evt.target).forEach(function (id) { if (physics.bodies[id]) physics.bodies[id].grabbed = true; });
+    });
+    state.cy.on("drag", "node", function (evt) {
+      dragBodyIds(evt.target).forEach(function (id) {
+        var body = physics.bodies[id];
+        if (!body) return;
+        var live = state.cy.getElementById(id);
+        if (!live.length) return;
+        var p = live.position();
+        body.x = p.x; body.y = p.y; body.vx = 0; body.vy = 0;
+      });
+      physicsWake();
+    });
+    state.cy.on("free", "node", function (evt) {
+      dragBodyIds(evt.target).forEach(function (id) { if (physics.bodies[id]) physics.bodies[id].grabbed = false; });
+      physicsWake();
+    });
+
+    // A single click never changes what's selected -- after a short pause
+    // (so a second click has a chance to arrive first) it just toggles
+    // whether *that specific course's* own prerequisite chain is grafted
+    // onto the graph (see the expansion block above), leaving state.focal,
+    // the detail panel, and history untouched. Double-click is the only
+    // way to actually navigate there (select()).
     state.cy.on("tap", "node", function (evt) {
       var d = evt.target.data();
+      var isRepeatClick = (evt.originalEvent && evt.originalEvent.detail > 1) ||
+        (clickTimer && clickTimer.id === d.id);
+      cancelPendingClick();
+      if (d.moreKey) { state.expandedMore[d.moreKey] = true; renderGraph(focal, { preserveViewport: true }); return; }
+      if (d.altKey) { state.expandedMore[d.altKey] = true; renderGraph(focal, { preserveViewport: true }); return; }
       if (d.isMore || d.isGroup) return;
-      select(d.id);
+      if (isRepeatClick) { select(d.id); return; }
+      if (d.id === focal) return; // already fully shown via the primary chain
+      var id = d.id;
+      clickTimer = { id: id, timeout: setTimeout(function () {
+        clickTimer = null;
+        var key = focal + "|node|" + id;
+        state.expandedMore[key] = !state.expandedMore[key];
+        renderGraph(focal, { preserveViewport: true });
+      }, CLICK_DELAY_MS) };
     });
-    state.cy.fit(undefined, 40);
+    state.cy.on("mouseover", "node", function (evt) {
+      var d = evt.target.data();
+      var clickable = d.moreKey || d.altKey || (!d.isMore && !d.isGroup && !d.focal);
+      if (clickable) document.getElementById("cy").style.cursor = "pointer";
+    });
+    state.cy.on("mouseout", "node", function () { document.getElementById("cy").style.cursor = ""; });
+    if (savedPan && savedZoom != null) {
+      state.cy.zoom(savedZoom);
+      state.cy.pan(savedPan);
+    } else {
+      state.cy.fit(undefined, 40);
+    }
 
     var chainLabel = document.getElementById("chain-label");
     var ancestorCount = chain.allCodes.length - 1;
@@ -774,8 +1355,16 @@
 
   if (window.matchMedia) {
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
-      if (state.focal) renderGraph(state.focal);
+      if (state.focal) renderGraph(state.focal, { preserveViewport: true });
     });
   }
+
+  document.getElementById("nav-back").addEventListener("click", function () { navigateHistory(-1); });
+  document.getElementById("nav-forward").addEventListener("click", function () { navigateHistory(1); });
+  window.addEventListener("keydown", function (evt) {
+    if (!evt.altKey || evt.ctrlKey || evt.metaKey) return;
+    if (evt.key === "ArrowLeft") { navigateHistory(-1); evt.preventDefault(); }
+    else if (evt.key === "ArrowRight") { navigateHistory(1); evt.preventDefault(); }
+  });
 })();
 </script>

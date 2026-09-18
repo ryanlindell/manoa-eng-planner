@@ -34,17 +34,29 @@ Token = namedtuple("Token", ["kind", "value", "groups"])
 # captures use unique *named* groups -- their absolute index would otherwise
 # shift depending on how many groups precede them in the alternation.
 _TOKEN_SPEC = [
-    ("NOFHEADER", r"^\s*(?P<nof_n>one|two|three|four|five|six|\d+)\s+of\s+the\s+following:?"),
+    # "N of ..." lead-in for a pick-N-of-these group. NOT anchored to the
+    # start of the text -- it shows up mid-sentence just as often ("CINE
+    # 350, and one of CINE 312, CINE 330, ..."), and every optional trailing
+    # word here ("the following", "courses", ":") is decoration the catalog
+    # sometimes skips ("one of: X, Y" / "one of X, Y" / "one of the
+    # following: X, Y" / "one of the following courses: X, Y" all occur).
+    ("NOFHEADER", r"\b(?:at\s+least\s+|any\s+)?(?P<nof_n>one|two|three|four|five|six|\d+)\s+of\b"
+                  r"\s*(?:the\s+following\b\s*)?(?:courses?\b\s*)?:?"),
     ("CONCURRENT", r"\(\s*or\s+concurrent\s*\)"),
-    # Three real phrasings seen in the catalog, all case-sensitive on the
+    # Four real phrasings seen in the catalog, all case-sensitive on the
     # grade letter itself (like subject codes, real grade letters are always
     # uppercase in the source -- avoids a bare lowercase "a"/"b" matching):
     #   "with a minimum grade of C" / "with a grade of C or better"
     #   "with a C- or better" / "with C- or better" (no "grade of")
     #   "C (not C-) or better in X" (no "with" at all)
+    #   "C (not C-) in X" (CHEM 161: same "(not C-)" qualifier, but the
+    #   catalog just drops "or better" entirely here -- the parenthetical
+    #   alone is still a strong, narrow signal, so require it rather than
+    #   matching a bare "C in X" that could be almost anything).
     ("GRADE", r"with\s+(?:an?\s+)?(?:minimum\s+)?grade\s+of\s+(?-i:(?P<grade_a>[A-D][+-]?))(?:\s*or\s*(?:better|higher))?"
               r"|with\s+(?:an?\s+)?(?-i:(?P<grade_b>[A-D][+-]?))\s*or\s*(?:better|higher)\b"
-              r"|(?-i:(?P<grade_c>[A-D][+-]?))\s*(?:\(\s*not\s+(?-i:[A-D][+-]?)\s*\)\s*)?or\s+better\b"),
+              r"|(?-i:(?P<grade_c>[A-D][+-]?))\s*(?:\(\s*not\s+(?-i:[A-D][+-]?)\s*\)\s*)?or\s+better\b"
+              r"|(?-i:(?P<grade_d>[A-D][+-]?))\s*\(\s*not\s+(?-i:[A-D][+-]?)\s*\)\s*(?=in\b)"),
     ("ORHIGHER", r"\bor\s+higher\b"),
     ("FORALPHA", r"\bfor\s*\(\s*(?P<alpha_letter>[A-Z])\s*\)"),
     ("CONSENT", r"\b(?:(?:departmental|instructor|faculty|program|chair|department)\s+)?"
@@ -89,7 +101,7 @@ def _extract_groups(kind, m):
     if kind == "NOFHEADER":
         return (m.group("nof_n"),)
     if kind == "GRADE":
-        return (m.group("grade_a") or m.group("grade_b") or m.group("grade_c"),)
+        return (m.group("grade_a") or m.group("grade_b") or m.group("grade_c") or m.group("grade_d"),)
     if kind == "FORALPHA":
         return (m.group("alpha_letter").upper(),)
     if kind == "STANDING":
@@ -126,19 +138,12 @@ class Parser:
         return tok
 
     def parse(self):
-        if self.peek() and self.peek().kind == "NOFHEADER":
-            tok = self.advance()
-            n = WORD_NUMBERS.get(tok.groups[0].lower())
-            if n is None:
-                try:
-                    n = int(tok.groups[0])
-                except ValueError:
-                    n = None
-            children = self._parse_comma_list()
-            node = {"op": "N_OF", "children": children}
-            if n is not None:
-                node["n"] = n
-            return node
+        # NOFHEADER used to be special-cased here as a whole-text-only
+        # construct, which meant a trailing "; or consent" after the list
+        # got silently dropped (nothing consumed it) and a mid-sentence
+        # "X, and one of Y, Z" never matched at all. It's now handled as a
+        # regular atom() (see below), so it composes with the normal
+        # AND/OR/SEMI continuation logic like anything else.
         if self.peek() is None:
             self.result.has_unparsed = True
             return {"type": "unparsed", "text": ""}
@@ -152,6 +157,18 @@ class Parser:
                 break
             children.append(self.atom())
             if self.peek() and self.peek().kind == "COMMA":
+                # "one of A, B, C, or consent" -- a comma directly followed
+                # by "or" doesn't belong to this list at all; it's the
+                # outer expression's own elliptical-comma-before-"or"
+                # ("...C, or consent" = "...C" OR "consent"), which
+                # and_expr/or_expr already know how to unwind as long as
+                # this comma is left for them, not swallowed into an empty
+                # atom() call here (atom() has no OR case, so calling it
+                # immediately after would silently return a zero-width
+                # unparsed leaf and pollute the group with it).
+                nxt = self.tokens[self.pos + 1] if self.pos + 1 < len(self.tokens) else None
+                if nxt is not None and nxt.kind == "OR":
+                    break
                 self.advance()
                 continue
             break
@@ -255,7 +272,7 @@ class Parser:
                 break
             if tok.kind == "AND":
                 self.advance()
-                nodes.append(self.atom())
+                nodes.append(self._atom_or_chain())
             elif tok.kind == "COMMA":
                 save = self.pos
                 self.advance()
@@ -313,31 +330,89 @@ class Parser:
                         break
                     if connector != "AND":
                         self.result.used_implicit_connector = True
-                    nodes.append(self.atom())
+                    nodes.append(self._atom_or_chain())
             else:
                 break
         self._last_and_absorbable = is_list_and and len(nodes) > 1
         return nodes[0] if len(nodes) == 1 else {"op": "AND", "children": nodes}
 
+    # "A or B or C", no commas at all -- used for one segment of a
+    # comma-separated list once _peek_list_connector has already decided
+    # the list's overall connector, so a segment's own internal
+    # alternatives ("CHEM 162 or CHEM 171 or CHEM 181A" as the middle item
+    # of "BIOL 171, CHEM 162 or CHEM 171 or CHEM 181A, PHYS 170, and
+    # MATH 242 or MATH 252A") are captured as one OR-group instead of
+    # calling atom() and grabbing only the first course, silently dropping
+    # its "or"-alternatives on the floor. Deliberately does NOT recurse
+    # into comma handling itself -- that would let it wander past its own
+    # segment boundary and re-absorb the *next* list item too (verified
+    # against the BE 260 case above, which is exactly what a naive
+    # `self.and_expr()` here did).
+    def _atom_or_chain(self):
+        nodes = [self.atom()]
+        while self.peek() and self.peek().kind == "OR":
+            self.advance()
+            self._skip(("EITHER",))
+            nodes.append(self.atom())
+        return nodes[0] if len(nodes) == 1 else {"op": "OR", "children": nodes}
+
     def _peek_list_connector(self):
         """Scans forward from the current position (without consuming) to
-        find whichever of AND/OR governs the rest of this comma-separated
-        run -- resolves an elliptical comma ("A, B, or C") by the connector
-        that actually appears later, instead of guessing one comma at a
-        time. Ignores connectors inside a nested parenthesized group."""
+        find whichever of AND/OR governs the *overall* comma-separated
+        list. Ignores connectors inside a nested parenthesized group.
+
+        "and" and "or" are trusted very differently here, on purpose:
+
+        An "and" found *anywhere* ahead is always safe to trust immediately,
+        even buried inside what will turn out to be one single list item
+        ("SPED 606, SPED 607 and SPED 608" -- the "and" sits between 607
+        and 608, not between the whole list and something else, but the
+        module docstring's own default for a genuinely ambiguous list is
+        already AND, so an "and" anywhere only ever confirms that default,
+        never overturns it).
+
+        "or" gets the opposite treatment: only the "or" introducing the
+        LAST comma-delimited segment counts. A middle segment can carry
+        its own internal "X or Y or Z" alternation with no comma of its
+        own ("BIOL 171, CHEM 162 or CHEM 171 or CHEM 181A, PHYS 170, and
+        MATH 242 or MATH 252A" is AND-of-four, but the first connector
+        encountered scanning left to right is the "or" inside segment 2 --
+        trusting that instead of the "and" actually introducing the last
+        segment wrongly turned the whole list into one big OR). Mistaking
+        a middle segment's own "or" for the list's connector is the one
+        direction with a real, confirmed bug behind it; mistaking a final
+        segment's leading "or" is comparatively rare and, when genuinely
+        ambiguous, still falls back to the same safe AND-and-flag-partial
+        default as everything else.
+        """
         depth = 0
+        segments = [[]]
         for tok in self.tokens[self.pos:]:
             if tok.kind == "LPAREN":
                 depth += 1
+                segments[-1].append(tok)
             elif tok.kind == "RPAREN":
                 if depth == 0:
-                    return None
+                    break
                 depth -= 1
+                segments[-1].append(tok)
             elif depth == 0:
-                if tok.kind in ("AND", "OR"):
-                    return tok.kind
                 if tok.kind in ("SEMI", "DOT"):
-                    return None
+                    break
+                if tok.kind == "COMMA":
+                    segments.append([])
+                    continue
+                segments[-1].append(tok)
+            else:
+                segments[-1].append(tok)
+
+        for seg in segments:
+            for tok in seg:
+                if tok.kind == "AND":
+                    return "AND"
+
+        if len(segments) >= 2 and segments[-1] and segments[-1][0].kind == "OR":
+            return "OR"
         return None
 
     def atom(self):
@@ -370,6 +445,30 @@ class Parser:
             sub = self.or_expr()
             self._apply_recursive(sub, "min_grade", tok.groups[0])
             return sub
+
+        if tok.kind == "NOFHEADER":
+            # "one of X, Y, Z" -- a comma list is genuinely only a real
+            # alternative-group signal here because "one of"/"two of" said
+            # so explicitly; a bare comma list elsewhere still defaults to
+            # AND (see and_expr) since it's otherwise ambiguous. Handling
+            # this as a plain atom (rather than only at the very start of
+            # the whole text, as before) means it also works mid-sentence
+            # ("CINE 350, and one of X, Y") and composes with whatever
+            # trails the list (e.g. "; or consent") through the normal
+            # and_expr/or_expr continuation logic instead of that tail
+            # silently being dropped.
+            self.advance()
+            n = WORD_NUMBERS.get(tok.groups[0].lower())
+            if n is None:
+                try:
+                    n = int(tok.groups[0])
+                except ValueError:
+                    n = None
+            children = self._parse_comma_list()
+            node = {"op": "N_OF", "children": children}
+            if n is not None:
+                node["n"] = n
+            return self._apply_group_modifiers(node)
 
         if tok.kind == "LPAREN":
             self.advance()
@@ -408,7 +507,18 @@ class Parser:
             else:
                 self.pos = save
                 break
-        node = variants[0] if len(variants) == 1 else {"op": "OR", "children": variants}
+        if len(variants) == 2 and _is_lab_pair(variants[0]["course"], variants[1]["course"]):
+            # "BIOL 172 / BIOL 172L" -- the lab section of the same course,
+            # both genuinely required together, not an alternative to it.
+            # The catalog's "/" is otherwise ambiguous between this and a
+            # cross-listing ("ARCH 628 / PLAN 675", the same course offered
+            # by two departments -- either satisfies it, a real OR), but a
+            # same-subject pair differing only by a trailing lab "L" is
+            # unambiguous, so it's the one case worth special-casing rather
+            # than defaulting every "/" to OR.
+            node = {"op": "AND", "children": variants}
+        else:
+            node = variants[0] if len(variants) == 1 else {"op": "OR", "children": variants}
         return self._apply_leaf_modifiers(node) if len(variants) == 1 else self._apply_group_modifiers(node)
 
     # A modifier can trail an atom bare ("ACC 200 with a C- or better") or
@@ -482,6 +592,15 @@ def _apply_recursive(node, key, value):
     elif "children" in node:
         for child in node["children"]:
             _apply_recursive(child, key, value)
+
+
+def _is_lab_pair(course_a: str, course_b: str) -> bool:
+    """True for "BIOL 172" / "BIOL 172L" -- same subject, one course number
+    is the other with a trailing lab "L" appended (either order: the raw
+    text sometimes lists the lab section first)."""
+    subj_a, num_a = course_a.split(" ", 1)
+    subj_b, num_b = course_b.split(" ", 1)
+    return subj_a == subj_b and (num_a + "L" == num_b or num_b + "L" == num_a)
 
 
 def _has_any_unparsed(node) -> bool:
