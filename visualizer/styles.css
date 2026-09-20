@@ -1,0 +1,316 @@
+:root {
+  color-scheme: light;
+  --page:        #f9f9f7;
+  --surface:     #fcfcfb;
+  --surface-2:   #f1f0eb;
+  --ink:         #0b0b0b;
+  --ink-2:       #52514e;
+  --ink-muted:   #898781;
+  --hairline:    #e1e0d9;
+  --border:      rgba(11,11,11,0.10);
+
+  --accent:      #1c5c3f;   /* UH green -- branding, focal node, primary actions */
+  --accent-ink:  #ffffff;
+  --accent-wash: #e5efe8;
+
+  --edge-prereq: #a6a49a;   /* recessive: the default, expected relationship */
+  --edge-coreq:  #4a3aa7;   /* violet: the minority, concurrent relationship */
+  --status-critical: #d03b3b; /* cycle-involved courses */
+  --status-warning:  #eda100; /* unresolved-prereq courses */
+
+  /* Sequential blue ramp, depth 0 (lightest) -> depth 7+ (darkest, most
+     semesters deep). The dark end is capped rather than running to a
+     near-black navy: node text is a single fixed ink color (not adapted
+     per node), so depth-7 still has to hold reasonable contrast against
+     near-black --ink text, the same way depth-0 needs to stay light
+     enough. See the dark-theme block below for the mirrored cap against
+     white text there. */
+  --depth-0: #eef4fc; --depth-1: #dce8fa; --depth-2: #c2d9f6; --depth-3: #a3c5f0;
+  --depth-4: #82ade8; --depth-5: #6396dd; --depth-6: #4a80cf; --depth-7: #386dbd;
+
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232320;
+    --ink: #ffffff; --ink-2: #c3c2b7; --ink-muted: #8f8d86;
+    --hairline: #2c2c2a; --border: rgba(255,255,255,0.12);
+    --accent: #4fae83; --accent-ink: #06170f; --accent-wash: #163326;
+    --edge-prereq: #55534c; --edge-coreq: #9085e9;
+    --status-critical: #e66767; --status-warning: #c98500;
+    /* Same depth-0 (lightest) -> depth-7 (darkest) direction as the light
+       theme above -- this used to run the other way (depth-0 darkest,
+       depth-7 near-white), which both read backwards against the "darker
+       = more semesters deep" legend and, worse, put the *lightest* color
+       at depth-7 under white --ink text, right where nodes are most
+       common in any single course's chain. Capped light end for the same
+       reason the light theme's dark end is capped, just mirrored. */
+    --depth-0: #3f7dc4; --depth-1: #366dae; --depth-2: #2d5d98; --depth-3: #244d82;
+    --depth-4: #1c3e6c; --depth-5: #152f56; --depth-6: #0f2140; --depth-7: #09142a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232320;
+  --ink: #ffffff; --ink-2: #c3c2b7; --ink-muted: #8f8d86;
+  --hairline: #2c2c2a; --border: rgba(255,255,255,0.12);
+  --accent: #4fae83; --accent-ink: #06170f; --accent-wash: #163326;
+  --edge-prereq: #55534c; --edge-coreq: #9085e9;
+  --status-critical: #e66767; --status-warning: #c98500;
+  /* Mirrors the @media dark block above (same reasoning, duplicated here
+     for the explicit data-theme="dark" toggle rather than the OS-level
+     media query). */
+  --depth-0: #3f7dc4; --depth-1: #366dae; --depth-2: #2d5d98; --depth-3: #244d82;
+  --depth-4: #1c3e6c; --depth-5: #152f56; --depth-6: #0f2140; --depth-7: #09142a;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font-family: var(--sans); font-size: 14px; line-height: 1.5;
+}
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+a { color: var(--accent); }
+
+.app {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "header header" "sidebar stage";
+  height: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; grid-template-areas: "header" "sidebar" "stage"; height: auto; min-height: 100vh; }
+  #sidebar { max-height: 46vh; }
+}
+
+header {
+  grid-area: header;
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--hairline);
+}
+header h1 { font-size: 1.5rem; letter-spacing: -0.01em; }
+header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: auto; }
+.nav-history { display: flex; gap: 6px; }
+.nav-btn {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  font: inherit; font-size: 1rem; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface); color: var(--ink); cursor: pointer;
+}
+.nav-btn:disabled { color: var(--ink-muted); cursor: default; opacity: 0.5; }
+.nav-btn:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
+
+#sidebar {
+  grid-area: sidebar; border-right: 1px solid var(--hairline);
+  overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 18px;
+}
+.search-box { position: relative; }
+.search-box input {
+  width: 100%; padding: 10px 12px; font: inherit; font-size: 0.95rem;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink);
+}
+.search-box input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.search-results {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 20;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18); max-height: 320px; overflow-y: auto;
+}
+.search-results button {
+  display: block; width: 100%; text-align: left; padding: 8px 12px; border: 0; background: none;
+  font: inherit; color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--hairline);
+}
+.search-results button:hover, .search-results button:focus-visible { background: var(--surface-2); }
+.search-results .code { font-family: var(--mono); font-weight: 600; font-size: 0.8rem; color: var(--accent); }
+
+.panel-title {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
+  margin: 0 0 8px;
+}
+.rank-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.rank-list li { border-bottom: 1px solid var(--hairline); }
+.rank-list button {
+  display: flex; align-items: baseline; gap: 8px; width: 100%; padding: 7px 4px;
+  border: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; border-radius: 4px;
+}
+.rank-list button:hover, .rank-list button:focus-visible { background: var(--surface-2); }
+.rank-list .code { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; flex: 0 0 auto; color: var(--accent); }
+.rank-list .title { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); font-size: 0.82rem; }
+.rank-list .value { flex: 0 0 auto; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-muted); }
+
+.highlight-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+.highlight-tabs button {
+  font: inherit; font-size: 0.72rem; padding: 5px 9px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink-2); cursor: pointer;
+}
+.highlight-tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.highlight-pane[hidden] { display: none; }
+
+#stage {
+  grid-area: stage; position: relative; display: flex; flex-direction: column; min-width: 0;
+}
+#cy-wrap { flex: 1 1 auto; min-height: 340px; position: relative; display: flex; flex-direction: column; }
+#cy { flex: 1 1 auto; min-height: 0; background: var(--surface); }
+.col-labels {
+  display: flex; justify-content: space-between; gap: 8px;
+  padding: 10px 14px 0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
+  border-top: 1px solid var(--hairline);
+}
+
+#detail {
+  border-top: 1px solid var(--hairline); background: var(--surface); padding: 16px 20px 20px;
+  max-height: 40vh; overflow-y: auto;
+}
+#detail .code { font-family: var(--mono); color: var(--accent); font-weight: 600; font-size: 0.85rem; }
+#detail h2 { font-size: 1.25rem; margin-top: 2px; }
+#detail .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--ink-2); font-size: 0.8rem; margin: 6px 0 10px; }
+#detail .meta .mono { color: var(--ink-muted); }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 600; border: 1px solid transparent;
+}
+.badge.critical { background: color-mix(in srgb, var(--status-critical) 16%, transparent); color: var(--status-critical); border-color: color-mix(in srgb, var(--status-critical) 40%, transparent); }
+.badge.warning { background: color-mix(in srgb, var(--status-warning) 16%, transparent); color: var(--status-warning); border-color: color-mix(in srgb, var(--status-warning) 40%, transparent); }
+.badge.gened { background: var(--accent-wash); color: var(--accent); }
+#detail .field-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); margin: 12px 0 3px; }
+#detail .field-value { font-size: 0.88rem; }
+
+#loading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: var(--surface); color: var(--ink-muted); font-family: var(--mono); font-size: 0.85rem;
+}
+.legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 8px 20px; font-size: 0.72rem; color: var(--ink-2); border-top: 1px solid var(--hairline); }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.legend .swatch { width: 14px; height: 3px; border-radius: 2px; }
+
+/* ---------- phone / touch layout ----------
+   Everything below hangs off .is-mobile on <html>, which app.js sets when the
+   viewport is phone-sized or the device is touch-first (see detectMobile).
+   Desktop never sees any of this. */
+
+/* Phone-only controls: invisible on desktop. */
+.explore-btn, .sidebar-close, .graph-controls, #node-actions, .detail-toggle { display: none; }
+.legend .hint-mobile { display: none; } /* beats .legend span's display */
+
+.is-mobile body { overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+.is-mobile button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+/* The whole app is exactly one screen tall; the graph gets whatever the
+   header, the two thin bars and the details sheet don't use. */
+.is-mobile .app {
+  grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: "header" "stage";
+  height: 100vh; height: 100dvh; min-height: 0; overflow: hidden;
+}
+
+.is-mobile header { padding: 8px 12px; gap: 8px; flex-wrap: nowrap; align-items: center; }
+.is-mobile header h1 { font-size: 1.15rem; flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.is-mobile header .tagline { display: none; }
+.is-mobile .nav-btn { width: 38px; height: 38px; }
+.is-mobile .explore-btn {
+  display: inline-flex; align-items: center; height: 38px; padding: 0 16px;
+  font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--accent); border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+}
+
+/* Search + "worth a look" becomes a full-screen sheet instead of eating half
+   the screen permanently. */
+/* The sheet is pinned to the *visible* viewport (--vv-top / --vv-h, kept in
+   sync by app.js from window.visualViewport), so when the on-screen
+   keyboard opens the sheet shrinks to the space above it instead of sliding
+   under it. The search row never scrolls; only #browse below it does, so
+   the box you're typing in can't be scrolled out of view. */
+.is-mobile #sidebar {
+  position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100vh); z-index: 50;
+  border-right: 0; background: var(--page); overflow: hidden; max-height: none; gap: 12px;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  transform: translateY(100%); visibility: hidden;
+  transition: transform 0.22s ease, visibility 0s linear 0.22s;
+}
+.is-mobile.sidebar-open #sidebar { transform: none; visibility: visible; transition: transform 0.22s ease, visibility 0s; }
+.sheet-top { display: contents; } /* desktop: the search box stays a direct child of the sidebar, as before */
+.is-mobile .sheet-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 0 0 auto; }
+.is-mobile .search-box { display: contents; }
+.is-mobile .search-box input { flex: 1 1 0; min-width: 0; order: 0; font-size: 16px; padding: 12px 14px; } /* under 16px, iOS zooms the page on focus */
+.is-mobile .sidebar-close {
+  display: block; order: 1; flex: 0 0 auto; min-height: 44px; padding: 0 6px; font: inherit; font-weight: 600; cursor: pointer;
+  border: 0; background: none; color: var(--accent);
+}
+/* Results sit in the flow under the input (not floating over the list) and
+   replace "worth a look" while there's a query. */
+.is-mobile .search-results {
+  position: static; order: 2; flex: 0 0 100%; max-height: calc(var(--vv-h, 100vh) - 130px); overflow-y: auto;
+  box-shadow: none; border-radius: 10px;
+}
+.is-mobile .search-results button { padding: 14px 12px; }
+.is-mobile .no-results { padding: 14px 12px; color: var(--ink-2); }
+.is-mobile #browse { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.is-mobile #sidebar.has-results #browse { display: none; }
+.is-mobile .highlight-tabs button { padding: 8px 12px; font-size: 0.8rem; }
+.is-mobile .rank-list button { padding: 12px 4px; }
+
+.is-mobile #stage { min-height: 0; }
+.is-mobile #cy-wrap { min-height: 0; }
+.is-mobile #cy { touch-action: none; } /* pan/pinch go to the graph, not the page */
+
+.is-mobile .col-labels { padding: 6px 12px; font-size: 0.64rem; gap: 8px; }
+.is-mobile .col-labels span:nth-child(2) { display: none; }
+.is-mobile #chain-label { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.is-mobile .col-labels span:last-child { flex: 0 0 auto; }
+
+/* Floating graph buttons + the key, which is a popover instead of a
+   four-line strip that used to push the graph off the screen. */
+.is-mobile .graph-controls { display: flex; gap: 6px; position: absolute; top: 8px; right: 8px; z-index: 10; }
+.ctl-btn {
+  height: 34px; padding: 0 12px; font: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 999px; color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 92%, transparent); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+.ctl-btn[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+.is-mobile .legend { display: none; }
+.is-mobile.legend-open .legend {
+  display: flex; flex-direction: column; gap: 8px; position: absolute; left: 10px; right: 10px; top: 52px; z-index: 30;
+  padding: 12px 14px; font-size: 0.78rem; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.is-mobile .legend .hint-desktop { display: none; }
+.is-mobile .legend .hint-mobile { display: inline-flex; }
+
+/* Tapping a course opens this instead of the desktop click / double-click
+   dance, which doesn't work well with fingers. */
+.is-mobile #node-actions:not([hidden]) {
+  display: flex; flex-direction: column; gap: 8px; position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 20;
+  padding: 10px 12px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+}
+.na-title { font-size: 0.86rem; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.na-code { font-family: var(--mono); font-weight: 600; color: var(--accent); }
+.na-name { color: var(--ink-2); }
+.na-buttons { display: flex; gap: 8px; }
+.na-btn {
+  flex: 1 1 0; min-height: 42px; font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--ink);
+}
+.na-btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.na-btn[hidden] { display: none; }
+
+/* Course details: a one-line handle at the bottom that expands into a sheet,
+   instead of a permanent 40%-of-the-screen panel. */
+.is-mobile #detail-wrap { background: var(--surface); border-top: 1px solid var(--hairline); padding-bottom: env(safe-area-inset-bottom); }
+.is-mobile .detail-toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 48px;
+  padding: 8px 14px; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer;
+}
+.is-mobile .dt-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.dt-chevron { color: var(--ink-muted); font-size: 0.7rem; transition: transform 0.2s; }
+.is-mobile.detail-open .dt-chevron { transform: rotate(180deg); }
+.is-mobile #detail { display: none; border-top: 1px solid var(--hairline); max-height: 48vh; max-height: 48dvh; padding: 12px 16px 16px; }
+.is-mobile.detail-open #detail { display: block; }
+.is-mobile #detail h2 { font-size: 1.1rem; }
