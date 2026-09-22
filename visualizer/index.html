@@ -1,10 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <title>Mānoa Prereq Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<!-- Shared links carry ?course=...; the canonical keeps GoatCounter counting them all as this one page. -->
+<link rel="canonical" href="https://ryanlindell.com/manoa-eng-planner/visualizer/">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../shared/feedback.css">
 
+</head>
+<body>
 <div class="app">
   <header>
     <h1>Mānoa Prereq Map</h1>
@@ -14,6 +22,10 @@
     </div>
     <button id="open-sidebar" class="explore-btn" type="button" aria-controls="sidebar" aria-expanded="false">Search</button>
     <div class="tagline">8,770 courses &middot; every dependency traced from the catalog's own prose</div>
+    <button id="btn-share-header" class="share-btn" type="button" aria-label="Share this course">
+      <svg class="share-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+      <span>Share</span>
+    </button>
   </header>
 
   <aside id="sidebar">
@@ -39,6 +51,10 @@
         <button id="btn-legend" class="ctl-btn" type="button" aria-label="Show key" aria-expanded="false">Key</button>
         <button id="btn-focus" class="ctl-btn" type="button" aria-label="Zoom to selected course">Focus</button>
         <button id="btn-fit" class="ctl-btn" type="button" aria-label="Fit whole graph">Fit all</button>
+        <button id="btn-share" class="ctl-btn ctl-share" type="button" aria-label="Share this course">
+          <svg class="share-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+          <span>Share</span>
+        </button>
       </div>
       <div id="node-actions" hidden>
         <div class="na-title"><span class="na-code"></span> <span class="na-name"></span></div>
@@ -67,5 +83,12 @@
   </div>
 </div>
 
+<div id="toast" role="status" aria-live="polite"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js" integrity="sha512-EY3U1MWdgKx0P1dqTE4inlKz2cpXtWpsR1YUyD855Hs6RL/A0cyvrKh60EpE8wDZ814cTe1KgRK+sG0Rn792vQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="app.js"></script>
+<script src="../shared/config.js"></script>
+<script src="../shared/analytics.js"></script>
+<script src="../shared/feedback.js"></script>
+</body>
+</html>

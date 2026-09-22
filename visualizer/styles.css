@@ -314,3 +314,32 @@ header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: 
 .is-mobile #detail { display: none; border-top: 1px solid var(--hairline); max-height: 48vh; max-height: 48dvh; padding: 12px 16px 16px; }
 .is-mobile.detail-open #detail { display: block; }
 .is-mobile #detail h2 { font-size: 1.1rem; }
+
+/* ---------- share ----------
+   Desktop: a button in the header. Phone: a pill among the floating graph
+   controls instead (the header row is already full there). */
+.share-btn {
+  display: inline-flex; align-items: center; gap: 6px; align-self: center; height: 34px; padding: 0 12px;
+  font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink);
+}
+.share-btn:hover, .share-btn:focus-visible { border-color: var(--accent); color: var(--accent); }
+.share-ico { flex: 0 0 auto; }
+.ctl-share { display: none; }
+.is-mobile .share-btn { display: none; }
+.is-mobile .ctl-share {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
+}
+
+/* "Link copied" confirmation (only shown when the link was copied rather than handed to the OS share sheet). */
+#toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 1100; max-width: calc(100vw - 32px);
+  padding: 10px 18px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; text-align: center;
+  background: var(--ink); color: var(--page); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+  opacity: 0; transform: translate(-50%, 12px); pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+.is-mobile #toast { bottom: calc(76px + env(safe-area-inset-bottom)); } /* clears the details bar */
+@media (prefers-reduced-motion: reduce) { #toast { transition: none; } }

@@ -10,11 +10,34 @@
   // -- see graph.py, which writes both copies together so they can't drift.
   var GRAPH_URL = "data/prereq_graph.json";
   var MAX_PER_COLUMN = 9;
+  var DEFAULT_COURSE = "BIOL 172"; // what the page opens on
 
   // expandedMore: keys are "<focal>|unlock", "<focal>|coreq", or
   // "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
   // clicked to fully expand for that specific focal course.
   var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null };
+
+  // Wires a control only if it exists. A missing optional button (say an older
+  // cached index.html paired with a newer app.js) must never stop this script
+  // before the graph starts loading.
+  function on(id, type, handler) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener(type, handler);
+  }
+  function setAttr(id, name, value) {
+    var el = document.getElementById(id);
+    if (el) el.setAttribute(name, value);
+  }
+
+  // If something still throws while the page starts up, say so, rather than
+  // leaving "loading catalog graph…" on screen forever with no clue why.
+  window.addEventListener("error", function (evt) {
+    var el = document.getElementById("loading");
+    if (el && el.style.display !== "none" && !state.graph) {
+      el.textContent = "Something went wrong starting the page (" + (evt.message || "unknown error") +
+        "). Try a hard refresh: Ctrl+F5, or Cmd+Shift+R on a Mac.";
+    }
+  });
 
   // Click-vs-double-click disambiguation for graph nodes, done by hand:
   // a single click's toggle re-renders the graph immediately (a new
@@ -85,16 +108,17 @@
   }
   function closeSidebar() {
     rootEl.classList.remove("sidebar-open");
-    document.getElementById("open-sidebar").setAttribute("aria-expanded", "false");
-    document.getElementById("search").blur();
+    setAttr("open-sidebar", "aria-expanded", "false");
+    var searchEl = document.getElementById("search");
+    if (searchEl) searchEl.blur();
   }
   function setDetailOpen(open) {
     rootEl.classList.toggle("detail-open", open);
-    document.getElementById("detail-toggle").setAttribute("aria-expanded", String(open));
+    setAttr("detail-toggle", "aria-expanded", String(open));
   }
   function setLegendOpen(open) {
     rootEl.classList.toggle("legend-open", open);
-    document.getElementById("btn-legend").setAttribute("aria-expanded", String(open));
+    setAttr("btn-legend", "aria-expanded", String(open));
   }
 
   // Tapping a course on a phone opens this small action bar instead of the
@@ -102,7 +126,8 @@
   // double-tapping is undiscoverable and fights the browser's own gestures.
   function hideNodeActions() {
     state.peek = null;
-    document.getElementById("node-actions").hidden = true;
+    var actions = document.getElementById("node-actions");
+    if (actions) actions.hidden = true;
     if (state.cy) state.cy.nodes(".peek").removeClass("peek");
   }
   function showNodeActions(id) {
@@ -148,13 +173,83 @@
     else if (fitZoom > 1.3) { state.cy.zoom(1.3); state.cy.center(); } // a 2-node graph shouldn't be blown up to fill the screen
   }
 
-  document.getElementById("open-sidebar").addEventListener("click", openSidebar);
-  document.getElementById("close-sidebar").addEventListener("click", closeSidebar);
-  document.getElementById("detail-toggle").addEventListener("click", function () { setDetailOpen(!rootEl.classList.contains("detail-open")); });
-  document.getElementById("btn-legend").addEventListener("click", function () { setLegendOpen(!rootEl.classList.contains("legend-open")); });
-  document.getElementById("btn-focus").addEventListener("click", function () { if (state.focal) focusOn(state.focal, true); });
-  document.getElementById("btn-fit").addEventListener("click", function () { fitAll(true); });
-  document.getElementById("na-expand").addEventListener("click", function () {
+  on("open-sidebar", "click", openSidebar);
+  on("close-sidebar", "click", closeSidebar);
+  on("detail-toggle", "click", function () { setDetailOpen(!rootEl.classList.contains("detail-open")); });
+  on("btn-legend", "click", function () { setLegendOpen(!rootEl.classList.contains("legend-open")); });
+  on("btn-focus", "click", function () { if (state.focal) focusOn(state.focal, true); });
+  on("btn-fit", "click", function () { fitAll(true); });
+
+  // ---------- share ----------
+  // Shares the course on screen as a link that opens straight on it. The link
+  // is rebuilt from scratch (not copied from the address bar) so a QR code's
+  // campaign tags never leak into what people forward; "ref=share" tags it so
+  // visits that came from a share show up as their own source in GoatCounter.
+  function shareUrl(code) {
+    return location.origin + location.pathname + "?course=" + encodeURIComponent(code) + "&ref=share";
+  }
+
+  function trackEvent(name, title) {
+    var gc = window.goatcounter;
+    if (gc && typeof gc.count === "function") gc.count({ event: true, path: name, title: title });
+  }
+
+  var toastTimer = null;
+  function showToast(message) {
+    var el = document.getElementById("toast");
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove("show"); }, 2400);
+  }
+
+  // Clipboard API where allowed (needs https / localhost); an old-school
+  // hidden-textarea copy otherwise; finally a prompt the person can copy from.
+  function copyLink(url, done) {
+    function legacy() {
+      var ta = document.createElement("textarea");
+      ta.value = url; ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta);
+      ta.select(); ta.setSelectionRange(0, url.length);
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      if (ok) done(true);
+      else { window.prompt("Copy this link:", url); done(false); }
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(function () { done(true); }, legacy);
+    else legacy();
+  }
+
+  function shareCurrent() {
+    var code = state.focal;
+    if (!code || !state.graph) return;
+    var n = state.graph.nodes[code] || {};
+    var name = n.title ? code + " (" + n.title + ")" : code;
+    var data = {
+      title: "Mānoa Prereq Map: " + code,
+      text: "Prerequisites for " + name + " at UH Mānoa",
+      url: shareUrl(code)
+    };
+    // The OS share sheet (Messages, AirDrop, Instagram, ...) is the whole
+    // point on a phone; on a desktop a copied link is what people expect.
+    var touch = state.mobile || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+    var canNative = touch && navigator.share && (!navigator.canShare || navigator.canShare(data));
+    if (canNative) {
+      navigator.share(data).then(function () {
+        trackEvent("share-native", code);
+      }, function (err) {
+        if (err && err.name === "AbortError") return; // they opened the sheet and closed it: not an error
+        copyLink(data.url, function (ok) { if (ok) { showToast("Link copied"); trackEvent("share-copied", code); } });
+      });
+      return;
+    }
+    copyLink(data.url, function (ok) { if (ok) { showToast("Link copied"); trackEvent("share-copied", code); } });
+  }
+  on("btn-share", "click", shareCurrent);
+  on("btn-share-header", "click", shareCurrent);
+  on("na-expand", "click", function () {
     if (!state.peek) return;
     var id = state.peek;
     var key = state.focal + "|node|" + id;
@@ -169,7 +264,7 @@
       cy.animate({ panBy: { x: cy.width() * 0.72 - rp.x, y: cy.height() / 2 - rp.y } }, { duration: 300 });
     }
   });
-  document.getElementById("na-open").addEventListener("click", function () {
+  on("na-open", "click", function () {
     var id = state.peek;
     hideNodeActions();
     if (id) select(id);
@@ -182,7 +277,8 @@
   // The graph container resizes when the details sheet opens or the phone
   // rotates; Cytoscape doesn't notice a container resize on its own.
   if (window.ResizeObserver) {
-    new ResizeObserver(function () { if (state.cy) state.cy.resize(); }).observe(document.getElementById("cy"));
+    var cyEl = document.getElementById("cy");
+    if (cyEl) new ResizeObserver(function () { if (state.cy) state.cy.resize(); }).observe(cyEl);
   }
 
   function onDeviceModeChange() {
@@ -219,8 +315,11 @@
       // An inline style always wins, everywhere, regardless of context.
       document.getElementById("loading").style.display = "none";
       buildHighlights(graph, state.index);
-      // Open on a genuinely deep, real course rather than an empty shell.
-      var opener = pickOpener(graph);
+      // Open on the course a shared link points at (?course=ECE%20367), else
+      // DEFAULT_COURSE; if that ever drops out of the catalog data, fall back
+      // to a genuinely deep, real course rather than an empty shell.
+      var requested = requestedCourse(graph);
+      var opener = requested || (graph.nodes[DEFAULT_COURSE] ? DEFAULT_COURSE : pickOpener(graph));
       select(opener);
     })
     .catch(function (err) {
@@ -254,6 +353,15 @@
       unlocks[e.from].push(e.to);    // e.from unlocks e.to
     });
     return { prereqOf: prereqOf, unlocks: unlocks };
+  }
+
+  // The course named by ?course= in the address, if it exists in the data.
+  // Forgiving about letter case and stray spaces ("ece  367" finds ECE 367).
+  function requestedCourse(graph) {
+    var raw = new URLSearchParams(location.search).get("course");
+    if (!raw) return null;
+    var code = raw.trim().replace(/\s+/g, " ").toUpperCase();
+    return graph.nodes[code] ? code : null;
   }
 
   function pickOpener(graph) {
@@ -1287,7 +1395,8 @@
     if (!n) return;
 
     // The phone's collapsed details handle shows just this one line.
-    document.querySelector("#detail-toggle .dt-label").textContent = code + " · " + (n.title || "(untitled)");
+    var handleLabel = document.querySelector("#detail-toggle .dt-label");
+    if (handleLabel) handleLabel.textContent = code + " · " + (n.title || "(untitled)");
 
     var codeEl = document.createElement("div"); codeEl.className = "code"; codeEl.textContent = code;
     var h2 = document.createElement("h2"); h2.textContent = n.title || "(untitled)";

@@ -1,0 +1,48 @@
+/* Feedback popup (shared/feedback.js). Every rule is namespaced .pf- and sets its
+   own fonts/colors so it looks the same on the planner and the visualizer
+   whatever their page CSS does to buttons and text. */
+.pf-popup {
+  position: fixed; right: 20px; bottom: 20px; z-index: 1000; box-sizing: border-box;
+  width: min(340px, calc(100vw - 24px)); padding: 16px 18px 16px;
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1b1b1b; background: #fff; border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+  opacity: 0; transform: translateY(12px); transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.pf-popup.pf-in { opacity: 1; transform: none; }
+.pf-popup * { box-sizing: border-box; }
+.pf-title { margin: 0 24px 4px 0; font: 600 16px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: inherit; }
+.pf-body { margin: 0 0 14px; color: #52514e; }
+.pf-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.pf-btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 16px; margin: 0;
+  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-decoration: none; cursor: pointer;
+  color: #1b1b1b; background: transparent; border: 1px solid rgba(0, 0, 0, 0.18); border-radius: 8px;
+}
+.pf-btn:hover { background: rgba(0, 0, 0, 0.05); }
+.pf-primary { flex: 1 1 auto; color: #fff; background: #1c5c3f; border-color: #1c5c3f; }
+.pf-primary:hover { background: #164a33; }
+.pf-close {
+  position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; padding: 0; margin: 0;
+  font: 400 22px/1 system-ui, sans-serif; color: #898781; background: none; border: 0; border-radius: 6px; cursor: pointer;
+}
+.pf-close:hover { color: #1b1b1b; background: rgba(0, 0, 0, 0.06); }
+.pf-popup :focus-visible { outline: 2px solid #1c5c3f; outline-offset: 2px; }
+
+@media (max-width: 720px) {
+  .pf-popup { left: 12px; right: 12px; width: auto; bottom: calc(12px + env(safe-area-inset-bottom)); }
+}
+@media (prefers-color-scheme: dark) {
+  .pf-popup { color: #f2f2ee; background: #1d1d1c; border-color: rgba(255, 255, 255, 0.14); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6); }
+  .pf-body { color: #c3c2b7; }
+  .pf-btn { color: #f2f2ee; border-color: rgba(255, 255, 255, 0.22); }
+  .pf-btn:hover { background: rgba(255, 255, 255, 0.08); }
+  .pf-primary { color: #06170f; background: #4fae83; border-color: #4fae83; }
+  .pf-primary:hover { background: #64c197; }
+  .pf-close { color: #8f8d86; }
+  .pf-close:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+  .pf-popup :focus-visible { outline-color: #4fae83; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-popup { transition: none; transform: none; }
+}
