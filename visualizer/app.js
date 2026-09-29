@@ -633,6 +633,12 @@
 
     var tabsEl = document.getElementById("tabs");
     var panesEl = document.getElementById("highlight-panes");
+    // Switching catalogs calls this again on the same page -- without
+    // clearing first, the old tabs/panes (and their duplicate "pane-<id>"
+    // element ids) just stayed and a second identical set piled up next to
+    // them.
+    tabsEl.textContent = "";
+    panesEl.textContent = "";
     tabs.forEach(function (tab, i) {
       var btn = document.createElement("button");
       btn.textContent = tab.label; btn.setAttribute("role", "tab");
