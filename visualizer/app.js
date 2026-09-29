@@ -5,17 +5,27 @@
   // itself with no parent to go up to -- a "../" path 404s there even
   // though it's the right relative path for local static-file serving
   // (where visualizer/ and data/ are real sibling folders on disk). Using
-  // "data/prereq_graph.json" here (matching the Artifact's published path)
-  // means a local copy has to live at visualizer/data/prereq_graph.json too
-  // -- see graph.py, which writes both copies together so they can't drift.
-  var GRAPH_URL = "data/prereq_graph.json";
+  // "data/..." here (matching the Artifact's published path) means a local
+  // copy has to live under visualizer/data/ too -- see graph.py, which
+  // writes both copies of each catalog year together so they can't drift.
+  //
+  // One entry per catalog year the site can show. Keep in sync by hand with
+  // config.py's CATALOGS (the id is that catoid, as a string, since a <select
+  // value> is always one) and with whatever graph.py has actually written to
+  // visualizer/data/ -- it names the default catalog's file prereq_graph.json
+  // and any other catalog's prereq_graph_catoid<N>.json, so add a row here
+  // each time a new year gets scraped and committed, not before.
+  var CATALOGS = [
+    { id: "4", label: "2026–2027", url: "data/prereq_graph.json" },
+    { id: "2", label: "2025–2026 (archived)", url: "data/prereq_graph_catoid2.json" },
+  ];
   var MAX_PER_COLUMN = 9;
   var DEFAULT_COURSE = "BIOL 172"; // what the page opens on
 
   // expandedMore: keys are "<focal>|unlock", "<focal>|coreq", or
   // "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
   // clicked to fully expand for that specific focal course.
-  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false };
+  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false, catalogId: CATALOGS[0].id };
 
   // Wires a control only if it exists. A missing optional button (say an older
   // cached index.html paired with a newer app.js) must never stop this script
@@ -210,7 +220,24 @@
     if (state.mobile) slot.insertBefore(box, slot.firstChild);
     else slot.appendChild(box);
   }
+  // Same idea for the catalog-year select: the mobile header has no spare
+  // room for it (title + nav + Search already fill it), so it moves into
+  // the search sheet instead, inside the labeled row that's just there to
+  // hold it -- desktop has no equivalent row since the header itself gives
+  // it context.
+  function placeCatalogSelect() {
+    var sel = document.getElementById("catalog-year");
+    var mobileRow = document.getElementById("mobile-catalog-row");
+    var navHistory = document.querySelector(".nav-history");
+    if (!sel) return;
+    if (state.mobile) {
+      if (sel.parentNode !== mobileRow) mobileRow.appendChild(sel);
+    } else if (sel.parentNode !== navHistory.parentNode || sel.nextSibling !== navHistory) {
+      navHistory.parentNode.insertBefore(sel, navHistory);
+    }
+  }
   placeSearchBox();
+  placeCatalogSelect();
   if (!state.mobile) applyDesktopLayout();
 
   // "/" jumps to the search box from anywhere (leaving full view first, since
@@ -304,7 +331,12 @@
   // campaign tags never leak into what people forward; "ref=share" tags it so
   // visits that came from a share show up as their own source in GoatCounter.
   function shareUrl(code) {
-    return location.origin + location.pathname + "?course=" + encodeURIComponent(code) + "&ref=share";
+    var url = location.origin + location.pathname + "?course=" + encodeURIComponent(code);
+    // Omitted for the default catalog so the common case's link doesn't grow
+    // a param nobody asked for; a link shared while viewing another year
+    // carries it, so opening the link lands back on that same year.
+    if (state.catalogId !== CATALOGS[0].id) url += "&catoid=" + encodeURIComponent(state.catalogId);
+    return url + "&ref=share";
   }
 
   function trackEvent(name, title) {
@@ -419,6 +451,7 @@
     state.mobile = now;
     rootEl.classList.toggle("is-mobile", now);
     placeSearchBox();
+    placeCatalogSelect();
     closeSidebar(); setGraphMax(false);
     if (now) { setLegendOpen(false); setDetailOpen(false); }
     else applyDesktopLayout();
@@ -431,41 +464,99 @@
     else if (m.addListener) m.addListener(onDeviceModeChange);
   });
 
-  fetch(GRAPH_URL)
-    .then(function (r) {
-      if (!r.ok) {
-        throw new Error("HTTP " + r.status + " fetching " + GRAPH_URL);
-      }
-      return r.json();
-    })
-    .then(function (graph) {
-      state.graph = graph;
-      state.index = buildIndex(graph);
-      // Not .hidden = true: #loading has its own "display: flex" rule (an
-      // ID selector), which beats the browser's default (non-!important)
-      // "[hidden] { display: none }" UA rule on plain specificity. The
-      // published Artifact papers over this with an auto-injected
-      // "[hidden]{display:none!important}" reset, which is exactly why this
-      // worked there but not when the file is served standalone locally.
-      // An inline style always wins, everywhere, regardless of context.
-      document.getElementById("loading").style.display = "none";
-      buildHighlights(graph, state.index);
-      // Open on the course a shared link points at (?course=ECE%20367), else
-      // DEFAULT_COURSE; if that ever drops out of the catalog data, fall back
-      // to a genuinely deep, real course rather than an empty shell.
-      var requested = requestedCourse(graph);
-      var opener = requested || (graph.nodes[DEFAULT_COURSE] ? DEFAULT_COURSE : pickOpener(graph));
-      select(opener);
-    })
-    .catch(function (err) {
-      console.error(err);
-      document.getElementById("loading").textContent =
-        "Couldn't load " + GRAPH_URL + ": " + err.message +
-        ". If you're viewing this from disk (a file:// URL), browsers block " +
-        "loading local JSON that way -- serve this repo with a static server " +
-        "(e.g. `python -m http.server` from the repo root) and open " +
-        "/visualizer/index.html instead.";
-    });
+  // ---------- catalog year ----------
+  var CATALOG_KEY = "prereqMapCatalog";
+  function catalogById(id) {
+    for (var i = 0; i < CATALOGS.length; i++) if (CATALOGS[i].id === id) return CATALOGS[i];
+    return null;
+  }
+  function readStoredCatalogId() {
+    try { return localStorage.getItem(CATALOG_KEY); } catch (e) { return null; }
+  }
+  function saveCatalogId(id) {
+    try { localStorage.setItem(CATALOG_KEY, id); } catch (e) {}
+  }
+
+  var catalogSelect = document.getElementById("catalog-year");
+  CATALOGS.forEach(function (c) {
+    var opt = document.createElement("option");
+    opt.value = c.id; opt.textContent = c.label;
+    catalogSelect.appendChild(opt);
+  });
+  catalogSelect.addEventListener("change", function () {
+    var entry = catalogById(catalogSelect.value);
+    if (!entry || entry.id === state.catalogId) return;
+    saveCatalogId(entry.id);
+    trackEvent("catalog-switch", entry.label);
+    // Most courses carry a code straight across catalog years; loadGraph
+    // falls back to DEFAULT_COURSE (then any real course at all) if this
+    // one happens not to exist in the year just switched to.
+    loadGraph(entry, state.focal);
+  });
+
+  // Opens on the catalog a shared link points at (?catoid=2), else whatever
+  // this browser last had selected, else the first (current) entry.
+  var requestedCatalogId = new URLSearchParams(location.search).get("catoid");
+  var initialCatalog = catalogById(requestedCatalogId) || catalogById(readStoredCatalogId()) || CATALOGS[0];
+  catalogSelect.value = initialCatalog.id;
+
+  function loadGraph(entry, preferCourse) {
+    document.getElementById("loading").style.display = "flex";
+    document.getElementById("loading").textContent = "loading catalog graph…";
+    return fetch(entry.url)
+      .then(function (r) {
+        if (!r.ok) {
+          throw new Error("HTTP " + r.status + " fetching " + entry.url);
+        }
+        return r.json();
+      })
+      .then(function (graph) {
+        state.catalogId = entry.id;
+        state.graph = graph;
+        state.index = buildIndex(graph);
+        // A different catalog year means a different graph entirely -- none
+        // of this carries across.
+        state.expandedMore = {};
+        state.nodePositions = {};
+        state.history = [];
+        state.historyIndex = -1;
+        hideNodeActions();
+        // Not .hidden = true: #loading has its own "display: flex" rule (an
+        // ID selector), which beats the browser's default (non-!important)
+        // "[hidden] { display: none }" UA rule on plain specificity. The
+        // published Artifact papers over this with an auto-injected
+        // "[hidden]{display:none!important}" reset, which is exactly why this
+        // worked there but not when the file is served standalone locally.
+        // An inline style always wins, everywhere, regardless of context.
+        document.getElementById("loading").style.display = "none";
+        buildHighlights(graph, state.index);
+        var countEl = document.getElementById("course-count");
+        if (countEl) {
+          var realCount = Object.keys(graph.nodes).filter(function (c) { return graph.nodes[c].in_catalog; }).length;
+          countEl.textContent = realCount.toLocaleString();
+        }
+        // Prefer, in order: the course being carried over from a catalog
+        // switch, one requested in the address (?course=ECE%20367), then
+        // DEFAULT_COURSE; if that ever drops out of the catalog data, fall
+        // back to a genuinely deep, real course rather than an empty shell.
+        var opener = (preferCourse && graph.nodes[preferCourse] ? preferCourse : null) ||
+          requestedCourse(graph) ||
+          (graph.nodes[DEFAULT_COURSE] ? DEFAULT_COURSE : pickOpener(graph));
+        select(opener);
+      })
+      .catch(function (err) {
+        console.error(err);
+        document.getElementById("loading").style.display = "flex";
+        document.getElementById("loading").textContent =
+          "Couldn't load " + entry.url + ": " + err.message +
+          ". If you're viewing this from disk (a file:// URL), browsers block " +
+          "loading local JSON that way -- serve this repo with a static server " +
+          "(e.g. `python -m http.server` from the repo root) and open " +
+          "/visualizer/index.html instead.";
+      });
+  }
+
+  loadGraph(initialCatalog);
 
   // Flat prereqOf/unlocks maps -- used for simple counts (search-adjacent
   // "most direct prereqs"/"most far-reaching" highlights, the ungrouped

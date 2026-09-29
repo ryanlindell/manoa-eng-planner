@@ -16,6 +16,7 @@
 <div class="app">
   <header>
     <h1>Mānoa Prereq Map</h1>
+    <select id="catalog-year" class="year-select" aria-label="Catalog year"></select>
     <div class="nav-history">
       <button id="nav-back" class="nav-btn" type="button" title="Back to previous course" disabled aria-label="Back">&larr;</button>
       <button id="nav-forward" class="nav-btn" type="button" title="Forward to next course" disabled aria-label="Forward">&rarr;</button>
@@ -27,7 +28,7 @@
     <!-- On desktop app.js moves the search box up here, so it stays usable with the sidebar put away. -->
     <div id="header-search" class="header-search"></div>
     <button id="open-sidebar" class="explore-btn" type="button" aria-controls="sidebar" aria-expanded="false">Search</button>
-    <div class="tagline">8,770 courses &middot; every dependency traced from the catalog's own prose</div>
+    <div class="tagline"><span id="course-count">8,770</span> courses &middot; every dependency traced from the catalog's own prose</div>
     <button id="btn-share-header" class="share-btn" type="button" aria-label="Share this course">
       <svg class="share-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
       <span>Share</span>
@@ -42,6 +43,12 @@
       </div>
       <button id="close-sidebar" class="sidebar-close" type="button">Cancel</button>
     </div>
+
+    <!-- On phones app.js moves the #catalog-year select in here (it stays in
+         the header on desktop) -- the mobile header has no room left for it. -->
+    <label id="mobile-catalog-row" class="mobile-catalog-row">
+      <span class="mobile-catalog-label">Catalog year</span>
+    </label>
 
     <div id="browse">
       <p class="panel-title">Worth a look</p>

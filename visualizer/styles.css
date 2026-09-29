@@ -100,6 +100,15 @@ header {
 }
 header h1 { font-size: 1.3rem; letter-spacing: -0.01em; }
 header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: auto; }
+.year-select {
+  height: 30px; padding: 0 8px; font: inherit; font-size: 0.82rem; font-weight: 600;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--ink); cursor: pointer;
+  max-width: 190px;
+}
+.year-select:hover, .year-select:focus-visible { border-color: var(--accent); color: var(--accent); }
+/* On mobile this select lives in .mobile-catalog-row inside the search
+   sheet instead (see below) -- the header has no room left for it there. */
+.is-mobile header .year-select { display: none; }
 .nav-history { display: flex; gap: 6px; }
 .nav-btn {
   width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
@@ -221,7 +230,12 @@ html:not(.detail-open) #detail {
    Desktop never sees any of this. */
 
 /* Phone-only controls: invisible on desktop. */
-.explore-btn, .sidebar-close, #node-actions { display: none; }
+.explore-btn, .sidebar-close, #node-actions, .mobile-catalog-row { display: none; }
+.is-mobile .mobile-catalog-row {
+  display: flex; align-items: center; gap: 10px; flex: 0 0 auto;
+  padding: 10px 4px 0; font-size: 0.85rem; color: var(--ink-2); cursor: pointer;
+}
+.is-mobile .mobile-catalog-row .year-select { max-width: none; flex: 1 1 auto; font-size: 0.85rem; padding: 8px 10px; height: 38px; }
 
 /* ---------- desktop: putting the panels away ----------
    The sidebar folds away from the header button; "Full view" (graph
