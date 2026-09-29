@@ -160,7 +160,13 @@ html.sidebar-collapsed:not(.is-mobile) #sidebar {
 .highlight-pane[hidden] { display: none; }
 
 #stage {
-  grid-area: stage; position: relative; display: flex; flex-direction: column; min-width: 0;
+  /* min-height: 0 overrides the grid item's implied automatic minimum size
+     (which defaults to its content's min-content height) -- without it,
+     #stage refused to shrink below #cy-wrap's 340px floor plus whatever
+     #detail-wrap had grown to, so opening course details just grew the
+     whole page taller than the viewport instead of the graph making room
+     for it, and the bottom details bar needed a page scroll to reach. */
+  grid-area: stage; position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0;
 }
 #cy-wrap { flex: 1 1 auto; min-height: 340px; position: relative; display: flex; flex-direction: column; }
 #cy { flex: 1 1 auto; min-height: 0; background: var(--surface); }
