@@ -24,6 +24,18 @@
     "is_placeholder": true
   },
   {
+    "code": "(Lab) TE ECE",
+    "title": "Technical Elective — must be a laboratory (see check sheet notes)",
+    "credits": 1,
+    "credits_raw": "1",
+    "gened": [],
+    "category": "elective",
+    "prereq_parse_status": "clean",
+    "prereq_raw": null,
+    "source_url": null,
+    "is_placeholder": true
+  },
+  {
     "code": "CHEM 161",
     "title": "General Chemistry I",
     "credits": 3.0,

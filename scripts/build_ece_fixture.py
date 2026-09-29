@@ -51,6 +51,7 @@ PLACEHOLDERS = {
     "EB": ("Engineering Breadth — CEE/ME/OE/BE 300+, CEE 270, or an approved 300+ science course", 3),
     "TE ECE #1": ("Technical Elective — ECE 300+ or department-approved (see check sheet notes)", 3),
     "TE ECE #2": ("Technical Elective — ECE 300+ or department-approved (see check sheet notes)", 3),
+    "(Lab) TE ECE": ("Technical Elective — must be a laboratory (see check sheet notes)", 1),
     "Major ECE (Group I) #1": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
     "Major ECE (Group I) #2": ("Major Track — Group I course (your chosen EP or SDS track)", 3),
     "Major ECE (Group I) #3": ("Major Track — Group I course (your chosen EP or SDS track)", 3),

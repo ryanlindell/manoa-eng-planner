@@ -45,7 +45,7 @@ const TEMPLATE_PLAN = {
   "Sophomore Spring": ["ECE 213", "MATH 244", "PHYS 274", "ECE 296", "COMG 251", "FG #2", "W Focus"],
   "Junior Fall": ["ECE 315", "ECE 324", "ECE 371", ["ECE 345", "MATH 307"], "EB"],
   "Junior Spring": ["ECE 323", "ECE 323L", "ECE 342", "TE ECE #1", "Major ECE (Group I) #1", "(Lab) ECE (Group I) #1", "ECE 396"],
-  "Senior Fall": ["Major ECE (Group I) #2", "(Lab) ECE (Group I) #2", "Major ECE (Group I) #3", "TE ECE #2", "DH or DL"],
+  "Senior Fall": ["Major ECE (Group I) #2", "(Lab) ECE (Group I) #2", "Major ECE (Group I) #3", "TE ECE #2", "(Lab) TE ECE", "DH or DL"],
   "Senior Spring": ["ECE 496", "ECE 495", "Major ECE (Group II) #1", "Major ECE (Group II) #2", ["ECON 120", "ECON 130", "ECON 131"], "DS"],
 };
 
