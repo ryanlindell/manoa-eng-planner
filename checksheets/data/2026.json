@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "year": 2026,
+  "program": "Electrical Engineering",
+  "catalog_effective": "August 2026",
+  "source": "checksheets/2026.pdf",
+  "credit_totals": {
+    "abet_math_and_basic_sciences_minimum": 30,
+    "abet_engineering_topics_minimum": 45,
+    "major_track_minimum": 17,
+    "technical_electives_additional": 7
+  },
+  "gened_codes": {
+    "FW": "Foundations: Written Communication (3 cr)",
+    "FQ": "Foundations: Quantitative Reasoning (replaced Foundations: Symbolic Reasoning, \"FS\", starting Fall 2018)",
+    "FG": "Foundations: Global & Multicultural Perspectives (6 cr across two courses; note 1 on the sheet). Two FG slots of 3 cr each appear on the grid.",
+    "DA": "Diversification: Arts",
+    "DB": "Diversification: Biological Science",
+    "DH": "Diversification: Humanities",
+    "DL": "Diversification: Literatures",
+    "DP": "Diversification: Physical Science",
+    "DS": "Diversification: Social Science",
+    "DY": "Diversification: Laboratory (science)",
+    "W/WI": "Writing Intensive. 5 courses required, minimum of 2 in upper division (note 4). Grid shows 'W Focus (5)'.",
+    "H/HAP": "Hawaiian, Asian & Pacific Issues. One course required (note 5). Not included in engineering courses -- may double-count with the DH/DL or DS requirement, or be taken standalone (note 6). Grid shows 'H Focus (1)'.",
+    "O/OC": "Oral Communication. One course required (note 5). Grid shows 'O Focus (1)'.",
+    "E/ETH": "Contemporary Ethical Issues. One course required (note 5). Grid shows 'E Focus (1)'."
+  },
+  "substitutions": [
+    "MATH 251A, MATH 252A, and MATH 253A (the Accelerated Calculus sequence, 4 cr each = 12 cr total) may substitute for the MATH 241-244 sequence (4+4+3+3 = 14 cr total). This is a whole-sequence substitution, not a course-by-course one -- each accelerated course covers more ground per course than its regular counterpart, so there's no 1:1 mapping to report (note 2).",
+    "CHEM 181/181L, or CHEM 171/171L, may substitute for CHEM 161/161L and CHEM 162 (note 3). The sheet doesn't specify whether this is a full 3-for-3 substitution or partial; recorded as printed.",
+    "ENGR 196, ENGR 296, and ENGR 396 may substitute for ECE 196, ECE 296, and ECE 396 respectively (note 10)."
+  ],
+  "tracks": {
+    "EP": {
+      "name": "Electro-Physics (EP) Track",
+      "group1_required_credits": 11,
+      "group2_required_credits": 6,
+      "areas": {
+        "Circuits": { "group1": ["ECE 326", "ECE 326L"], "group2": ["ECE 422", "ECE 422L", "ECE 423", "ECE 425", "ECE 427"] },
+        "Devices": { "group1": ["ECE 327"], "group2": ["ECE 328", "ECE 328L", "ECE 426"] },
+        "Electromagnetics": { "group1": ["ECE 372", "ECE 372L"], "group2": ["ECE 470", "ECE 471", "ECE 473", "ECE 474", "ECE 475", "ECE 477"] },
+        "Energy": { "group1": [], "group2": ["ECE 435", "ECE 438"] },
+        "Biomedical": { "group1": [], "group2": ["ECE 480"] }
+      }
+    },
+    "SDS": {
+      "name": "Systems & Data Sciences (SDS) Track",
+      "group1_required_credits": 12,
+      "group2_required_credits": 6,
+      "areas": {
+        "Communications": { "group1": ["ECE 343", "ECE 343L"], "group2": ["ECE 344", "ECE 442", "ECE 446", "ECE 449"] },
+        "Controls": { "group1": ["ECE 351", "ECE 351L"], "group2": ["ECE 452", "ECE 453"] },
+        "Signal Processing": { "group1": ["ECE 415"], "group2": ["ECE 416", "ECE 417", "ECE 445"] },
+        "Energy": { "group1": [], "group2": ["ECE 435"] }
+      }
+    }
+  },
+  "technical_electives": {
+    "rule": "ECE courses numbered 300 or above, totaling 7 additional credits drawn from the track lists (note 9). Of these, 3 credits must be outside the student's chosen major track and 1 credit must be a laboratory. On the grid: TE ECE (3 cr, Junior Spring) + TE ECE (3 cr) + (Lab) TE ECE (1 cr) (both Senior Fall) = 7 cr, matching note 9.",
+    "additional_eligible": ["ECE 205", "ECE 361", "ECE 361L", "ECE 362", "ECE 366", "ECE 367", "ECE 367L", "ECE 368", "ECE 369", "ECE 406", "ECE 461", "ECE 467", "ECE 468", "ECE 469"],
+    "case_by_case": ["ECE 491"]
+  },
+  "engineering_breadth": {
+    "rule": "Engineering Breadth (EB, 3 cr) is satisfied by a CEE, ME, OE, or BE course at the 300 level or higher; or CEE 270; or a physical/biological/computer science course at the 300 level or higher, which additionally requires approval from the Department's Undergraduate Curriculum Committee (note 8; the approval clause reads as applying only to the science-course option, not to the CEE/ME/OE/BE or CEE 270 options).",
+    "named_eligible": ["CEE 270"]
+  },
+  "concentrations": {
+    "Biomedical": "All Group I courses in either the EP or SDS track, plus two biomedical-related Group II courses and an EB course approved by the Department's Undergraduate Curriculum Committee and listed on the ECE website. ECE 496 is a biomedical project approved by the concentration coordinator.",
+    "Energy": "All Group I courses in either the EP or SDS track, plus two energy-related Group II courses and an EB course approved by the Department's Undergraduate Curriculum Committee and listed on the ECE website. ECE 496 is an energy [project -- the sheet's own text is truncated at the bottom of the page; this is genuinely how the official document ends, not a missing page]."
+  },
+  "other_rules": {
+    "major_track_minimum": "A minimum of 17 credits in one of the major tracks: all track core courses (Group I) plus the remaining track elective courses (Group II).",
+    "all_courses_letter_graded": "ALL COURSES MUST BE TAKEN FOR LETTER (A-F) GRADES.",
+    "prereq_grade_requirement": "Enrollment in ECE courses requires a grade of 'C' or better in all prerequisites (note 7).",
+    "alternate_track_proposal": "A student, with a faculty member, may propose an alternate track if (1) equivalent in rigor & breadth to the listed tracks, (2) endorsed by another faculty member, and (3) approved by the Department Undergraduate Curriculum Committee (note 11)."
+  },
+  "known_ambiguities": [
+    "Note 9's '3 must be outside the major track' most likely means 3 credits (parallel to '1 [credit] must be a laboratory'), not 3 courses, but the sheet doesn't say so explicitly.",
+    "ECE 205 is listed as TE-eligible (note 9) despite being below the stated '300 or above' threshold for Technical Electives -- this is an inconsistency in the department's own check sheet, confirmed against the source image, not a transcription error.",
+    "CHEM 171/171L or CHEM 181/181L vs. CHEM 161/161L + CHEM 162: the sheet doesn't specify if this is a full-scope or partial substitution."
+  ]
+}
