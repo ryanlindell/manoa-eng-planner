@@ -1,0 +1,23 @@
+=== UH Manoa Catalog -- Build Coverage Report ===
+Subjects processed: 180
+Total course blocks seen: 9001
+  Parsed OK: 9001
+    Real courses: 8703
+    (Alpha) parent placeholders (not enrollable): 298
+  Failed to parse heading: 0
+Credits missing on real courses: 3
+coid resolved: 1807/8703 from same-page refs, 3100/8703 after global cross-reference pass
+Duplicate course codes detected: 0
+
+prereq_raw present on 5305/8703 real courses -- clean: 3580, partial: 1386, failed: 339
+  worst subjects for failed prereq: [('MUS', 60), ('SPED', 35), ('COMG', 23), ('STE', 20), ('ES', 18), ('TI', 15), ('PHIL', 13), ('LWJT', 12), ('ITM', 11), ('ENG', 10)]
+coreq_raw present on 255/8703 real courses -- clean: 239, partial: 8, failed: 8
+  worst subjects for failed coreq: [('STE', 6), ('ECON', 1), ('FMCH', 1)]
+
+Subjects in pages/ but not in data/subjects.json: none
+Subjects in data/subjects.json but never captured: none
+
+--- Subjects with credits-missing courses (top 10) ---
+  ASTR: 1
+  NREM: 1
+  SUST: 1

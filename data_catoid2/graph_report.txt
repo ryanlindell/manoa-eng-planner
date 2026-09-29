@@ -1,0 +1,70 @@
+=== UH Manoa Catalog -- Prereq Graph Report ===
+Nodes: 8821 (in-catalog: 8703, external/unresolved: 118)
+Edges: 7588 (prereq: 7263, coreq: 325)
+
+Cycles detected (prereq edges only): 5
+  ['GEO 400', 'GEO 401', 'GEO 402', 'GEO 405']
+  ['BIOL 301', 'BIOL 301L']
+  ['BIOL 171', 'BIOL 171L']
+  ['BIOL 172', 'BIOL 172L']
+  ['REL 661B', 'REL 661C']
+
+Dangling references (mentioned but not in dataset): 118 distinct codes
+  MED 531: referenced by 34 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MDED 545B']
+  PED 531: referenced by 28 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MDED 545B']
+  PSTY 531: referenced by 23 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MDED 545B']
+  MED 541: referenced by 19 course(s), e.g. ['MED 545B', 'MED 545C', 'MED 545D']
+  KRS 703: referenced by 14 course(s), e.g. ['EDEP 733C', 'EDEP 733E', 'EDEP 733H']
+  EDEP 703: referenced by 14 course(s), e.g. ['EDEP 733C', 'EDEP 733E', 'EDEP 733H']
+  OBGN 531: referenced by 13 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MDED 545B']
+  STE 402: referenced by 13 course(s), e.g. ['STE 404B', 'STE 404C', 'STE 404D']
+  FMCH 531: referenced by 12 course(s), e.g. ['ANAT 545C', 'FMCH 545B', 'FMCH 545C']
+  KRS 733: referenced by 10 course(s), e.g. ['EDEP 734C', 'EDEP 734E', 'EDEP 734H']
+  EDEP 733: referenced by 10 course(s), e.g. ['EDEP 734C', 'EDEP 734E', 'EDEP 734H']
+  PACE 200: referenced by 10 course(s), e.g. ['PACE 247', 'PACE 310', 'PACE 316']
+  MUS 311: referenced by 8 course(s), e.g. ['MUS 411B', 'MUS 411C', 'MUS 411D']
+  ARCH 781: referenced by 7 course(s), e.g. ['ARCH 747B', 'ARCH 747C', 'ARCH 747E']
+  WGSS 300: referenced by 7 course(s), e.g. ['WGSS 318', 'WGSS 339', 'WGSS 362']
+  SURG 531: referenced by 6 course(s), e.g. ['ANAT 545C', 'MDED 541', 'MDED 545B']
+  LAIS 360: referenced by 6 course(s), e.g. ['ANTH 478', 'LAIS 468', 'LAIS 478']
+  JPN 407: referenced by 6 course(s), e.g. ['EALL 603C', 'EALL 603J', 'EALL 603K']
+  ZOOL 306: referenced by 6 course(s), e.g. ['ZOOL 490B', 'ZOOL 490D', 'ZOOL 490E']
+  ICS 110: referenced by 5 course(s), e.g. ['CINE 419', 'CINE 484', 'CINE 487']
+
+Depth status breakdown (all graph nodes):
+  ok: 4960
+  no_prereq: 3398
+  unresolved_prereq: 339
+  cycle: 6
+  external: 113
+
+Depth distribution (in-catalog courses with a resolvable depth, n=8697):
+  min=0 max=10 mean=1.02
+  depth 0: 5072 courses
+  depth 1: 1699 courses
+  depth 2: 612 courses
+  depth 3: 401 courses
+  depth 4: 360 courses
+  depth 5: 237 courses
+  depth 6: 177 courses
+  depth 7: 73 courses
+  depth 8: 46 courses
+  depth 9: 19 courses
+  depth 10: 1 courses
+
+Deepest courses:
+  KOR 496: depth 10 -- Korean Abroad
+  ASAN 653: depth 9 -- Major Authors in Modern Korean Literature
+  ASAN 664: depth 9 -- Topics and Issues in Modern Korean Literature
+  ECE 442: depth 9 -- Digital Communications
+  ECE 446: depth 9 -- Information Theory and Coding
+  ECE 616: depth 9 -- Digital Image Processing
+  ECE 651: depth 9 -- Nonlinear Control Systems
+  ECE 652: depth 9 -- Optimal Control Systems
+  ECE 655: depth 9 -- Robust Control
+  ECE 685: depth 9 -- Biomedical Signal Processing and Analysis
+  KOR 495: depth 9 -- Internship Program
+  KOR 613M: depth 9 -- Korean Verse: modern
+  KOR 613T: depth 9 -- Korean Verse: traditional
+  KOR 614M: depth 9 -- Korean Narrative: modern
+  KOR 614T: depth 9 -- Korean Narrative: traditional
