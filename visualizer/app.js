@@ -121,6 +121,81 @@
     setAttr("btn-legend", "aria-expanded", String(open));
   }
 
+  // ---------- desktop: giving the graph the room ----------
+  // The sidebar, details panel and key can each be put away, and "Full view"
+  // hides everything but the graph. The first three are remembered in this
+  // browser; full view isn't, so nobody comes back to a page with no search box.
+  var LAYOUT_KEY = "prereqMapLayout";
+  function readLayoutPrefs() {
+    try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function saveLayoutPref(name, value) {
+    var prefs = readLayoutPrefs();
+    prefs[name] = value;
+    try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(prefs)); } catch (e) {}
+  }
+
+  // Cytoscape keeps its top-left corner and zoom fixed when its box resizes,
+  // so hiding the sidebar would just leave the same small graph hugging the
+  // left edge of a bigger box. On desktop, a graph that was entirely on screen
+  // is re-fitted so the freed-up room actually makes it bigger; one the viewer
+  // has zoomed into keeps its zoom, with whatever was in the middle kept in
+  // the middle. (Phone zoom is picked for readable text; never refit there.)
+  function keepGraphCentered(change) {
+    var cy = state.cy;
+    if (!cy) { change(); return; }
+    var w = cy.width(), h = cy.height(), z = cy.zoom(), pan = cy.pan();
+    var mid = { x: (w / 2 - pan.x) / z, y: (h / 2 - pan.y) / z };
+    var bb = cy.elements().renderedBoundingBox();
+    var allVisible = bb.x1 >= -2 && bb.y1 >= -2 && bb.x2 <= w + 2 && bb.y2 <= h + 2;
+    change();
+    cy.resize();
+    if (!state.mobile && allVisible) { cy.fit(undefined, 40); return; }
+    cy.pan({ x: cy.width() / 2 - mid.x * z, y: cy.height() / 2 - mid.y * z });
+  }
+
+  function setSidebarCollapsed(collapsed) {
+    rootEl.classList.toggle("sidebar-collapsed", collapsed);
+    setAttr("toggle-sidebar", "aria-expanded", String(!collapsed));
+    var label = document.querySelector("#toggle-sidebar span");
+    if (label) label.textContent = collapsed ? "Show sidebar" : "Hide sidebar";
+  }
+  function setGraphMax(max) {
+    rootEl.classList.toggle("graph-max", max);
+    setAttr("btn-max", "aria-pressed", String(max));
+    var btn = document.getElementById("btn-max");
+    if (btn) btn.textContent = max ? "Exit full view" : "Full view";
+  }
+  // Desktop opens with the details and key showing unless this browser has
+  // put them away before; the phone starts with both tucked away instead.
+  function applyDesktopLayout() {
+    var prefs = readLayoutPrefs();
+    setSidebarCollapsed(!!prefs.sidebarCollapsed);
+    setDetailOpen(prefs.detailOpen !== false);
+    setLegendOpen(prefs.legendOpen !== false);
+  }
+  // The search box lives in the header on desktop, so putting the sidebar away
+  // costs nothing, and in the phone's search sheet otherwise. Moving the element
+  // keeps its listeners, so the search code never needs to know which it's in.
+  function placeSearchBox() {
+    var box = document.querySelector(".search-box");
+    var slot = state.mobile ? document.querySelector("#sidebar .sheet-top") : document.getElementById("header-search");
+    if (!box || !slot || box.parentNode === slot) return;
+    if (state.mobile) slot.insertBefore(box, slot.firstChild);
+    else slot.appendChild(box);
+  }
+  placeSearchBox();
+  if (!state.mobile) applyDesktopLayout();
+
+  // "/" jumps to the search box from anywhere (leaving full view first, since
+  // that hides the header it sits in).
+  function openSearch() {
+    if (state.mobile) { openSidebar(); return; }
+    if (rootEl.classList.contains("graph-max")) keepGraphCentered(function () { setGraphMax(false); });
+    var input = document.getElementById("search");
+    if (input) { input.focus(); input.select(); }
+  }
+
   // Tapping a course on a phone opens this small action bar instead of the
   // desktop click (toggle its prereqs) / double-click (go there) pair --
   // double-tapping is undiscoverable and fights the browser's own gestures.
@@ -175,8 +250,25 @@
 
   on("open-sidebar", "click", openSidebar);
   on("close-sidebar", "click", closeSidebar);
-  on("detail-toggle", "click", function () { setDetailOpen(!rootEl.classList.contains("detail-open")); });
-  on("btn-legend", "click", function () { setLegendOpen(!rootEl.classList.contains("legend-open")); });
+  on("detail-toggle", "click", function () {
+    var open = !rootEl.classList.contains("detail-open");
+    keepGraphCentered(function () { setDetailOpen(open); });
+    if (!state.mobile) saveLayoutPref("detailOpen", open);
+  });
+  on("btn-legend", "click", function () {
+    var open = !rootEl.classList.contains("legend-open");
+    setLegendOpen(open);
+    if (!state.mobile) saveLayoutPref("legendOpen", open);
+  });
+  on("toggle-sidebar", "click", function () {
+    var collapsed = !rootEl.classList.contains("sidebar-collapsed");
+    keepGraphCentered(function () { setSidebarCollapsed(collapsed); });
+    saveLayoutPref("sidebarCollapsed", collapsed);
+  });
+  on("btn-max", "click", function () {
+    var max = !rootEl.classList.contains("graph-max");
+    keepGraphCentered(function () { setGraphMax(max); });
+  });
   on("btn-focus", "click", function () { if (state.focal) focusOn(state.focal, true); });
   on("btn-fit", "click", function () { fitAll(true); });
 
@@ -270,7 +362,19 @@
     if (id) select(id);
   });
   window.addEventListener("keydown", function (evt) {
+    if (evt.key === "/" && !evt.ctrlKey && !evt.metaKey && !evt.altKey) {
+      var t = evt.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      evt.preventDefault();
+      openSearch();
+      return;
+    }
     if (evt.key !== "Escape") return;
+    // Leaving full view is what Esc means there; don't also shut the key.
+    if (rootEl.classList.contains("graph-max")) {
+      keepGraphCentered(function () { setGraphMax(false); });
+      return;
+    }
     closeSidebar(); setLegendOpen(false); hideNodeActions();
   });
 
@@ -286,7 +390,10 @@
     if (now === state.mobile) return;
     state.mobile = now;
     rootEl.classList.toggle("is-mobile", now);
-    closeSidebar(); setLegendOpen(false); setDetailOpen(false);
+    placeSearchBox();
+    closeSidebar(); setGraphMax(false);
+    if (now) { setLegendOpen(false); setDetailOpen(false); }
+    else applyDesktopLayout();
     // Node sizing, dragging and the opening view all differ by mode, so
     // rebuild the graph rather than patching the live instance.
     if (state.focal) renderGraph(state.focal);
@@ -524,8 +631,7 @@
     // Land back on the graph: a phone has no room to keep the search sheet
     // or the details sheet open over the course you just navigated to.
     closeSidebar();
-    setLegendOpen(false);
-    if (state.mobile) setDetailOpen(false);
+    if (state.mobile) { setLegendOpen(false); setDetailOpen(false); }
   }
 
   // A fresh navigation (search, click, graph tap): truncates any forward
