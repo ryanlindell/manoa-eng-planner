@@ -15,7 +15,7 @@
   // expandedMore: keys are "<focal>|unlock", "<focal>|coreq", or
   // "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
   // clicked to fully expand for that specific focal course.
-  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null };
+  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false };
 
   // Wires a control only if it exists. A missing optional button (say an older
   // cached index.html paired with a newer app.js) must never stop this script
@@ -141,11 +141,11 @@
   // is re-fitted so the freed-up room actually makes it bigger; one the viewer
   // has zoomed into keeps its zoom, with whatever was in the middle kept in
   // the middle. (Phone zoom is picked for readable text; never refit there.)
-  // Matches the CSS transition on .app's grid-template-columns and #detail's
-  // max-height (see styles.css) -- the panels these toggles show/hide slide
-  // rather than snap now, so the graph's own container resizes gradually
-  // too. The corrective fit/pan below has to wait for that to finish, or it
-  // measures the box mid-slide and gets the wrong answer.
+  // Matches the CSS transition on #sidebar's width and #detail's max-height
+  // (see styles.css) -- the panels these toggles show/hide slide rather than
+  // snap now, so the graph's own container resizes gradually too. The
+  // corrective fit/pan below has to wait for that to finish, or it measures
+  // the box mid-slide and gets the wrong answer.
   var LAYOUT_TRANSITION_MS = 260;
 
   function keepGraphCentered(change, immediate) {
@@ -155,8 +155,19 @@
     var mid = { x: (w / 2 - pan.x) / z, y: (h / 2 - pan.y) / z };
     var bb = cy.elements().renderedBoundingBox();
     var allVisible = bb.x1 >= -2 && bb.y1 >= -2 && bb.x2 <= w + 2 && bb.y2 <= h + 2;
+    // The passive ResizeObserver below (which just keeps Cytoscape's canvas
+    // matched to #cy for *other* causes of resize, like the window itself)
+    // would otherwise also fire many times a second while this transition is
+    // in flight -- each call clears and redraws the canvas, and interleaved
+    // with the transition's own paints that was producing a visibly blank
+    // graph for a good chunk of the animation. Pausing it here leaves the
+    // graph's last frame in place (just increasingly clipped or padded by
+    // the container's own animated edge, never blank) until the one
+    // resize+fit below runs once things have settled.
+    if (!immediate) state.suspendAutoResize = true;
     change();
     function settle() {
+      state.suspendAutoResize = false;
       cy.resize();
       if (!state.mobile && allVisible) { cy.fit(undefined, 40); return; }
       cy.pan({ x: cy.width() / 2 - mid.x * z, y: cy.height() / 2 - mid.y * z });
@@ -397,7 +408,9 @@
   // rotates; Cytoscape doesn't notice a container resize on its own.
   if (window.ResizeObserver) {
     var cyEl = document.getElementById("cy");
-    if (cyEl) new ResizeObserver(function () { if (state.cy) state.cy.resize(); }).observe(cyEl);
+    if (cyEl) new ResizeObserver(function () {
+      if (state.cy && !state.suspendAutoResize) state.cy.resize();
+    }).observe(cyEl);
   }
 
   function onDeviceModeChange() {

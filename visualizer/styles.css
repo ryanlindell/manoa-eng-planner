@@ -79,11 +79,14 @@ a { color: var(--accent); }
 
 .app {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  /* auto, not a fixed 340px: #sidebar's own width is what's animated (grid
+     doesn't reliably animate track-size transitions), and an auto track just
+     follows that element's rendered width every frame like any other layout
+     dependency -- no special animation support needed on the grid's part. */
+  grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
   grid-template-areas: "header header" "sidebar stage";
   height: 100%;
-  transition: grid-template-columns 0.25s ease;
 }
 @media (max-width: 860px) {
   .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; grid-template-areas: "header" "sidebar" "stage"; height: auto; min-height: 100vh; }
@@ -107,9 +110,13 @@ header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: 
 .nav-btn:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
 
 #sidebar {
-  grid-area: sidebar; border-right: 1px solid var(--hairline); min-width: 0;
+  grid-area: sidebar; width: 340px; border-right: 1px solid var(--hairline);
   overflow-y: auto; overflow-x: hidden; padding: 16px; display: flex; flex-direction: column; gap: 18px;
-  opacity: 1; transition: opacity 0.2s ease;
+  opacity: 1;
+  transition: width 0.25s ease, opacity 0.2s ease, padding 0.25s ease, border-right-color 0.25s ease;
+}
+html.sidebar-collapsed:not(.is-mobile) #sidebar {
+  width: 0; opacity: 0; padding-left: 0; padding-right: 0; border-right-color: transparent; pointer-events: none;
 }
 .search-box { position: relative; }
 .search-box input {
@@ -228,10 +235,10 @@ html:not(.detail-open) #detail {
 .header-search .search-box input { padding: 5px 10px; font-size: 0.88rem; height: 30px; }
 .header-search .search-results { z-index: 40; max-height: min(420px, 70vh); } /* above the floating key card */
 @media (max-width: 1250px) { header .tagline { display: none; } }
-html.sidebar-collapsed:not(.is-mobile) #sidebar { display: none; }
-html.sidebar-collapsed:not(.is-mobile) .app {
-  grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "header" "stage";
-}
+/* Collapsing #sidebar to width:0 (see the #sidebar rule above) already
+   leaves nothing in its auto-sized grid track -- no separate rule needed
+   here to remove the column, and no display:none, which would make it an
+   instant snap instead of the width/opacity transition actually animating. */
 html.graph-max:not(.is-mobile) .app {
   grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr); grid-template-areas: "stage"; height: 100vh; min-height: 0;
 }
