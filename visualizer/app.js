@@ -25,7 +25,7 @@
   // expandedMore: keys are "<focal>|unlock", "<focal>|coreq", or
   // "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
   // clicked to fully expand for that specific focal course.
-  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false, catalogId: CATALOGS[0].id };
+  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false, catalogId: CATALOGS[0].id, highlightTab: "deepest" };
 
   // Wires a control only if it exists. A missing optional button (say an older
   // cached index.html paired with a newer app.js) must never stop this script
@@ -639,11 +639,20 @@
     // them.
     tabsEl.textContent = "";
     panesEl.textContent = "";
-    tabs.forEach(function (tab, i) {
+    // Reopens on whichever tab was open before (e.g. after a catalog
+    // switch) rather than always resetting to the first one; falls back to
+    // that first tab if the remembered id doesn't match one of these (it
+    // always will today -- the four ids never change -- but a viewer's
+    // stored id from a future version with different tabs shouldn't crash).
+    var openId = tabs.some(function (t) { return t.id === state.highlightTab; }) ? state.highlightTab : tabs[0].id;
+    state.highlightTab = openId;
+    tabs.forEach(function (tab) {
+      var isOpen = tab.id === openId;
       var btn = document.createElement("button");
       btn.textContent = tab.label; btn.setAttribute("role", "tab");
-      btn.setAttribute("aria-selected", i === 0 ? "true" : "false");
+      btn.setAttribute("aria-selected", isOpen ? "true" : "false");
       btn.addEventListener("click", function () {
+        state.highlightTab = tab.id;
         tabsEl.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-selected", "false"); });
         panesEl.querySelectorAll(".highlight-pane").forEach(function (p) { p.hidden = true; });
         btn.setAttribute("aria-selected", "true");
@@ -652,7 +661,7 @@
       tabsEl.appendChild(btn);
 
       var pane = document.createElement("div");
-      pane.className = "highlight-pane"; pane.id = "pane-" + tab.id; pane.hidden = i !== 0;
+      pane.className = "highlight-pane"; pane.id = "pane-" + tab.id; pane.hidden = !isOpen;
       var ul = document.createElement("ul"); ul.className = "rank-list";
       if (tab.items.length === 0) {
         var li0 = document.createElement("li"); li0.style.padding = "8px 4px"; li0.style.color = "var(--ink-muted)";
