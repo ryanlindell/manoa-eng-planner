@@ -19,13 +19,30 @@
     { id: "4", label: "2026–2027", url: "data/prereq_graph.json" },
     { id: "2", label: "2025–2026 (archived)", url: "data/prereq_graph_catoid2.json" },
   ];
+  // One entry per major this site can filter the graph down to. `catalogId`
+  // is which CATALOGS entry the course-relevance data was computed against
+  // (see scripts/build_ee_relevant_courses.py) -- the filter gets disabled
+  // rather than shown wrong if the viewer is on some other catalog year.
+  // Keep in sync by hand with checksheets/data/ the same way CATALOGS is
+  // kept in sync with visualizer/data/: add a row here each time another
+  // major's check sheet gets extracted and its relevant-courses file built.
+  var PROGRAMS = [
+    { id: "EE", label: "Electrical Engineering", url: "data/ee_relevant_EE.json", catalogId: "4" },
+  ];
   var MAX_PER_COLUMN = 9;
   var DEFAULT_COURSE = "BIOL 172"; // what the page opens on
 
-  // expandedMore: keys are "<focal>|unlock", "<focal>|coreq", or
-  // "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
+  // expandedMore: keys are "<focal>|unlock", "<focal>|unlock-outside", "<focal>|coreq",
+  // or "<focal>|prereq|<level>" -- any truncated "+N more" column a viewer has
   // clicked to fully expand for that specific focal course.
-  var state = { graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1, nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false, catalogId: CATALOGS[0].id, highlightTab: "deepest" };
+  var state = {
+    graph: null, index: null, cy: null, focal: null, expandedMore: {}, history: [], historyIndex: -1,
+    nodePositions: {}, mobile: false, peek: null, suspendAutoResize: false, catalogId: CATALOGS[0].id,
+    highlightTab: "deepest",
+    // "none" or a PROGRAMS id; relevantSet is a plain object used as a
+    // Set (code -> true) once that program's course list has loaded.
+    filterProgram: "none", relevantSet: null,
+  };
 
   // Wires a control only if it exists. A missing optional button (say an older
   // cached index.html paired with a newer app.js) must never stop this script
@@ -177,7 +194,19 @@
     if (!immediate) state.suspendAutoResize = true;
     change();
     function settle() {
+      // Always clear the suspend this transition set, even below, if
+      // something else already replaced state.cy -- otherwise the passive
+      // ResizeObserver would stay paused indefinitely (nothing else would
+      // ever clear it).
       state.suspendAutoResize = false;
+      // Something else (a course navigation, the major filter, a catalog
+      // switch...) destroyed and replaced state.cy while this transition's
+      // settle was still pending -- cy here is a stale, already-destroyed
+      // instance now, and calling into it crashes deep inside Cytoscape
+      // (a null internal renderer reference). Whatever replaced it already
+      // set its own correct view, so there's nothing left for this settle
+      // to do.
+      if (state.cy !== cy) return;
       cy.resize();
       if (!state.mobile && allVisible) { cy.fit(undefined, 40); return; }
       cy.pan({ x: cy.width() / 2 - mid.x * z, y: cy.height() / 2 - mid.y * z });
@@ -236,8 +265,22 @@
       navHistory.parentNode.insertBefore(sel, navHistory);
     }
   }
+  // Same again for the major filter -- lands right after #catalog-year
+  // either way, since both insert immediately before .nav-history.
+  function placeFilterSelect() {
+    var sel = document.getElementById("major-filter");
+    var mobileRow = document.getElementById("mobile-filter-row");
+    var navHistory = document.querySelector(".nav-history");
+    if (!sel) return;
+    if (state.mobile) {
+      if (sel.parentNode !== mobileRow) mobileRow.appendChild(sel);
+    } else if (sel.parentNode !== navHistory.parentNode || sel.nextSibling !== navHistory) {
+      navHistory.parentNode.insertBefore(sel, navHistory);
+    }
+  }
   placeSearchBox();
   placeCatalogSelect();
+  placeFilterSelect();
   if (!state.mobile) applyDesktopLayout();
 
   // "/" jumps to the search box from anywhere (leaving full view first, since
@@ -452,6 +495,7 @@
     rootEl.classList.toggle("is-mobile", now);
     placeSearchBox();
     placeCatalogSelect();
+    placeFilterSelect();
     closeSidebar(); setGraphMax(false);
     if (now) { setLegendOpen(false); setDetailOpen(false); }
     else applyDesktopLayout();
@@ -491,7 +535,7 @@
     // Most courses carry a code straight across catalog years; loadGraph
     // falls back to DEFAULT_COURSE (then any real course at all) if this
     // one happens not to exist in the year just switched to.
-    loadGraph(entry, state.focal);
+    loadGraph(entry, state.focal).then(updateFilterAvailability);
   });
 
   // Opens on the catalog a shared link points at (?catoid=2), else whatever
@@ -556,7 +600,95 @@
       });
   }
 
-  loadGraph(initialCatalog);
+  // ---------- major filter ----------
+  var FILTER_KEY = "prereqMapFilter";
+  function programById(id) {
+    for (var i = 0; i < PROGRAMS.length; i++) if (PROGRAMS[i].id === id) return PROGRAMS[i];
+    return null;
+  }
+  function readStoredFilterId() {
+    try { return localStorage.getItem(FILTER_KEY); } catch (e) { return null; }
+  }
+  function saveFilterId(id) {
+    try { localStorage.setItem(FILTER_KEY, id); } catch (e) {}
+  }
+  function filterActive() { return state.filterProgram !== "none" && !!state.relevantSet; }
+  // A course counts as "relevant" only once its program's course list has
+  // actually loaded -- before that (or with the filter off) nothing is
+  // dimmed or hidden, same as an unfiltered view.
+  function isRelevant(code) { return !!(state.relevantSet && state.relevantSet[code]); }
+
+  var filterSelect = document.getElementById("major-filter");
+  var noneOption = document.createElement("option");
+  noneOption.value = "none"; noneOption.textContent = "All courses";
+  filterSelect.appendChild(noneOption);
+  PROGRAMS.forEach(function (p) {
+    var opt = document.createElement("option");
+    opt.value = p.id; opt.textContent = p.label;
+    filterSelect.appendChild(opt);
+  });
+
+  // A program's relevant-courses data is only valid for the catalog year it
+  // was built against (PROGRAMS[].catalogId) -- switching to some other
+  // catalog year disables it rather than leave it silently applying stale
+  // data, the same way the catalog-year dropdown itself never lets you pick
+  // a program that doesn't match.
+  function updateFilterAvailability() {
+    Array.prototype.forEach.call(filterSelect.options, function (opt) {
+      if (opt.value === "none") { opt.disabled = false; return; }
+      var p = programById(opt.value);
+      opt.disabled = !p || p.catalogId !== state.catalogId;
+    });
+    var active = programById(state.filterProgram);
+    if (active && active.catalogId !== state.catalogId) {
+      filterSelect.title = "Not available for this catalog year -- no relevant-courses data has been built for it yet.";
+      setFilterProgram("none");
+    } else {
+      filterSelect.title = "";
+    }
+  }
+
+  function setFilterProgram(id) {
+    var program = programById(id);
+    if (program && program.catalogId !== state.catalogId) program = null; // stale for this catalog year
+    var resolvedId = program ? program.id : "none";
+    state.filterProgram = resolvedId;
+    filterSelect.value = resolvedId;
+    filterSelect.classList.toggle("active", resolvedId !== "none");
+    saveFilterId(resolvedId);
+    function rerender() {
+      if (state.focal) renderGraph(state.focal, { preserveViewport: true });
+      if (state.graph) buildHighlights(state.graph, state.index);
+    }
+    if (!program) { state.relevantSet = null; rerender(); return; }
+    fetch(program.url)
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status + " fetching " + program.url);
+        return r.json();
+      })
+      .then(function (data) {
+        var set = {};
+        (data.courses || []).forEach(function (c) { set[c] = true; });
+        state.relevantSet = set;
+        rerender();
+      })
+      .catch(function (err) {
+        console.error(err);
+        showToast("Couldn't load the " + program.label + " filter");
+        state.filterProgram = "none"; state.relevantSet = null; filterSelect.value = "none";
+      });
+  }
+
+  filterSelect.addEventListener("change", function () {
+    trackEvent("major-filter", filterSelect.value);
+    setFilterProgram(filterSelect.value);
+  });
+
+  loadGraph(initialCatalog).then(function () {
+    updateFilterAvailability();
+    var storedFilterId = readStoredFilterId();
+    if (storedFilterId && storedFilterId !== "none") setFilterProgram(storedFilterId);
+  });
 
   // Flat prereqOf/unlocks maps -- used for simple counts (search-adjacent
   // "most direct prereqs"/"most far-reaching" highlights, the ungrouped
@@ -603,6 +735,11 @@
   function buildHighlights(graph, index) {
     var nodes = graph.nodes;
     var codes = Object.keys(nodes).filter(function (c) { return nodes[c].in_catalog; });
+    // "Deepest chain in the whole 8,700-course catalog" is nearly always
+    // some unrelated sequence with nothing to do with the filtered major --
+    // rank among only the relevant courses instead, same as everywhere else
+    // the filter applies.
+    if (filterActive()) codes = codes.filter(isRelevant);
 
     var deepest = codes.filter(function (c) { return typeof nodes[c].depth === "number"; })
       .sort(function (a, b) { return nodes[b].depth - nodes[a].depth; }).slice(0, 12)
@@ -1242,7 +1379,24 @@
     var chain = computeAncestorChain(focal);
     var allUnlocks = idx.unlocks[focal] || [];
     var unlockKey = focal + "|unlock";
+    var outsideKey = focal + "|unlock-outside";
+    // Prereqs (the chain above) always render in full regardless of the
+    // filter -- hiding what a course actually needs would defeat the point
+    // of a *prereq* map. "Required by" is the one column that narrows: when
+    // the focal course is itself relevant, courses it unlocks outside the
+    // filtered set aren't hidden either, just tucked behind their own "+N
+    // outside your major" stub (outsideUnlocks below) instead of cluttering
+    // "what does this lead to" with things you wouldn't go on to take. A
+    // focal course that's itself outside the filter shows its full,
+    // unrestricted unlocks list -- there's no "your major" framing to apply
+    // to a course that isn't part of it.
+    var outsideUnlocks = [];
+    if (filterActive() && isRelevant(focal)) {
+      outsideUnlocks = allUnlocks.filter(function (c) { return !isRelevant(c); });
+      allUnlocks = allUnlocks.filter(function (c) { return isRelevant(c); });
+    }
     var unlocks = state.expandedMore[unlockKey] ? { shown: allUnlocks, extra: 0 } : capped(allUnlocks);
+    var outsideShown = state.expandedMore[outsideKey] ? outsideUnlocks : [];
     var coreqUnits = computeRequirementUnits(focal, "coreq_tree");
 
     var els = [];
@@ -1275,6 +1429,10 @@
       // even though the node's actual live position will drift off it.
       var data = { id: code, label: code, title: n.title || "", depth: n.depth, status: n.depth_status, inCatalog: !!n.in_catalog, focal: !!opts.isFocal, homeX: x, homeY: y };
       if (opts.parent) data.parent = opts.parent;
+      // Applies uniformly wherever a course node gets drawn -- prereq chain,
+      // coreqs, group members, unlocks -- so "dim what's outside your major"
+      // needs no special-casing per column, just this one shared spot.
+      if (filterActive() && !isRelevant(code)) data.relevance = "dim";
       // Seed at wherever physics last settled this course, if anywhere --
       // otherwise this course is new to the graph and starts at its home
       // column, same as before physics existed.
@@ -1385,14 +1543,33 @@
 
     var coreqHeight = coreqUnits.length ? layoutUnitColumn(coreqUnits, 0, 120, "coreq", focal, focal + "|coreq") : 0;
 
-    unlocks.shown.forEach(function (c, i) { addNode(c, unlockX, (i - (unlocks.shown.length - 1) / 2) * rowHeight); });
-    if (unlocks.extra > 0) {
-      els.push({ data: { id: "__more_unlock", label: "+" + unlocks.extra + " more", isMore: true, moreKey: unlockKey, expandable: true }, position: { x: unlockX, y: (unlocks.shown.length / 2 + 0.7) * rowHeight } });
-      els.push({ data: { id: focal + "->__more_unlock", source: focal, target: "__more_unlock", kind: "prereq", isMoreEdge: true } });
+    // One row per thing that actually appears in the "required by" column,
+    // in display order -- courses, then the ordinary length-cap "+more"
+    // stub (if any), then the filtered-out courses' own stub or (once
+    // clicked) their own rows -- so every row can be centered together by
+    // one shared index/count instead of two different columns' worth of ad
+    // hoc position math.
+    var unlockRows = [];
+    unlocks.shown.forEach(function (c) { unlockRows.push({ kind: "course", code: c }); });
+    if (unlocks.extra > 0) unlockRows.push({ kind: "more", count: unlocks.extra });
+    if (outsideShown.length) {
+      outsideShown.forEach(function (c) { unlockRows.push({ kind: "course", code: c }); });
+    } else if (outsideUnlocks.length) {
+      unlockRows.push({ kind: "outside-more", count: outsideUnlocks.length });
     }
-    unlocks.shown.forEach(function (c) {
-      els.push({ data: { id: focal + "->" + c, source: focal, target: c, kind: "prereq" } });
-      markEdge(focal, c, "prereq");
+    unlockRows.forEach(function (row, i) {
+      var y = (i - (unlockRows.length - 1) / 2) * rowHeight;
+      if (row.kind === "course") { addNode(row.code, unlockX, y); return; }
+      var isOutside = row.kind === "outside-more";
+      var id = isOutside ? "__more_unlock_outside" : "__more_unlock";
+      var label = isOutside ? "+" + row.count + " outside your major" : "+" + row.count + " more";
+      els.push({ data: { id: id, label: label, isMore: true, moreKey: isOutside ? outsideKey : unlockKey, expandable: true }, position: { x: unlockX, y: y } });
+      els.push({ data: { id: focal + "->" + id, source: focal, target: id, kind: "prereq", isMoreEdge: true } });
+    });
+    unlockRows.forEach(function (row) {
+      if (row.kind !== "course") return;
+      els.push({ data: { id: focal + "->" + row.code, source: focal, target: row.code, kind: "prereq" } });
+      markEdge(focal, row.code, "prereq");
     });
 
     // Click-revealed expansions: a viewer can click any course node (a
@@ -1498,6 +1675,13 @@
         // not "[field = false]" (which is an invalid selector -- silently
         // dropped, not applied, logged as an error in the console).
         { selector: "node[!inCatalog]", style: { "border-style": "dashed", "background-opacity": 0.5, "color": t.ink2 } },
+        // Major filter: everything still renders (see renderGraph's unlocks
+        // section for the one place that's not also true), this just mutes
+        // whatever's outside the selected program. Full-node opacity, not
+        // just background, so it reads as de-emphasized against every
+        // other rule above rather than fighting the depth-color/status/
+        // focal styling those already apply.
+        { selector: "node[relevance = 'dim']", style: { "opacity": 0.35 } },
         { selector: "node.peek", style: { "border-width": 3, "border-color": t.accent } },
         { selector: "node[?isMore]", style: {
           // "transparent" alone isn't enough: Cytoscape drops the alpha and
@@ -1661,6 +1845,10 @@
     if (!n.in_catalog) {
       var b3 = document.createElement("span"); b3.className = "badge warning"; b3.textContent = "referenced, not in current catalog";
       meta.appendChild(b3);
+    }
+    if (filterActive() && !isRelevant(code)) {
+      var b4 = document.createElement("span"); b4.className = "badge outside"; b4.textContent = "outside your major requirements";
+      meta.appendChild(b4);
     }
     (n.gened || []).forEach(function (g) {
       var bg = document.createElement("span"); bg.className = "badge gened"; bg.textContent = g;

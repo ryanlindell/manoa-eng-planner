@@ -206,6 +206,8 @@ html:not(.detail-open) #detail {
 .badge.critical { background: color-mix(in srgb, var(--status-critical) 16%, transparent); color: var(--status-critical); border-color: color-mix(in srgb, var(--status-critical) 40%, transparent); }
 .badge.warning { background: color-mix(in srgb, var(--status-warning) 16%, transparent); color: var(--status-warning); border-color: color-mix(in srgb, var(--status-warning) 40%, transparent); }
 .badge.gened { background: var(--accent-wash); color: var(--accent); }
+.badge.outside { background: var(--surface-2); color: var(--ink-muted); border-color: var(--border); }
+.filter-select.active { border-color: var(--accent); color: var(--accent); font-weight: 700; }
 #detail .field-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); margin: 12px 0 3px; }
 #detail .field-value { font-size: 0.88rem; }
 

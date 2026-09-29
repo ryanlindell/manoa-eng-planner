@@ -17,6 +17,7 @@
   <header>
     <h1>Mānoa Prereq Map</h1>
     <select id="catalog-year" class="year-select" aria-label="Catalog year"></select>
+    <select id="major-filter" class="year-select filter-select" aria-label="Filter to a major"></select>
     <div class="nav-history">
       <button id="nav-back" class="nav-btn" type="button" title="Back to previous course" disabled aria-label="Back">&larr;</button>
       <button id="nav-forward" class="nav-btn" type="button" title="Forward to next course" disabled aria-label="Forward">&rarr;</button>
@@ -44,10 +45,14 @@
       <button id="close-sidebar" class="sidebar-close" type="button">Cancel</button>
     </div>
 
-    <!-- On phones app.js moves the #catalog-year select in here (it stays in
-         the header on desktop) -- the mobile header has no room left for it. -->
+    <!-- On phones app.js moves #catalog-year and #major-filter in here (they
+         stay in the header on desktop) -- the mobile header has no room left
+         for them. -->
     <label id="mobile-catalog-row" class="mobile-catalog-row">
       <span class="mobile-catalog-label">Catalog year</span>
+    </label>
+    <label id="mobile-filter-row" class="mobile-catalog-row">
+      <span class="mobile-catalog-label">Filter to major</span>
     </label>
 
     <div id="browse">
