@@ -141,7 +141,14 @@
   // is re-fitted so the freed-up room actually makes it bigger; one the viewer
   // has zoomed into keeps its zoom, with whatever was in the middle kept in
   // the middle. (Phone zoom is picked for readable text; never refit there.)
-  function keepGraphCentered(change) {
+  // Matches the CSS transition on .app's grid-template-columns and #detail's
+  // max-height (see styles.css) -- the panels these toggles show/hide slide
+  // rather than snap now, so the graph's own container resizes gradually
+  // too. The corrective fit/pan below has to wait for that to finish, or it
+  // measures the box mid-slide and gets the wrong answer.
+  var LAYOUT_TRANSITION_MS = 260;
+
+  function keepGraphCentered(change, immediate) {
     var cy = state.cy;
     if (!cy) { change(); return; }
     var w = cy.width(), h = cy.height(), z = cy.zoom(), pan = cy.pan();
@@ -149,9 +156,16 @@
     var bb = cy.elements().renderedBoundingBox();
     var allVisible = bb.x1 >= -2 && bb.y1 >= -2 && bb.x2 <= w + 2 && bb.y2 <= h + 2;
     change();
-    cy.resize();
-    if (!state.mobile && allVisible) { cy.fit(undefined, 40); return; }
-    cy.pan({ x: cy.width() / 2 - mid.x * z, y: cy.height() / 2 - mid.y * z });
+    function settle() {
+      cy.resize();
+      if (!state.mobile && allVisible) { cy.fit(undefined, 40); return; }
+      cy.pan({ x: cy.width() / 2 - mid.x * z, y: cy.height() / 2 - mid.y * z });
+    }
+    // Full view (see setGraphMax) still snaps its layout instantly (display:
+    // none, not a transition), so measuring right away is correct there and
+    // skipping the wait keeps it feeling immediate.
+    if (immediate) settle();
+    else setTimeout(settle, LAYOUT_TRANSITION_MS);
   }
 
   function setSidebarCollapsed(collapsed) {
@@ -166,12 +180,13 @@
     var btn = document.getElementById("btn-max");
     if (btn) btn.textContent = max ? "Exit full view" : "Full view";
   }
-  // Desktop opens with the details and key showing unless this browser has
-  // put them away before; the phone starts with both tucked away instead.
+  // First-time desktop visitors get the graph front and center: sidebar and
+  // details tucked away, key still up since it explains the graph itself.
+  // Once someone's touched a control, their choice is remembered instead.
   function applyDesktopLayout() {
     var prefs = readLayoutPrefs();
-    setSidebarCollapsed(!!prefs.sidebarCollapsed);
-    setDetailOpen(prefs.detailOpen !== false);
+    setSidebarCollapsed(prefs.sidebarCollapsed !== false);
+    setDetailOpen(!!prefs.detailOpen);
     setLegendOpen(prefs.legendOpen !== false);
   }
   // The search box lives in the header on desktop, so putting the sidebar away
@@ -191,7 +206,7 @@
   // that hides the header it sits in).
   function openSearch() {
     if (state.mobile) { openSidebar(); return; }
-    if (rootEl.classList.contains("graph-max")) keepGraphCentered(function () { setGraphMax(false); });
+    if (rootEl.classList.contains("graph-max")) keepGraphCentered(function () { setGraphMax(false); }, true);
     var input = document.getElementById("search");
     if (input) { input.focus(); input.select(); }
   }
@@ -267,7 +282,7 @@
   });
   on("btn-max", "click", function () {
     var max = !rootEl.classList.contains("graph-max");
-    keepGraphCentered(function () { setGraphMax(max); });
+    keepGraphCentered(function () { setGraphMax(max); }, true);
   });
   on("btn-focus", "click", function () { if (state.focal) focusOn(state.focal, true); });
   on("btn-fit", "click", function () { fitAll(true); });
@@ -372,7 +387,7 @@
     if (evt.key !== "Escape") return;
     // Leaving full view is what Esc means there; don't also shut the key.
     if (rootEl.classList.contains("graph-max")) {
-      keepGraphCentered(function () { setGraphMax(false); });
+      keepGraphCentered(function () { setGraphMax(false); }, true);
       return;
     }
     closeSidebar(); setLegendOpen(false); hideNodeActions();
