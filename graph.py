@@ -15,7 +15,7 @@ from pathlib import Path
 
 import networkx as nx
 
-from config import DATA_DIR
+from config import CATOID, DATA_DIR
 
 DATA_PATH = Path(DATA_DIR)
 IN_JSONL = DATA_PATH / "courses.jsonl"
@@ -27,7 +27,15 @@ OUT_REPORT = DATA_PATH / "graph_report.txt"
 # (relative to the page, no parent directory to go up to) -- so a second
 # copy has to live under visualizer/ for local static-file serving to work
 # the same way. Written together so they can't drift out of sync.
-VISUALIZER_JSON = Path(__file__).resolve().parent / "visualizer" / "data" / "prereq_graph.json"
+#
+# Only the catalog the live site is built from (CATOID == 4, see config.py)
+# gets to overwrite this -- a build of some other catalog year lands next to
+# it under a catoid-suffixed name instead, so running this script against an
+# archived catalog can never silently swap out the live site's data. Point
+# visualizer/app.js's GRAPH_URL at that filename yourself to browse it.
+VISUALIZER_JSON = Path(__file__).resolve().parent / "visualizer" / "data" / (
+    "prereq_graph.json" if CATOID == 4 else f"prereq_graph_catoid{CATOID}.json"
+)
 
 NON_COURSE_LEAF_TYPES = {"consent", "standing", "major_restriction", "unparsed"}
 

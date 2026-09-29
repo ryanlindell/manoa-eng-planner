@@ -40,7 +40,11 @@ def discover_subjects() -> list[str]:
 
 
 def load_known_subjects() -> set[str]:
-    path = DATA_PATH / "subjects.json"
+    # subjects.json is the site's list of course prefixes, not catalog-year
+    # data -- it lives in the plain "data/" dir even when DATA_PATH has been
+    # namespaced for a non-default CATOID (see config.py), so every catalog's
+    # build compares against the same list instead of an empty one.
+    path = Path("data") / "subjects.json"
     if not path.exists():
         return set()
     return {s["code"] for s in json.loads(path.read_text(encoding="utf-8"))}

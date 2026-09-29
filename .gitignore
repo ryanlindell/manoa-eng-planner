@@ -8,7 +8,10 @@ browser_profile/
 browser_profile_*/
 
 # Raw scraped/captured HTML -- large, fully reproducible from the site via
-# capture_playwright.py, and not meant to live in version control.
+# capture_playwright.py, and not meant to live in version control. pages/ is
+# catoid 4 (see config.py); pages_catoid<N>/ is any other catalog year scraped
+# the same way.
 pages/
+pages_catoid*/
 debug/
 capture_log*.txt
