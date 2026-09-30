@@ -1,0 +1,249 @@
+"""HTML -> course dict, for the 2024-25 catalog (manoa.hawaii.edu/catalog-2024-25/),
+a completely different site from the Acalog system parse_course.py targets --
+WordPress, plain-fetchable (no WAF), one <div class="post-... courses"> per
+course, with the whole description/prereq/restrictions/etc. run together as
+one prose paragraph instead of Acalog's separate <strong>Field:</strong>
+labels. See scripts/capture_2024_catalog.py for the fetch side.
+
+Schema note: this can't cleanly separate "restrictions" from the rest of the
+description the way parse_course.py does (Acalog gives that its own labeled
+field; here it's just another sentence in the same paragraph, with no
+reliable delimiter). restrictions_raw is therefore best-effort here -- some
+restriction sentences stay embedded in `description` rather than risk
+mis-splitting a sentence that isn't actually a restriction. prereq_raw and
+coreq_raw are the fields that matter for the prereq graph, and those *do*
+have a reliable "Pre:" / "Co-requisite:" marker to split on -- see
+split_prose below.
+"""
+
+import html as html_module
+import re
+
+GENED_CODES = {"FW", "FQ", "FGA", "FGB", "FGC", "DA", "DB", "DH", "DL", "DP", "DS", "DY"}
+
+COURSE_BLOCK_RE = re.compile(
+    r'<div id="post-(\d+)"[^>]*\bclass="([^"]*)"[^>]*>.*?'
+    r'<h2 class="entry-title"><a href="([^"]+)"[^>]*>([^<]+)</a></h2>\s*'
+    r'<div class="dtags">(.*?)</div>\s*</div>\s*'
+    r'<div class="entry-content">\s*<p>(.*?)</p>',
+    re.S,
+)
+TAG_ANCHOR_RE = re.compile(r'>([A-Z]{1,4})<')
+# The closing ")" on the credits value is missing on a real, recurring slice
+# of courses on this site (confirmed by hand: CHEM 131, KRS 113, COMG 251,
+# COMG 321, MICR 351L, ... -- a source-side markup defect, not something
+# specific to one department), so it's optional here rather than a hard
+# failure losing otherwise-good data.
+HEADING_RE = re.compile(r"^([A-Z]{2,6})\s+(\d+)([A-Za-z]*)\s+(.*?)\s*\(([^()]*?)\)?\s*$")
+LEC_LAB_RE = re.compile(r"^\((\d+(?:\s*-\s*\d+)?\s*Lec[^)]*)\)\s*")
+CROSSLISTED_RE = re.compile(r"\(Cross-?[- ]?listed as ([^)]+)\)", re.I)
+OFFERED_RE = re.compile(r"\((Fall|Spring|Summer) only\)", re.I)
+# Scheduling metadata ("this alternates years"), not part of the actual
+# requirement -- but unlike OFFERED_RE's target, this one often lands
+# *inside* the captured Pre:/Co-requisite: tail (it trails the actual
+# course list within that same sentence), so it needs its own strip after
+# those are pulled out rather than a single upfront pass over the whole body.
+ALT_YEARS_RE = re.compile(r"\.?\s*\(Alt\.?\s*(?:even|odd)?\s*years?(?::\s*\w+)?\)\s*$", re.I)
+COREQ_RE = re.compile(r"\bCo-?requisites?:\s*(.+?)\s*$", re.S)
+PRE_RE = re.compile(r"(?:^|(?<=[.\s]))Pre(?:-?requisites?)?:\s*(.+)$", re.S)
+RECOMMENDED_RE = re.compile(r"\bRecommended:\s*(.+?)\s*$", re.S)
+REPEATABLE_RE = re.compile(r"(Repeatable[^.]*\.)", re.I)
+GRADE_OPTION_RE = re.compile(r"\b(A-F only|CR/NC only|CR/NC or A-F(?: option)?)\.", re.I)
+# Explicitly labeled "Pre:"/"Co-requisite:" text always goes through
+# parse_prereq.py unchanged. These two don't carry a label at all -- a bare
+# "Senior standing or higher." or "Consent." sentence *is* the entire
+# prerequisite, just phrased without the word "Pre:" -- and parse_prereq.py's
+# grammar already understands both (STANDING/CONSENT tokens), so routing them
+# there (only when no labeled "Pre:" was found at all) gets a real parse
+# instead of leaving a plain-English sentence stuck in the description.
+IMPLICIT_PREREQ_RE = re.compile(
+    r"^((?:Freshman|Sophomore|Junior|Senior|Graduate|Undergraduate)\s+standing"
+    r"(?:\s+or\s+higher)?|(?:Requires\s+)?(?:departmental|instructor|faculty|program|chair|department)?"
+    r"\s*(?:consent|permission|approval))\.?$",
+    re.I,
+)
+# "Majors only" restrictions are the opposite case: common and mechanically
+# regular (a short, self-contained sentence naming who may enroll), but
+# parse_prereq.py's grammar has no MAJOR_RESTRICTION token at all (the
+# {"type": "major_restriction", ...} leaf in its own docstring is
+# aspirational, never actually produced) -- so these go to restrictions_raw
+# as plain extracted text, the same "kept separate, never tree-parsed" role
+# restrictions_raw already has for the Acalog-sourced catalog years.
+MAJORS_ONLY_RE = re.compile(
+    r"^((?:[A-Z][\w./]*(?:[,&]|,?\s+and)\s*)*[A-Z][\w./]*\s+majors?\s+only"
+    r"|(?:For|Intended (?:primarily )?for)\s+[\w\s,]+?\s+majors?"
+    r"|No credit for [\w\s,]+?\s+majors?)\.?$",
+    re.I,
+)
+
+
+def strip_tags(fragment: str) -> str:
+    text = re.sub(r"<[^>]+>", " ", fragment)
+    text = html_module.unescape(text)
+    text = text.replace("\xa0", " ")
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def parse_credits(raw: str):
+    raw = raw.strip().rstrip(".")
+    if not raw:
+        return None, None
+    if raw.upper() == "V":
+        return None, None
+    m = re.match(r"^(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)$", raw)
+    if m:
+        return float(m.group(1)), float(m.group(2))
+    m = re.match(r"^(\d+(?:\.\d+)?)$", raw)
+    if m:
+        v = float(m.group(1))
+        return v, v
+    return None, None
+
+
+def split_prose(body: str) -> dict:
+    """Pulls the reliably-delimited fields (Pre:, Co-requisite:, cross-listed,
+    offered-semester, repeatable, grade option) out of one prose paragraph,
+    in that priority order (each strips its match off the *end* of what's
+    left before the next one looks) -- everything left over is description."""
+    text = body
+    out = {"coreq_raw": None, "prereq_raw": None, "recommended_raw": None, "crosslisted_raw": None,
+           "repeatable_raw": None, "grade_option_raw": None, "credits_format_raw": None, "restrictions_raw": None}
+
+    lec_lab = LEC_LAB_RE.match(text)
+    if lec_lab:
+        out["credits_format_raw"] = lec_lab.group(1).strip()
+        text = text[lec_lab.end():]
+
+    m = CROSSLISTED_RE.search(text)
+    if m:
+        out["crosslisted_raw"] = strip_tags(m.group(1))
+        text = (text[:m.start()] + text[m.end():]).strip()
+
+    m = OFFERED_RE.search(text)
+    if m:
+        text = (text[:m.start()] + text[m.end():]).strip()
+
+    # Co-requisite is always its own trailing sentence, after Pre: if any --
+    # pull it first so PRE_RE's "rest of the string" capture doesn't swallow it.
+    m = COREQ_RE.search(text)
+    if m:
+        out["coreq_raw"] = ALT_YEARS_RE.sub("", m.group(1)).strip().rstrip(".")
+        text = text[:m.start()].strip()
+
+    m = PRE_RE.search(text)
+    if m:
+        out["prereq_raw"] = ALT_YEARS_RE.sub("", m.group(1)).strip().rstrip(".")
+        text = text[:m.start()].strip()
+
+    m = RECOMMENDED_RE.search(text)
+    if m:
+        out["recommended_raw"] = m.group(1).strip().rstrip(".")
+        text = text[:m.start()].strip()
+
+    m = REPEATABLE_RE.search(text)
+    if m:
+        out["repeatable_raw"] = m.group(1).strip().rstrip(".")
+        text = (text[:m.start()] + text[m.end():]).strip()
+
+    m = GRADE_OPTION_RE.search(text)
+    if m:
+        out["grade_option_raw"] = m.group(1).strip()
+        text = (text[:m.start()] + text[m.end():]).strip()
+
+    # Whatever's left is sentence-split so the two remaining patterns (a bare
+    # standing/consent sentence, several possible "majors only" sentences)
+    # can be matched and pulled per-sentence rather than trying to regex the
+    # whole remaining paragraph at once -- both patterns are only reliable
+    # when they're a *whole* sentence on their own, not a fragment of a
+    # longer one.
+    sentences = re.split(r"(?<=[.])\s+", text)
+    kept = []
+    restrictions = []
+    for sent in sentences:
+        s = sent.strip()
+        if not s:
+            continue
+        if out["prereq_raw"] is None and IMPLICIT_PREREQ_RE.match(s):
+            out["prereq_raw"] = s.rstrip(".")
+            continue
+        if MAJORS_ONLY_RE.match(s):
+            restrictions.append(s if s.endswith(".") else s + ".")
+            continue
+        kept.append(s)
+    out["restrictions_raw"] = " ".join(restrictions) if restrictions else None
+
+    out["description"] = re.sub(r"\s+", " ", " ".join(kept)).strip()
+    return out
+
+
+def _failed_block(raw_heading: str | None, snippet: str) -> dict:
+    return {"parse_status": "failed_heading", "code": None, "raw_heading": raw_heading,
+            "raw_block_snippet": snippet[:300]}
+
+
+def parse_course_block(post_id: str, classes: str, url: str, heading_raw: str, dtags_html: str, body_html: str) -> dict:
+    heading = strip_tags(heading_raw)
+    m = HEADING_RE.match(heading)
+    if not m:
+        return _failed_block(heading, heading)
+    subject, number, alpha_suffix, title, credits_raw = m.groups()
+    alpha_suffix = alpha_suffix or None
+    credits_raw = credits_raw.strip()
+    is_alpha_parent = title.strip().lower().startswith("(alpha)")
+    credits_min, credits_max = parse_credits(credits_raw)
+
+    body = strip_tags(body_html)
+    fields = split_prose(body)
+
+    # gened tags come from the "gened-tags-<code>" classes on the post div
+    # (confirmed against the .dtags anchor text too, which carries the same
+    # codes -- classes are used since they're already tokenized).
+    gened = sorted({
+        tok.split("-")[-1].upper() for tok in classes.split() if tok.startswith("gened-tags-")
+    } & GENED_CODES)
+    # .dtags may carry codes the class list doesn't cleanly tokenize (a
+    # multi-code class like gened-tags-dp-dy would only yield "DY" above) --
+    # fall back to reading the tag anchors' own text too.
+    for tag in TAG_ANCHOR_RE.findall(dtags_html):
+        if tag in GENED_CODES:
+            gened.append(tag)
+    gened = sorted(set(gened))
+
+    return {
+        "parse_status": "ok",
+        "code": f"{subject} {number}{alpha_suffix or ''}",
+        "subject": subject,
+        "number": number,
+        "alpha_suffix": alpha_suffix,
+        "title": title.strip(),
+        "is_alpha_parent": is_alpha_parent,
+        "description": fields["description"],
+        "credits_raw": credits_raw,
+        "credits_min": credits_min,
+        "credits_max": credits_max,
+        "credits_format_raw": fields["credits_format_raw"],
+        "gened": gened,
+        "focus": None,
+        "prereq_raw": fields["prereq_raw"],
+        "coreq_raw": fields["coreq_raw"],
+        # Best-effort, not exhaustive -- only the mechanically regular
+        # "X, Y majors only." / "For non-science majors." shapes are pulled
+        # out (see MAJORS_ONLY_RE); any restriction phrased less
+        # predictably stays embedded in `description` rather than risk
+        # mis-splitting a sentence that isn't actually a restriction.
+        "restrictions_raw": fields["restrictions_raw"],
+        "crosslisted_raw": fields["crosslisted_raw"],
+        "repeatable_raw": fields["repeatable_raw"],
+        "grade_option_raw": fields["grade_option_raw"],
+        "other_notes": {"Recommended": fields["recommended_raw"]} if fields["recommended_raw"] else None,
+        "coid": None,
+        "source_url": url,
+        "post_id": post_id,
+    }
+
+
+def parse_subject_page(html: str) -> list[dict]:
+    courses = []
+    for post_id, classes, url, heading_raw, dtags_html, body_html in COURSE_BLOCK_RE.findall(html):
+        courses.append(parse_course_block(post_id, classes, url, heading_raw, dtags_html, body_html))
+    return courses

@@ -1,0 +1,17 @@
+=== UH Manoa 2024-25 Catalog -- Build Coverage Report ===
+Subject pages processed: 174
+Total course blocks seen: 6860 (78 duplicate posts skipped, see module docstring)
+  Parsed OK: 6854
+    Real courses: 6568
+    (Alpha) parent placeholders (not enrollable): 286
+  Failed to parse heading: 6
+Duplicate course codes detected (post-dedup, should be 0): 5
+  DNCE 240: ['arts-languages-letters__theatre-dance__dnce.html', 'arts-languages-letters__theatre-dance__dnce.html']
+  THEA 680: ['arts-languages-letters__theatre-dance__thea.html', 'arts-languages-letters__theatre-dance__thea.html']
+  NAVL 202: ['rotc__navl.html', 'rotc__navl.html']
+  TIM 399: ['travel-industry-management__tim.html', 'travel-industry-management__tim.html']
+  LWPA 569: ['wsr-law__law__lwpa.html', 'wsr-law__law__lwpa.html']
+
+prereq_raw present on 4605/6568 real courses -- clean: 3159, partial: 1256, failed: 190
+coreq_raw present on 222/6568 real courses -- clean: 193, partial: 27, failed: 2
+restrictions_raw extracted (best-effort, see parse_course_2024 docstring): 606

@@ -40,9 +40,9 @@ VISUALIZER_JSON = Path(__file__).resolve().parent / "visualizer" / "data" / (
 NON_COURSE_LEAF_TYPES = {"consent", "standing", "major_restriction", "unparsed"}
 
 
-def load_real_courses() -> dict[str, dict]:
+def load_real_courses(in_jsonl: Path = IN_JSONL) -> dict[str, dict]:
     courses = {}
-    for line in IN_JSONL.open(encoding="utf-8"):
+    for line in in_jsonl.open(encoding="utf-8"):
         c = json.loads(line)
         if c["parse_status"] == "ok" and not c["is_alpha_parent"]:
             courses[c["code"]] = c
@@ -217,7 +217,7 @@ def find_dangling_refs(g: nx.DiGraph, courses: dict[str, dict]) -> dict[str, lis
     return dict(dangling)
 
 
-def export_json(g: nx.DiGraph, depths, depth_status):
+def export_json(g: nx.DiGraph, depths, depth_status, out_json: Path = OUT_JSON, visualizer_json: Path = VISUALIZER_JSON):
     nodes = {}
     for code, attrs in g.nodes(data=True):
         nodes[code] = {
@@ -234,9 +234,10 @@ def export_json(g: nx.DiGraph, depths, depth_status):
         "edges": edges,
     }
     text = json.dumps(payload, ensure_ascii=False, indent=1)
-    OUT_JSON.write_text(text, encoding="utf-8")
-    VISUALIZER_JSON.parent.mkdir(parents=True, exist_ok=True)
-    VISUALIZER_JSON.write_text(text, encoding="utf-8")
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    out_json.write_text(text, encoding="utf-8")
+    visualizer_json.parent.mkdir(parents=True, exist_ok=True)
+    visualizer_json.write_text(text, encoding="utf-8")
 
 
 def build_report(g, courses, cycles, dangling, depths, depth_status) -> str:
@@ -288,21 +289,32 @@ def build_report(g, courses, cycles, dangling, depths, depth_status) -> str:
     return "\n".join(lines) + "\n"
 
 
-def main():
-    courses = load_real_courses()
+def build(in_jsonl: Path = IN_JSONL, out_pickle: Path = OUT_PICKLE, out_json: Path = OUT_JSON,
+          out_report: Path = OUT_REPORT, visualizer_json: Path = VISUALIZER_JSON) -> str:
+    """The whole pipeline (load -> graph -> analyze -> write), parameterized
+    so a source outside the CATOID/DATA_DIR system (e.g. the 2024-25 catalog,
+    see scripts/graph_2024.py) can reuse it without pretending to be a
+    catalog year config.py knows about. main() below is just this, called
+    with the module-level defaults."""
+    courses = load_real_courses(in_jsonl)
     g = build_graph(courses)
     cycles = find_cycles(g)
     dangling = find_dangling_refs(g, courses)
     depths, depth_status = compute_depths(courses)
 
-    DATA_PATH.mkdir(parents=True, exist_ok=True)
-    with open(OUT_PICKLE, "wb") as f:
+    out_pickle.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_pickle, "wb") as f:
         pickle.dump(g, f)
-    export_json(g, depths, depth_status)
+    export_json(g, depths, depth_status, out_json, visualizer_json)
 
     report = build_report(g, courses, cycles, dangling, depths, depth_status)
-    OUT_REPORT.write_text(report, encoding="utf-8")
+    out_report.write_text(report, encoding="utf-8")
     print(report)
+    return report
+
+
+def main():
+    build()
 
 
 if __name__ == "__main__":

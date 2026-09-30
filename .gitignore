@@ -13,5 +13,9 @@ browser_profile_*/
 # the same way.
 pages/
 pages_catoid*/
+# 2024-25 catalog: a different site/system entirely (see data_2024/README.md),
+# fetched by scripts/scrape_2024_catalog.py instead of capture_playwright.py,
+# but the same "large and fully reproducible" reasoning applies.
+pages_2024_raw/
 debug/
 capture_log*.txt
