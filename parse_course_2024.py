@@ -21,13 +21,48 @@ import re
 
 GENED_CODES = {"FW", "FQ", "FGA", "FGB", "FGC", "DA", "DB", "DH", "DL", "DP", "DS", "DY"}
 
-COURSE_BLOCK_RE = re.compile(
-    r'<div id="post-(\d+)"[^>]*\bclass="([^"]*)"[^>]*>.*?'
+# Bounds each course to its own chunk using *only* this fixed, confirmed-
+# universal boundary marker (verified against all 7066 posts across every
+# fetched page: exactly this literal shape, every time) -- deliberately not
+# matching any of a post's own inner structure here. A single whole-file
+# regex that tried to match heading/dtags/body all in one pattern used to
+# do that, and it was a real, severe bug: some posts' <p> tag carries a
+# class attribute (Gutenberg block-editor markup, e.g.
+# <p class="wp-block-paragraph">) that a literal "<p>" doesn't match, and
+# when that broke the pattern mid-post, regex backtracking didn't just fail
+# that one post -- it silently extended across the post boundary and
+# matched a *later* post's heading/dtags/body instead, misattributing that
+# real content onto the earlier, broken post's id (confirmed: CEE 220's
+# post ended up carrying CEE 270's actual course data). Splitting into
+# independently-bounded chunks first makes that whole failure mode
+# impossible -- the worst a per-post markup quirk can now do is fail
+# *that* post (see parse_course_block below), never a neighboring one.
+POST_BOUNDARY_RE = re.compile(r'<div id="post-(\d+)" class="([^"]*)">')
+COURSE_INNER_RE = re.compile(
     r'<h2 class="entry-title"><a href="([^"]+)"[^>]*>([^<]+)</a></h2>\s*'
     r'<div class="dtags">(.*?)</div>\s*</div>\s*'
-    r'<div class="entry-content">\s*<p>(.*?)</p>',
+    # The <p> is optional: a real, if unusual, slice of courses (mostly
+    # graduate seminars) have a genuinely empty entry-content on the site
+    # itself -- title and credits exist, there's just no description
+    # written. Confirmed by hand (GEO 750/752/757/758/761/762/764, PSY
+    # 701/702/722, OCN 770, HRM 200, CEE 483, ANAT 499, STE 550, COM 500):
+    # entry-content goes straight to the course-tags div with nothing
+    # between, not a markup break.
+    r'<div class="entry-content">\s*(?:<p[^>]*>(.*?)</p>)?',
     re.S,
 )
+
+
+def split_into_post_blocks(html: str) -> list[tuple[str, str, str]]:
+    """(post_id, classes, block_html) for every course post on the page,
+    block_html running from that post's own boundary marker up to (not
+    including) the next one -- or end of page for the last post."""
+    boundaries = list(POST_BOUNDARY_RE.finditer(html))
+    blocks = []
+    for i, m in enumerate(boundaries):
+        end = boundaries[i + 1].start() if i + 1 < len(boundaries) else len(html)
+        blocks.append((m.group(1), m.group(2), html[m.start():end]))
+    return blocks
 TAG_ANCHOR_RE = re.compile(r'>([A-Z]{1,4})<')
 # The closing ")" on the credits value is missing on a real, recurring slice
 # of courses on this site (confirmed by hand: CHEM 131, KRS 113, COMG 251,
@@ -176,23 +211,33 @@ def split_prose(body: str) -> dict:
     return out
 
 
-def _failed_block(raw_heading: str | None, snippet: str) -> dict:
-    return {"parse_status": "failed_heading", "code": None, "raw_heading": raw_heading,
-            "raw_block_snippet": snippet[:300]}
+def _failed_block(post_id: str, raw_heading: str | None, snippet: str) -> dict:
+    return {"parse_status": "failed_heading", "code": None, "post_id": post_id,
+            "raw_heading": raw_heading, "raw_block_snippet": snippet[:300]}
 
 
-def parse_course_block(post_id: str, classes: str, url: str, heading_raw: str, dtags_html: str, body_html: str) -> dict:
+def parse_course_block(post_id: str, classes: str, block_html: str) -> dict:
+    inner = COURSE_INNER_RE.search(block_html)
+    if not inner:
+        # This post's own inner structure didn't match at all (some markup
+        # variant not yet seen) -- since block_html is already bounded to
+        # just this post (see split_into_post_blocks), that's *all* this
+        # can affect; it can't consume a neighboring post's content the way
+        # the old whole-file regex did.
+        return _failed_block(post_id, None, strip_tags(block_html))
+    url, heading_raw, dtags_html, body_html = inner.groups()
+
     heading = strip_tags(heading_raw)
     m = HEADING_RE.match(heading)
     if not m:
-        return _failed_block(heading, heading)
+        return _failed_block(post_id, heading, heading)
     subject, number, alpha_suffix, title, credits_raw = m.groups()
     alpha_suffix = alpha_suffix or None
     credits_raw = credits_raw.strip()
     is_alpha_parent = title.strip().lower().startswith("(alpha)")
     credits_min, credits_max = parse_credits(credits_raw)
 
-    body = strip_tags(body_html)
+    body = strip_tags(body_html) if body_html else ""
     fields = split_prose(body)
 
     # gened tags come from the "gened-tags-<code>" classes on the post div
@@ -244,6 +289,6 @@ def parse_course_block(post_id: str, classes: str, url: str, heading_raw: str, d
 
 def parse_subject_page(html: str) -> list[dict]:
     courses = []
-    for post_id, classes, url, heading_raw, dtags_html, body_html in COURSE_BLOCK_RE.findall(html):
-        courses.append(parse_course_block(post_id, classes, url, heading_raw, dtags_html, body_html))
+    for post_id, classes, block_html in split_into_post_blocks(html):
+        courses.append(parse_course_block(post_id, classes, block_html))
     return courses
