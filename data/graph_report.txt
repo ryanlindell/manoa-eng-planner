@@ -1,6 +1,6 @@
 === UH Manoa Catalog -- Prereq Graph Report ===
 Nodes: 8885 (in-catalog: 8770, external/unresolved: 115)
-Edges: 7618 (prereq: 7278, coreq: 340)
+Edges: 7621 (prereq: 7281, coreq: 340)
 
 Cycles detected (prereq edges only): 3
   ['GEO 400', 'GEO 401', 'GEO 402', 'GEO 405']
@@ -14,6 +14,7 @@ Dangling references (mentioned but not in dataset): 115 distinct codes
   MED 541: referenced by 19 course(s), e.g. ['MED 545B', 'MED 545C', 'MED 545D']
   KRS 703: referenced by 14 course(s), e.g. ['EDEP 733C', 'EDEP 733E', 'EDEP 733H']
   EDEP 703: referenced by 14 course(s), e.g. ['EDEP 733C', 'EDEP 733E', 'EDEP 733H']
+  WGSS 300: referenced by 13 course(s), e.g. ['SOC 318', 'SOC 367', 'SOC 435']
   STE 402: referenced by 13 course(s), e.g. ['STE 404B', 'STE 404C', 'STE 404D']
   KRS 733: referenced by 10 course(s), e.g. ['EDEP 734C', 'EDEP 734E', 'EDEP 734H']
   EDEP 733: referenced by 10 course(s), e.g. ['EDEP 734C', 'EDEP 734E', 'EDEP 734H']
@@ -21,7 +22,6 @@ Dangling references (mentioned but not in dataset): 115 distinct codes
   OBGN 531: referenced by 9 course(s), e.g. ['ANAT 545C', 'MDED 541', 'OBGN 545B']
   FMCH 531: referenced by 8 course(s), e.g. ['ANAT 545C', 'FMCH 545B', 'FMCH 545C']
   MUS 311: referenced by 8 course(s), e.g. ['MUS 411B', 'MUS 411C', 'MUS 411D']
-  WGSS 300: referenced by 7 course(s), e.g. ['WGSS 318', 'WGSS 339', 'WGSS 362']
   LAIS 360: referenced by 6 course(s), e.g. ['ANTH 478', 'LAIS 468', 'LAIS 478']
   JPN 407: referenced by 6 course(s), e.g. ['EALL 603C', 'EALL 603J', 'EALL 603K']
   ZOOL 306: referenced by 6 course(s), e.g. ['ZOOL 490B', 'ZOOL 490D', 'ZOOL 490E']

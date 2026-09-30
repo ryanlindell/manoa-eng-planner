@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-09-18T03:52:30.837100+00:00",
+ "generated_at": "2026-09-30T00:42:45.234512+00:00",
  "node_count": 8885,
- "edge_count": 7618,
+ "edge_count": 7621,
  "nodes": {
   "ACC 200": {
    "title": "Introduction to Accounting I",
@@ -63333,7 +63333,7 @@
       "course": "PSY 610"
      },
      {
-      "course": "EDEP 612",
+      "course": "PSY 612",
       "min_grade": "B"
      },
      {
@@ -197055,7 +197055,7 @@
         "text": "any 200 -"
        },
        {
-        "course": "SOC 300"
+        "course": "WGSS 300"
        }
       ]
      },
@@ -197471,7 +197471,7 @@
         "text": "any 200 -"
        },
        {
-        "course": "SOC 300"
+        "course": "WGSS 300"
        }
       ]
      },
@@ -197860,7 +197860,7 @@
         "text": "any 200 -"
        },
        {
-        "course": "SOC 300"
+        "course": "WGSS 300"
        }
       ]
      },
@@ -197987,7 +197987,7 @@
           "text": "any 200 -"
          },
          {
-          "course": "SOC 300"
+          "course": "WGSS 300"
          }
         ]
        }
@@ -198055,7 +198055,7 @@
         "text": "any 200 -"
        },
        {
-        "course": "SOC 300"
+        "course": "WGSS 300"
        }
       ]
      },
@@ -209622,7 +209622,7 @@
         "text": "any 200 -"
        },
        {
-        "course": "SUST 300"
+        "course": "WGSS 300"
        }
       ]
      },
@@ -230991,6 +230991,11 @@
    "depth": 0,
    "depth_status": "external"
   },
+  "PSY 612": {
+   "in_catalog": false,
+   "depth": 0,
+   "depth_status": "external"
+  },
   "KRS 703": {
    "in_catalog": false,
    "depth": 0,
@@ -231246,6 +231251,11 @@
    "depth": 0,
    "depth_status": "external"
   },
+  "WGSS 300": {
+   "in_catalog": false,
+   "depth": 0,
+   "depth_status": "external"
+  },
   "SOC 200": {
    "in_catalog": false,
    "depth": 0,
@@ -231326,11 +231336,6 @@
    "depth": 0,
    "depth_status": "external"
   },
-  "SUST 300": {
-   "in_catalog": false,
-   "depth": 0,
-   "depth_status": "external"
-  },
   "SUST 151": {
    "in_catalog": false,
    "depth": 0,
@@ -231377,11 +231382,6 @@
    "depth_status": "external"
   },
   "TIM 369": {
-   "in_catalog": false,
-   "depth": 0,
-   "depth_status": "external"
-  },
-  "WGSS 300": {
    "in_catalog": false,
    "depth": 0,
    "depth_status": "external"
@@ -243491,11 +243491,6 @@
   {
    "from": "EDEP 608",
    "to": "EDEP 657",
-   "type": "prereq"
-  },
-  {
-   "from": "EDEP 612",
-   "to": "EDEP 612",
    "type": "prereq"
   },
   {
@@ -263095,17 +263090,7 @@
   },
   {
    "from": "SOC 300",
-   "to": "SOC 318",
-   "type": "prereq"
-  },
-  {
-   "from": "SOC 300",
    "to": "SOC 362",
-   "type": "prereq"
-  },
-  {
-   "from": "SOC 300",
-   "to": "SOC 367",
    "type": "prereq"
   },
   {
@@ -268349,6 +268334,11 @@
    "type": "prereq"
   },
   {
+   "from": "PSY 612",
+   "to": "EDEP 612",
+   "type": "prereq"
+  },
+  {
    "from": "KRS 703",
    "to": "EDEP 733C",
    "type": "prereq"
@@ -269174,6 +269164,71 @@
    "type": "prereq"
   },
   {
+   "from": "WGSS 300",
+   "to": "SOC 318",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "SOC 367",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "SOC 435",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "SOC 446",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "SOC 452",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "SUST 367",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 318",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 339",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 362",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 367",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 435",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 446",
+   "type": "prereq"
+  },
+  {
+   "from": "WGSS 300",
+   "to": "WGSS 452",
+   "type": "prereq"
+  },
+  {
    "from": "SOC 200",
    "to": "SOC 374",
    "type": "prereq"
@@ -269359,11 +269414,6 @@
    "type": "prereq"
   },
   {
-   "from": "SUST 300",
-   "to": "SUST 367",
-   "type": "prereq"
-  },
-  {
    "from": "SUST 151",
    "to": "SUST 426",
    "type": "prereq"
@@ -269416,41 +269466,6 @@
   {
    "from": "TIM 369",
    "to": "TIM 402",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 318",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 339",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 362",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 367",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 435",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 446",
-   "type": "prereq"
-  },
-  {
-   "from": "WGSS 300",
-   "to": "WGSS 452",
    "type": "prereq"
   },
   {

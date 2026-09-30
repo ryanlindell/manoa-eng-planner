@@ -27,6 +27,37 @@ from collections import namedtuple
 STANDING_LEVELS = {"freshman", "sophomore", "junior", "senior", "graduate", "undergraduate"}
 WORD_NUMBERS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6}
 
+# "CHEM (131, 151, 161, 171, or 181A)" -- one subject prefix scoping over a
+# whole parenthesized list of bare numbers. Every Acalog-sourced catalog
+# year spells the subject out per item instead ("CHEM 131, CHEM 151, ...");
+# this compact form only showed up once the 2024-25 catalog (a different
+# site entirely, see data_2024/README.md) was added, and without this the
+# tokenizer had no way to know "151"/"161"/etc. belonged to CHEM rather than
+# whatever course's own prereq text this is -- it silently guessed
+# own_subject instead, which happened to be flat wrong for BIOL 172 (see the
+# conversation this was fixed in). This runs as a text-level rewrite into
+# the already-correctly-handled explicit-subject-per-item form, rather than
+# teaching the tokenizer a whole new construct, so it can't regress the
+# existing grammar for every other catalog year's prose.
+_SUBJECT_GROUP_RE = re.compile(
+    r"\b([A-Z]{2,6})\s*\(\s*((?:\d{2,4}[A-Za-z]?\s*(?:,\s*)?(?:or\s+)?)+\d{2,4}[A-Za-z]?)\s*\)"
+)
+
+
+def _expand_subject_groups(text: str) -> str:
+    def expand(m):
+        subject = m.group(1)
+        items = []
+        for raw_item in re.split(r",\s*|\s+or\s+", m.group(2)):
+            item = re.sub(r"^or\s+", "", raw_item.strip(), flags=re.I).strip()
+            if item:
+                items.append(item)
+        if len(items) < 2:
+            return m.group(0)  # not actually a list -- leave whatever this was alone
+        return "(" + ", ".join(f"{subject} {it}" for it in items[:-1]) + f", or {subject} {items[-1]})"
+
+    return _SUBJECT_GROUP_RE.sub(expand, text)
+
 Token = namedtuple("Token", ["kind", "value", "groups"])
 
 # Order is priority: earlier patterns win at a given position. Matched as one
@@ -128,6 +159,10 @@ class Parser:
         # Set by and_expr() on every call, read by or_expr() right after --
         # see and_expr()'s comma+AND branch and _fold note in or_expr().
         self._last_and_absorbable = False
+        # Updated every time an explicit "SUBJ NUM" is seen anywhere in this
+        # prereq text -- see _course_leaf for why a bare number's fallback
+        # needs this instead of always defaulting to own_subject.
+        self.last_explicit_subject = None
 
     def peek(self):
         return self.tokens[self.pos] if self.pos < len(self.tokens) else None
@@ -491,19 +526,37 @@ class Parser:
 
         return self._unparsed_atom()
 
-    def _course_leaf(self):
+    def _course_leaf(self, fallback_subject=None):
         tok = self.advance()
         if tok.kind == "COURSE":
+            self.last_explicit_subject = tok.groups[0]
             return {"course": f"{tok.groups[0]} {tok.groups[1]}"}
-        return {"course": f"{self.own_subject} {tok.groups[0]}"}
+        # A bare number with no subject of its own. Two cases:
+        #   - Right after a slash whose left side *did* name a subject
+        #     ("BIOL 172/172L") -- fallback_subject carries that in from
+        #     _course_atom, unambiguous, always wins.
+        #   - Anywhere else ("MATH 242 or 252A", "160 or consent"): the
+        #     natural reading carries forward whatever subject was most
+        #     recently stated explicitly in this same prereq text
+        #     (last_explicit_subject), falling back to this course's own
+        #     subject only if none has appeared yet ("160 or consent" in an
+        #     ECE course's own text means ECE 160, correctly, since no
+        #     other subject was ever named). Defaulting bare numbers to
+        #     own_subject unconditionally was the bug: "MATH 242 or 252A"
+        #     in a CEE course's prereq text silently became "CEE 252A"
+        #     instead of "MATH 252A" -- a real, wrong course reference, not
+        #     just an unparsed gap.
+        subj = fallback_subject or self.last_explicit_subject or self.own_subject
+        return {"course": f"{subj} {tok.groups[0]}"}
 
     def _course_atom(self):
         variants = [self._course_leaf()]
+        first_subject = variants[0]["course"].split(" ", 1)[0]
         while self.peek() and self.peek().kind == "SLASH":
             save = self.pos
             self.advance()
             if self.peek() and self.peek().kind in ("COURSE", "BARENUM"):
-                variants.append(self._course_leaf())
+                variants.append(self._course_leaf(fallback_subject=first_subject))
             else:
                 self.pos = save
                 break
@@ -625,7 +678,7 @@ def parse_prereq(raw: str, own_subject: str) -> tuple[dict, str]:
     if raw is None or not raw.strip():
         return None, "clean"
 
-    tokens = tokenize(raw)
+    tokens = tokenize(_expand_subject_groups(raw))
     result = ParseResult()
     parser = Parser(tokens, own_subject, result)
     tree = parser.parse()
