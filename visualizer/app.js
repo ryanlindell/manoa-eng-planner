@@ -9,15 +9,20 @@
   // copy has to live under visualizer/data/ too -- see graph.py, which
   // writes both copies of each catalog year together so they can't drift.
   //
-  // One entry per catalog year the site can show. Keep in sync by hand with
-  // config.py's CATALOGS (the id is that catoid, as a string, since a <select
-  // value> is always one) and with whatever graph.py has actually written to
-  // visualizer/data/ -- it names the default catalog's file prereq_graph.json
-  // and any other catalog's prereq_graph_catoid<N>.json, so add a row here
-  // each time a new year gets scraped and committed, not before.
+  // One entry per catalog year the site can show. `id` is usually that
+  // year's catoid as a string (config.py's CATALOGS, since a <select value>
+  // is always a string) -- except 2024-25, which isn't in the Acalog/catoid
+  // system at all (a completely different site; see data_2024/README.md),
+  // so its id is just "2024" and it has no config.py counterpart. Keep this
+  // in sync by hand with whatever graph.py (or scripts/graph_2024.py) has
+  // actually written to visualizer/data/ -- the default catalog's file is
+  // prereq_graph.json, catoid-based years are prereq_graph_catoid<N>.json,
+  // and 2024-25 is prereq_graph_2024.json. Add a row here each time a new
+  // year gets scraped and committed, not before.
   var CATALOGS = [
     { id: "4", label: "2026–2027", url: "data/prereq_graph.json" },
     { id: "2", label: "2025–2026 (archived)", url: "data/prereq_graph_catoid2.json" },
+    { id: "2024", label: "2024–2025 (archived)", url: "data/prereq_graph_2024.json" },
   ];
   // One entry per major this site can filter the graph down to. `catalogId`
   // is which CATALOGS entry the course-relevance data was computed against
