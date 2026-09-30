@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "year": 2023,
+  "program": "Electrical Engineering",
+  "catalog_effective": "August 2023",
+  "source": "checksheets/2023.pdf",
+  "note": "This year's sheet uses the department's older 'EE' course prefix throughout, not 'ECE' (the rename happened between the 2023 and 2024 printings -- confirmed by direct comparison of both PDFs, not an assumption). Every EE-department course code below reflects that. Footnote numbers also differ from 2024+: this sheet has 10 notes, not 11 (see the missing-caveat item in known_ambiguities), so every note-number citation below is this sheet's own, not copied from the 2024+ schema.",
+  "credit_totals": {
+    "abet_math_and_basic_sciences_minimum": 30,
+    "abet_engineering_topics_minimum": 45,
+    "major_track_minimum": 17,
+    "technical_electives_additional": 7
+  },
+  "gened_codes": {
+    "FW": "Foundations: Written Communication (3 cr)",
+    "FQ": "Foundations: Quantitative Reasoning",
+    "FG": "Foundations: Global & Multicultural Perspectives (6 cr across two courses; note 1 on the sheet, printed as 'FG Foundation Courses'). Two FG slots of 3 cr each appear on the grid.",
+    "DA": "Diversification: Arts",
+    "DB": "Diversification: Biological Science",
+    "DH": "Diversification: Humanities",
+    "DL": "Diversification: Literatures",
+    "DP": "Diversification: Physical Science",
+    "DS": "Diversification: Social Science",
+    "DY": "Diversification: Laboratory (science)",
+    "W": "Writing Intensive. 5 courses required, minimum of 2 in upper division (note 4). Printed as just 'Writing Intensive (W)', not the 'W/WI' form used from 2024 on. Grid shows 'W Focus (5)'.",
+    "H": "Hawaiian, Asian & Pacific Issues. One course required (note 5). Printed as just 'Hawaiian, Asian & Pacific Issues (H)', not the 'H/HAP' form used from 2024 on -- this sheet also has no equivalent of 2024+'s note stating H is excluded from engineering courses and may double-count with DH/DL/DS; see known_ambiguities. Grid shows 'H Focus (1)'.",
+    "O": "Oral Communication. One course required (note 5). Printed as just 'Oral Communication (O)'. Grid shows 'O Focus (1)'.",
+    "E": "Contemporary Ethical Issues. One course required (note 5). Printed as just 'Contemporary Ethical Issues (E)'. Grid shows 'E Focus (1)'."
+  },
+  "substitutions": [
+    "MATH 251A, MATH 252A, and MATH 253A (the Accelerated Calculus sequence) may substitute for the MATH 241-244 sequence -- a whole-sequence substitution, not a course-by-course one (note 2).",
+    "CHEM 181/181L, or CHEM 171/171L, may substitute for CHEM 161/161L and CHEM 162 (note 3). The sheet doesn't specify whether this is a full 3-for-3 substitution or partial; recorded as printed.",
+    "ENGR 196, ENGR 296, and ENGR 396 may substitute for EE 196, EE 296, and EE 396 respectively (note 9)."
+  ],
+  "tracks": {
+    "EP": {
+      "name": "Electro-Physics (EP) Track",
+      "group1_required_credits": 11,
+      "group2_required_credits": 6,
+      "areas": {
+        "Circuits": { "group1": ["EE 326", "EE 326L"], "group2": ["EE 422", "EE 422L", "EE 423", "EE 425", "EE 427"] },
+        "Devices": { "group1": ["EE 327"], "group2": ["EE 328", "EE 328L", "EE 426"] },
+        "Electromagnetics": { "group1": ["EE 372", "EE 372L"], "group2": ["EE 470", "EE 471", "EE 473", "EE 474", "EE 475", "EE 477"] },
+        "Energy": { "group1": [], "group2": ["EE 435", "EE 438"] },
+        "Biomedical": { "group1": [], "group2": ["EE 480"] }
+      }
+    },
+    "SDS": {
+      "name": "Systems & Data Sciences (SDS) Track",
+      "group1_required_credits": 12,
+      "group2_required_credits": 6,
+      "areas": {
+        "Communications": { "group1": ["EE 343", "EE 343L"], "group2": ["EE 344", "EE 442", "EE 446", "EE 449"] },
+        "Controls": { "group1": ["EE 351", "EE 351L"], "group2": ["EE 452", "EE 453"] },
+        "Signal Processing": { "group1": ["EE 415"], "group2": ["EE 416", "EE 417", "EE 445"] },
+        "Energy": { "group1": [], "group2": ["EE 435"] }
+      }
+    }
+  },
+  "technical_electives": {
+    "rule": "EE courses numbered 300 or above, totaling 7 additional credits drawn from the track lists (note 8). Of these, 3 credits must be outside the student's chosen major track and 1 credit must be a laboratory. On the grid: TE EE (3 cr, Junior Spring) + TE EE (3 cr) + (Lab) TE EE (1 cr) (both Senior Fall) = 7 cr, matching note 8.",
+    "additional_eligible": ["EE 205", "EE 361", "EE 361L", "EE 362", "EE 366", "EE 367", "EE 367L", "EE 368", "EE 369", "EE 406", "EE 461", "EE 467", "EE 468", "EE 469"],
+    "case_by_case": ["EE 491"]
+  },
+  "engineering_breadth": {
+    "rule": "Engineering Breadth (EB, 3 cr) is satisfied by a CEE, ME, OE, or BE course at the 300 level or higher; or CEE 270; or a physical/biological/computer science course at the 300 level or higher, which additionally requires approval from the Department's Undergraduate Curriculum Committee (note 7).",
+    "named_eligible": ["CEE 270"]
+  },
+  "concentrations": {
+    "Biomedical": "All Group I courses in either the EP or Systems Track, plus two biomedical-related Group II courses and an EB course approved by the Department's Undergraduate Curriculum Committee and listed on the EE website. EE 496 will be a biomedical project approved by the concentration coordinator.",
+    "Energy": "All Group I courses in either the EP or Systems Track, plus two energy-related Group II courses and an EB course approved by the Department's Undergraduate Curriculum Committee and listed on the EE website. EE 496 will be an energy project approved by the concentration coordinator."
+  },
+  "other_rules": {
+    "major_track_minimum": "A minimum of 17 credits in one of the major tracks: all track core courses (Group I) plus the remaining track elective courses (Group II).",
+    "all_courses_letter_graded": "ALL COURSES MUST BE TAKEN FOR LETTER (A-F) GRADES.",
+    "prereq_grade_requirement": "Enrollment in EE courses requires a grade of 'C' or better in all prerequisite courses (note 6).",
+    "alternate_track_proposal": "A student, along with a faculty member, may propose an alternate track if (1) equivalent in rigor & breadth to the listed tracks, (2) endorsed by another faculty member, and (3) approved by the Department's Undergraduate Curriculum Committee (note 10)."
+  },
+  "known_ambiguities": [
+    "This sheet has no equivalent of the 2024+ note stating that H (Hawaiian, Asian & Pacific Issues) is not included in engineering courses and may double-count with DH/DL or DS. Genuinely absent from this year's notes (confirmed against the full text), not an extraction gap -- may reflect an actual policy that hadn't been formalized yet, or simply wasn't written down; recorded as printed either way, not assumed to still apply.",
+    "Note 8's '3 must be outside the major track' most likely means 3 credits (parallel to '1 [credit] must be a laboratory'), not 3 courses, but the sheet doesn't say so explicitly.",
+    "EE 205 is listed as TE-eligible (note 8) despite being below the stated '300 or above' threshold for Technical Electives -- the same inconsistency present in every other year's sheet, not a transcription error.",
+    "CHEM 171/171L or CHEM 181/181L vs. CHEM 161/161L + CHEM 162: the sheet doesn't specify if this is a full-scope or partial substitution."
+  ]
+}
