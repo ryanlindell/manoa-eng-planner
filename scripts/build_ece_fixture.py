@@ -35,6 +35,21 @@ REAL_CODES_CATEGORY = {
     "ECON 120": "hub", "ECON 130": "hub", "ECON 131": "hub",
 }
 
+# Real either/or alternatives within the ~34 REAL_CODES_CATEGORY codes --
+# taking ONE satisfies the whole check-sheet slot, not both/all. Every code
+# listed here is also a REAL_CODES_CATEGORY key; any REAL_CODES_CATEGORY
+# code that never appears in a group here is its own one-course slot (no
+# alternative). Hand-transcribed from the 2026 sheet's own semester grid,
+# same as REAL_CODES_CATEGORY itself -- see build_ee_relevant_courses.py's
+# fixed_groups_for_subject() for how this crosses the EE/ECE rename for
+# pre-2024 catalogs the same way fixed_codes_for_subject() already does for
+# REAL_CODES_CATEGORY's own codes.
+FIXED_OR_GROUPS = [
+    ["ECE 160", "ECE 110"],
+    ["ECE 345", "MATH 307"],
+    ["ECON 120", "ECON 130", "ECON 131"],
+]
+
 # code -> (title, credits) for slots the check sheet leaves student-choice
 # dependent. Never a stand-in for a specific real course. Codes use the
 # check sheet's own short labels -- a "#N" suffix is added only where a

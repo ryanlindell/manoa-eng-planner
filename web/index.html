@@ -2,70 +2,242 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EE Degree Planner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engineering Degree Planner</title>
+<!-- Public Sans and IBM Plex Mono are the prereq map's text and course-code fonts (../visualizer/index.html); Montserrat is this page's own title font. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="layout-horizontal">
   <header class="app-header">
-    <h1>EE Degree Planner</h1>
+    <h1 id="app-title">Engineering Degree Planner</h1>
+    <span class="app-sub" id="app-sub"></span>
     <a class="viz-link" href="../visualizer/index.html" target="_blank" rel="noopener">
       Wanna see some data visualization? &rarr;
     </a>
   </header>
 
+  <div class="toolbar" id="toolbar">
+    <label class="tb-field" title="Keep several plans (say, one per track) and switch between them. New, duplicate, rename and delete are at the bottom of the list.">
+      <span>Plan</span>
+      <select id="plan-select" aria-label="Which plan to show"></select>
+    </label>
+    <label class="tb-field" title="Which major's check sheet to plan against. Switching re-checks the same courses against the new major.">
+      <span>Major</span>
+      <select id="major-select" aria-label="Major"></select>
+    </label>
+    <label class="tb-field">
+      <span>Track</span>
+      <select id="track-select" aria-label="Major track"></select>
+    </label>
+    <label class="tb-field" title="The semester you started. Changing it moves every semester in the plan by the same amount, so you can line it up with your transcript.">
+      <span>Start term</span>
+      <select id="start-select" aria-label="First semester of the plan"></select>
+    </label>
+    <div class="tb-field">
+      <span>Layout</span>
+      <div class="seg" role="group" aria-label="Plan layout">
+        <button type="button" id="layout-vertical" title="Semesters stacked down the page, courses across">Vertical</button>
+        <button type="button" id="layout-horizontal" title="Semesters side by side across the page, courses stacked">Horizontal</button>
+      </div>
+    </div>
+    <button type="button" id="check-btn" class="btn primary" title="Check prerequisites, when courses actually run, time conflicts, credit load, and every degree requirement">Check rules</button>
+    <button type="button" id="fill-btn" class="btn" title="Start from the check sheet's recommended 8 semesters">Check-sheet plan&hellip;</button>
+    <button type="button" id="advanced-btn" class="btn" title="Extra requirement sets for this plan, such as pre-med">Advanced options</button>
+    <label class="tb-field">
+      <span>Add term</span>
+      <select id="add-term-select" aria-label="Add a semester"></select>
+    </label>
+    <button type="button" id="undo-btn" class="btn" title="Undo your last change (Ctrl+Z)" disabled>&#8630; Undo</button>
+    <button type="button" id="redo-btn" class="btn" title="Redo what you just undid (Ctrl+Y)" disabled>&#8631; Redo</button>
+    <span class="tb-spacer"></span>
+    <span class="tb-total" id="total-credits"></span>
+    <button type="button" id="export-btn" class="btn quiet" title="Save this plan as a file">Export</button>
+    <button type="button" id="import-btn" class="btn quiet" title="Load a plan file saved with Export">Import</button>
+    <input type="file" id="import-file" accept="application/json,.json" hidden>
+    <button type="button" id="clear-btn" class="btn quiet" title="Remove every course from the plan">Clear</button>
+  </div>
+
+  <div class="notice" id="notice" hidden>
+    <span id="notice-text"></span>
+    <button type="button" class="modal-x" id="notice-close" aria-label="Dismiss">&times;</button>
+  </div>
+
   <p class="instructions">
-    Click an empty box in <strong>Your Plan</strong> to select it, then click a course in
-    <strong>Normal Schedule</strong> to place it there. Click the same empty box a second time
-    to enter a course manually. Drag a semester by its <strong>⠿</strong> handle to reorder it,
-    rename it inline, or mark it as a gap or transfer semester.
+    Click <strong>+ Add course</strong> or any dashed <strong>choose</strong> tile to pick the real course for that
+    requirement &mdash; the picker shows when each course actually runs (from STAR) and whether its prerequisites are
+    in place. Drag a course to another semester to move it, click it for details, use <strong>Gap</strong> on a semester you
+    sit out, and press
+    <strong>Check rules</strong> to see whether the schedule is likely to work. Set <strong>Start term</strong> to the
+    semester you began: semesters before the current term count as completed, and completed courses are shared with
+    the prereq map's &ldquo;taken&rdquo; list in both directions.
   </p>
 
-  <main class="layout">
+  <main class="layout" id="layout">
     <section class="plan-panel">
       <h2 class="panel-title">Your Plan</h2>
-      <div class="semester-toolbar">
-        <button id="add-semester-btn">+ Add Semester</button>
-        <button id="add-transfer-btn">+ Add Transfer Semester</button>
-      </div>
-      <section class="semester-column" id="semester-column">
-        <!-- Semester boxes are rendered by app.js -->
+      <div class="legend" id="legend"></div>
+      <section class="board-top" id="board-top"></section>
+      <section class="board" id="board">
+        <div class="loading">loading the catalog&hellip;</div>
       </section>
     </section>
 
-    <section class="template-panel">
-      <h2 class="panel-title">Normal Schedule</h2>
-      <section class="semester-column" id="template-column">
-        <!-- Template semester boxes are rendered by app.js -->
-      </section>
-    </section>
+    <aside class="side-panel">
+      <section class="report" id="report" hidden></section>
+      <section class="requirements" id="requirements"></section>
+    </aside>
   </main>
 
-  <div id="manual-entry-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Fill Course Details</h3>
-      <label>
-        Course Number:
-        <input type="text" id="manual-course-number" placeholder="e.g. CAS PY 123">
-      </label>
-      <label>
-        Name:
-        <input type="text" id="manual-course-name" placeholder="e.g. Calculus">
-      </label>
-      <label>
-        Credits:
-        <input type="number" id="manual-course-credits" min="0" step="1" value="4">
-      </label>
-      <label>
-        Hub Units (comma-separated):
-        <input type="text" id="manual-course-gened" placeholder="e.g. WR, DH">
-      </label>
-      <div class="modal-actions">
-        <button id="manual-entry-save">Save</button>
-        <button id="manual-entry-close">Close</button>
+  <footer class="app-footer" id="app-footer"></footer>
+
+  <!-- Course picker -->
+  <div id="picker-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+    <div class="modal-content wide">
+      <div class="modal-head">
+        <h3 id="picker-title">Add a course</h3>
+        <label class="picker-sem">to
+          <select id="picker-sem" aria-label="Semester to add to"></select>
+        </label>
+        <button type="button" class="modal-x" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="chips" id="picker-presets" role="group" aria-label="Requirement filters (combine several)"></div>
+      <div class="picker-filters">
+        <input type="search" id="picker-search" placeholder="Search by code or title, e.g. ECE 4 or history" autocomplete="off" spellcheck="false">
+        <span class="picker-levels" id="picker-levels" role="group" aria-label="Course level"></span>
+        <label class="check"><input type="checkbox" id="picker-runs"> <span id="picker-runs-label">Runs that season</span></label>
+        <label class="check"><input type="checkbox" id="picker-ready"> Prereqs in place</label>
+      </div>
+      <p class="picker-hint" id="picker-hint"></p>
+      <div class="picker-list" id="picker-list"></div>
+      <div class="picker-foot">
+        <button type="button" class="btn quiet" id="picker-manual">Not listed? Enter a course manually</button>
+        <span class="picker-count" id="picker-count"></span>
       </div>
     </div>
   </div>
 
+  <!-- Course details -->
+  <div id="detail-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3 id="detail-title"></h3>
+        <button type="button" class="modal-x" data-close aria-label="Close">&times;</button>
+      </div>
+      <div id="detail-body"></div>
+    </div>
+  </div>
+
+  <!-- Manual entry -->
+  <div id="manual-entry-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3>Enter a course manually</h3>
+        <button type="button" class="modal-x" data-close aria-label="Close">&times;</button>
+      </div>
+      <label>
+        Course number
+        <input type="text" id="manual-course-number" placeholder="e.g. HIST 151 or AP CALC">
+      </label>
+      <label>
+        Name
+        <input type="text" id="manual-course-name" placeholder="e.g. World History to 1500">
+      </label>
+      <label>
+        Credits
+        <input type="number" id="manual-course-credits" min="0" step="1" value="3">
+      </label>
+      <label>
+        Gen-ed tags (comma-separated)
+        <input type="text" id="manual-course-gened" placeholder="e.g. FGA, DH, DS">
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn primary" id="manual-entry-save">Add</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advanced options -->
+  <div id="advanced-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3>Advanced options</h3>
+        <button type="button" class="modal-x" data-close aria-label="Close">&times;</button>
+      </div>
+      <p class="modal-text">These apply to the plan you have open. Each plan keeps its own.</p>
+      <label class="option">
+        <input type="checkbox" id="opt-premed">
+        <span>
+          <strong>Pre-med (JABSOM)</strong>
+          <span class="option-detail">Track the John A. Burns School of Medicine's admission prerequisites alongside the EE degree: a year each of
+          biology, physics, general chemistry and organic chemistry with labs, one biochemistry course, and 90 credits. Adds a
+          Pre-med section to Requirements, a Pre-med filter to the course picker, and pre-med lines to Check rules.
+          <a id="premed-source" target="_blank" rel="noopener">JABSOM's requirements</a></span>
+        </span>
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn primary" data-close>Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fill from check sheet -->
+  <div id="fill-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3>Start from the check sheet</h3>
+        <button type="button" class="modal-x" data-close aria-label="Close">&times;</button>
+      </div>
+      <p class="modal-text" id="fill-text"></p>
+      <label>
+        First semester
+        <select id="fill-start"></select>
+      </label>
+      <label>
+        Major
+        <select id="fill-major"></select>
+      </label>
+      <label>
+        Track
+        <select id="fill-track"></select>
+      </label>
+      <p class="modal-text warn" id="fill-warning"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn primary" id="fill-go">Fill plan</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- One line of text -->
+  <div id="text-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="text-title">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3 id="text-title"></h3>
+        <button type="button" class="modal-x" data-close aria-label="Close">&times;</button>
+      </div>
+      <input type="text" id="text-input" maxlength="60" aria-labelledby="text-title">
+      <div class="modal-actions">
+        <button type="button" class="btn primary" id="text-ok">OK</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Yes/no -->
+  <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <p class="modal-text" id="confirm-text"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn primary" id="confirm-yes">Yes</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="programs.js"></script>
   <script src="app.js"></script>
   <script src="../shared/config.js"></script>
   <script src="../shared/analytics.js"></script>

@@ -1,0 +1,17 @@
+=== UH Manoa 2020-21 Catalog -- Build Coverage Report ===
+Subject pages processed: 169
+Total course blocks seen: 6776 (99 duplicate posts skipped)
+  Parsed OK: 6772
+    Real courses: 6489
+    (Alpha) parent placeholders (not enrollable): 283
+  Failed to parse heading: 4
+Duplicate course codes detected (post-dedup, should be 0): 5
+  DNCE 240: ['arts-sciences__arts-humanities__theatre-dance__dnce.html', 'arts-sciences__arts-humanities__theatre-dance__dnce.html']
+  SPAN 202: ['arts-sciences__lang-ling-lit__llea__span.html', 'arts-sciences__lang-ling-lit__llea__span.html']
+  PPC 340: ['arts-sciences__social-sciences__ppc.html', 'arts-sciences__social-sciences__ppc.html']
+  TIM 399: ['travel-industry-management__tim.html', 'travel-industry-management__tim.html']
+  LWPA 569: ['wsr-law__law__lwpa.html', 'wsr-law__law__lwpa.html']
+
+prereq_raw present on 4648/6489 real courses -- clean: 3161, partial: 1291, failed: 196
+coreq_raw present on 233/6489 real courses -- clean: 204, partial: 27, failed: 2
+restrictions_raw extracted (best-effort, see parse_course_2024 docstring): 574

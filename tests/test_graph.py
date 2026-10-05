@@ -136,6 +136,37 @@ def test_unresolved_prereq_status_when_parse_failed_but_raw_present():
     assert status["I"] == "unresolved_prereq"
 
 
+def test_concurrent_prereq_leaf_does_not_trigger_cycle():
+    """A lecture/lab pair each listing the other as "(or concurrent)" in its
+    own Pre: text (not coreq_raw) is the same normal pattern as a coreq pair
+    -- BIOL 171/171L, 172/172L, 301/301L (every catalog year) and BIOL
+    265/265L (catalogs through 2022-23) are all this shape. Before this was
+    handled, tree_depth treated a concurrent leaf exactly like a hard
+    prereq and recursed into the mutual reference forever, showing "cycle"
+    with depth None for what is actually a resolvable, non-blocking pair."""
+    courses = {
+        "M": _course("M", {"course": "N", "concurrent": True}),
+        "N": _course("N", {"course": "M", "concurrent": True}),
+    }
+    depths, status = graph.compute_depths(courses)
+    assert depths["M"] == 0
+    assert depths["N"] == 0
+    assert status["M"] == "ok"
+    assert status["N"] == "ok"
+
+
+def test_concurrent_prereq_leaf_does_not_inflate_one_directional_depth():
+    """Even without a cycle, a concurrent leaf shouldn't add +1 -- it can be
+    taken the same term, not strictly before."""
+    courses = {
+        "A": _course("A"),  # depth 0
+        "P": _course("P", {"course": "A", "concurrent": True}),
+    }
+    depths, status = graph.compute_depths(courses)
+    assert depths["P"] == 0
+    assert status["P"] == "ok"
+
+
 def test_coreq_edge_does_not_trigger_cycle_detection():
     """A lecture/lab coreq pair (each requires the other concurrently) is
     normal, not a genuine ordering cycle -- find_cycles only looks at prereq

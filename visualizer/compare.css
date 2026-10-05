@@ -1,0 +1,88 @@
+/* Layout for compare.html only -- styles.css supplies the shared reset,
+   fonts, color tokens, and control styles (.year-select, .nav-btn, .badge,
+   .mono) this page reuses as-is. */
+
+.cmp-app { min-height: 100%; display: flex; flex-direction: column; }
+
+.cmp-controls {
+  display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap;
+  padding: 14px 16px; border-bottom: 1px solid var(--hairline);
+}
+.cmp-field { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--ink-2); }
+.cmp-field .year-select { max-width: none; }
+#btn-swap { align-self: flex-end; margin-bottom: 1px; font-size: 1.1rem; }
+
+.cmp-subfilter {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-2);
+  align-self: flex-end; margin-bottom: 1px;
+}
+.cmp-subfilter[hidden] { display: none; }
+.cmp-subfilter-label { font-size: 0.78rem; color: var(--ink-muted); }
+.cmp-subfilter-opt { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; color: var(--ink); cursor: pointer; }
+
+.cmp-loading {
+  padding: 40px 16px; text-align: center; color: var(--ink-muted); font-size: 0.9rem;
+}
+.cmp-loading[hidden] { display: none; }
+
+.cmp-summary {
+  padding: 12px 16px; border-bottom: 1px solid var(--hairline);
+  font-size: 0.85rem; color: var(--ink-2); display: flex; gap: 18px; flex-wrap: wrap;
+}
+.cmp-summary strong { color: var(--ink); font-family: var(--mono); }
+.cmp-summary[hidden] { display: none; }
+
+.cmp-results { flex: 1; padding: 8px 16px 40px; }
+.cmp-results[hidden] { display: none; }
+
+.cmp-section { margin-top: 22px; }
+.cmp-section h2 {
+  font-size: 1rem; font-family: var(--sans); font-weight: 600; margin-bottom: 4px;
+  display: flex; align-items: baseline; gap: 8px;
+}
+.cmp-count {
+  font-family: var(--mono); font-size: 0.85rem; color: var(--accent);
+  background: var(--accent-wash); border-radius: 999px; padding: 1px 9px;
+}
+.cmp-hint { color: var(--ink-muted); font-size: 0.78rem; margin: 0 0 8px; }
+.cmp-empty { color: var(--ink-muted); font-size: 0.85rem; margin: 6px 0; }
+
+.cmp-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hairline); }
+.cmp-row {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+  padding: 9px 4px; border-bottom: 1px solid var(--hairline);
+}
+.cmp-row:hover { background: var(--surface-2); }
+.cmp-code { font-family: var(--mono); font-weight: 600; font-size: 0.82rem; color: var(--accent); flex: 0 0 auto; }
+.cmp-code.old { color: var(--ink-muted); text-decoration: line-through; }
+.cmp-arrow { color: var(--ink-muted); flex: 0 0 auto; }
+/* Sized to its own text, not stretched -- gened badges and everything else
+   sit right after it, close to the title, instead of pushed off to wherever
+   a forced flex-grow width happened to end. */
+.cmp-title { flex: 0 1 auto; font-size: 0.86rem; color: var(--ink); }
+.cmp-credits { font-family: var(--mono); font-size: 0.76rem; color: var(--ink-muted); flex: 0 0 auto; }
+/* On whichever element starts the "credits / links" cluster for a given
+   row shape -- margin-left: auto pushes it (and everything after it) to
+   the row's right edge, while code/title/gened stay compact on the left. */
+.cmp-push { margin-inline-start: auto; }
+.cmp-link {
+  flex: 0 0 auto; font-size: 0.76rem; color: var(--ink-muted); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 999px; padding: 2px 9px;
+}
+.cmp-link:hover, .cmp-link:focus-visible { color: var(--accent); border-color: var(--accent); }
+.cmp-diffs { flex: 1 1 100%; margin: 2px 0 0; padding: 0; list-style: none; font-size: 0.78rem; color: var(--ink-2); }
+.cmp-diffs li { padding: 1px 0; }
+.cmp-diffs .field { color: var(--ink-muted); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.04em; margin-inline-end: 6px; }
+.cmp-diffs .from { color: var(--status-critical); text-decoration: line-through; }
+.cmp-diffs .to { color: var(--accent); }
+.cmp-diffs .from, .cmp-diffs .to { font-family: var(--mono); font-size: 0.76rem; }
+
+.cmp-gened { display: inline-flex; gap: 4px; flex-wrap: wrap; flex: 0 0 auto; }
+.cmp-gened.old .badge { opacity: 0.55; text-decoration: line-through; }
+
+@media (max-width: 640px) {
+  .cmp-controls { padding: 10px 12px; }
+  .cmp-field { flex: 1 1 44%; }
+  .cmp-results { padding: 8px 12px 32px; }
+}

@@ -37,6 +37,19 @@ VISUALIZER_JSON = Path(__file__).resolve().parent / "visualizer" / "data" / (
     "prereq_graph.json" if CATOID == 4 else f"prereq_graph_catoid{CATOID}.json"
 )
 
+# Focus (W/H/E/O) per course code, derived from STAR section data by
+# scripts/build_star_focus.py. Not part of any one catalog year's scrape, so it
+# lives at a fixed path and export_json() stamps it onto every node it has an
+# entry for -- otherwise rebuilding a catalog would wipe the embedded lists.
+STAR_FOCUS_JSON = Path(__file__).resolve().parent / "data" / "star_focus.json"
+
+
+def load_star_focus() -> dict:
+    if not STAR_FOCUS_JSON.exists():
+        return {}
+    return json.loads(STAR_FOCUS_JSON.read_text(encoding="utf-8")).get("focus_by_code", {})
+
+
 NON_COURSE_LEAF_TYPES = {"consent", "standing", "major_restriction", "unparsed"}
 
 
@@ -134,6 +147,19 @@ def compute_depths(courses: dict[str, dict]) -> tuple[dict[str, int | None], dic
     semantics -- NOT a flat graph-distance calculation. See the module
     docstring and the design note in the strategy discussion:
       - course leaf: 1 + depth(that course)
+      - course leaf marked concurrent ("(or concurrent)" in the source text,
+        e.g. a lecture requiring its lab "or concurrent"): 0, the same as a
+        non-course leaf below -- it doesn't have to be *completed* first, so
+        it shouldn't inflate this course's depth, and more importantly it
+        must not recurse into that course's own depth. Two courses each
+        listing the other only as "(or concurrent)" (any lecture/lab pair --
+        BIOL 171/171L, 172/172L, 301/301L, and BIOL 265/265L in catalogs
+        through 2022-23) is normal, not a genuine ordering problem, the same
+        reasoning find_cycles already applies to coreq edges -- but until
+        this was fixed here, treating a concurrent leaf exactly like a hard
+        prereq made tree_depth recurse into that mutual reference forever,
+        surfacing as a false "cycle" status (and a needlessly inflated depth
+        even for a *one-directional* concurrent leaf, which never cycles).
       - consent/standing/major_restriction/unparsed leaf: 0 (doesn't block on
         a course)
       - AND: max(children) -- must satisfy all, bounded by the slowest
@@ -150,6 +176,8 @@ def compute_depths(courses: dict[str, dict]) -> tuple[dict[str, int | None], dic
 
     def tree_depth(node):
         if "course" in node:
+            if node.get("concurrent"):
+                return 0
             sub = course_depth(node["course"])
             return None if sub is None else sub + 1
         if node.get("type") in NON_COURSE_LEAF_TYPES:
@@ -225,6 +253,9 @@ def export_json(g: nx.DiGraph, depths, depth_status, out_json: Path = OUT_JSON, 
             "depth": depths.get(code),
             "depth_status": depth_status.get(code, "external"),
         }
+    for code, focus in load_star_focus().items():
+        if code in nodes:
+            nodes[code]["focus"] = focus
     edges = [{"from": u, "to": v, "type": d.get("type")} for u, v, d in g.edges(data=True)]
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

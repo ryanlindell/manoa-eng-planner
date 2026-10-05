@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Analysis — Mānoa Prereq Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="canonical" href="https://ryanlindell.com/manoa-eng-planner/visualizer/analysis.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="compare.css">
+<link rel="stylesheet" href="star.css">
+<link rel="stylesheet" href="../shared/feedback.css">
+</head>
+<body>
+<div class="cmp-app">
+  <header>
+    <h1>Analysis</h1>
+    <a href="index.html" class="page-link">&larr; Course graph</a>
+    <!-- Tabs: each panel's script loads the first time its tab opens (see the
+         inline script at the bottom), so opening one never pays for the other's data. -->
+    <nav class="an-tabs" role="tablist" aria-label="Analysis tools">
+      <button id="tab-compare" class="an-tab" role="tab" type="button" aria-controls="panel-compare" data-tab="compare">Compare catalogs</button>
+      <button id="tab-star" class="an-tab" role="tab" type="button" aria-controls="panel-star" data-tab="star">STAR offerings</button>
+      <button id="tab-ee" class="an-tab" role="tab" type="button" aria-controls="panel-ee" data-tab="ee">EE degree</button>
+    </nav>
+    <div class="tagline" id="an-tagline"></div>
+  </header>
+
+  <!-- ===== Compare catalogs (compare.js) ===== -->
+  <section id="panel-compare" class="an-panel" role="tabpanel" aria-labelledby="tab-compare" hidden>
+    <div class="cmp-controls">
+      <label class="cmp-field">
+        <span>Catalog A</span>
+        <select id="catalog-a" class="year-select" aria-label="Catalog A"></select>
+      </label>
+      <button id="btn-swap" class="nav-btn" type="button" title="Swap A and B" aria-label="Swap catalogs">&#8646;</button>
+      <label class="cmp-field">
+        <span>Catalog B</span>
+        <select id="catalog-b" class="year-select" aria-label="Catalog B"></select>
+      </label>
+      <label class="cmp-field">
+        <span>Subject</span>
+        <select id="subject-filter" class="year-select" aria-label="Filter to a subject"></select>
+      </label>
+      <label class="cmp-field">
+        <span>Gen-Ed</span>
+        <select id="gened-filter" class="year-select" aria-label="Filter to a general education requirement"></select>
+      </label>
+      <label class="cmp-field" title="Focus designations come from STAR's section data (Spring 2024 – Fall 2026), not from the catalog, so a course carries the same letters in every catalog year.">
+        <span>Focus</span>
+        <select id="focus-filter" class="year-select" aria-label="Filter to a Focus requirement (W, H, E, O)"></select>
+      </label>
+      <label class="cmp-field">
+        <span>Major</span>
+        <select id="major-filter" class="year-select" aria-label="Filter to a major"></select>
+      </label>
+      <div id="major-subfilter" class="cmp-subfilter" hidden></div>
+    </div>
+
+    <div id="cmp-loading" class="cmp-loading">loading catalogs&hellip;</div>
+
+    <div id="summary" class="cmp-summary" hidden></div>
+
+    <main id="results" class="cmp-results" hidden>
+      <section class="cmp-section" data-kind="new">
+        <h2><span class="cmp-count" id="count-new"></span> new in <span id="label-new"></span></h2>
+        <p class="cmp-empty" id="empty-new" hidden>None, with the current filters.</p>
+        <ul class="cmp-list" id="list-new"></ul>
+      </section>
+      <section class="cmp-section" data-kind="removed">
+        <h2><span class="cmp-count" id="count-removed"></span> removed from <span id="label-removed"></span></h2>
+        <p class="cmp-empty" id="empty-removed" hidden>None, with the current filters.</p>
+        <ul class="cmp-list" id="list-removed"></ul>
+      </section>
+      <section class="cmp-section" data-kind="renamed">
+        <h2><span class="cmp-count" id="count-renamed"></span> possibly renamed or renumbered</h2>
+        <p class="cmp-hint">Same title, different course code -- a guess, not confirmed by the catalog itself.</p>
+        <p class="cmp-empty" id="empty-renamed" hidden>None, with the current filters.</p>
+        <ul class="cmp-list" id="list-renamed"></ul>
+      </section>
+      <section class="cmp-section" data-kind="changed">
+        <h2><span class="cmp-count" id="count-changed"></span> changed</h2>
+        <p class="cmp-hint">Same course code in both catalogs, but title, credits, prereqs, or gen-ed tags differ.</p>
+        <p class="cmp-empty" id="empty-changed" hidden>None, with the current filters.</p>
+        <ul class="cmp-list" id="list-changed"></ul>
+      </section>
+    </main>
+  </section>
+
+  <!-- ===== EE degree planning (ee.js renders everything inside) ===== -->
+  <section id="panel-ee" class="an-panel" role="tabpanel" aria-labelledby="tab-ee" hidden>
+    <div id="ee-root" class="viz-root"><div class="cmp-loading">loading the EE check sheet, catalog and STAR data&hellip;</div></div>
+  </section>
+
+  <!-- ===== STAR offerings (star.js renders everything inside) ===== -->
+  <section id="panel-star" class="an-panel" role="tabpanel" aria-labelledby="tab-star" hidden>
+    <div id="star-root" class="viz-root"><div class="cmp-loading">loading STAR section data&hellip;</div></div>
+  </section>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="viz-tip" class="viz-tip" role="tooltip" hidden></div>
+
+<script src="catalogs.js"></script>
+<script src="viz.js"></script>
+<script>
+(function () {
+  // Tab switching, kept in the URL hash (#compare / #star, plus whatever
+  // state a panel adds after a "?") so a link reopens the same view.
+  var TABS = {
+    compare: { script: "compare.js", tagline: "what's new, removed, or changed between any two catalog years" },
+    star: { script: "star.js", tagline: "when courses run, how big they are, and how full they get — from STAR" },
+    ee: { script: "ee.js", tagline: "planning an Electrical Engineering degree around when courses actually run" },
+  };
+  var loaded = {};
+  function hashTab() { return location.hash.replace(/^#/, "").split("?")[0]; }
+  function currentTab() {
+    var name = hashTab();
+    return TABS[name] ? name : "compare";
+  }
+  function show(name) {
+    Object.keys(TABS).forEach(function (t) {
+      var on = t === name;
+      document.getElementById("panel-" + t).hidden = !on;
+      var tab = document.getElementById("tab-" + t);
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
+    });
+    document.getElementById("an-tagline").textContent = TABS[name].tagline;
+    if (!loaded[name]) {
+      loaded[name] = true;
+      var s = document.createElement("script");
+      s.src = TABS[name].script;
+      document.body.appendChild(s);
+    }
+  }
+  function wire(btn) {
+    btn.addEventListener("click", function () {
+      var name = btn.getAttribute("data-tab");
+      if (currentTab() !== name) location.hash = name;
+      show(name);
+    });
+    btn.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      var names = Object.keys(TABS), i = names.indexOf(btn.getAttribute("data-tab"));
+      var next = names[(i + (e.key === "ArrowRight" ? 1 : names.length - 1)) % names.length];
+      document.getElementById("tab-" + next).focus();
+      document.getElementById("tab-" + next).click();
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".an-tab"), wire);
+  window.addEventListener("hashchange", function () { show(currentTab()); });
+  show(currentTab());
+
+  // Local-only extension tabs: a gitignored visualizer/private/tabs.js may
+  // call registerAnalysisTab() to add its own tab. Only ever requested when
+  // the page is opened locally, so the published site never looks for it.
+  window.registerAnalysisTab = function (id, label, script, tagline) {
+    if (TABS[id]) return;
+    TABS[id] = { script: script, tagline: tagline };
+    var btn = document.createElement("button");
+    btn.id = "tab-" + id; btn.className = "an-tab"; btn.type = "button";
+    btn.setAttribute("role", "tab"); btn.setAttribute("aria-controls", "panel-" + id); btn.setAttribute("data-tab", id);
+    btn.textContent = label;
+    document.querySelector(".an-tabs").appendChild(btn);
+    var panel = document.createElement("section");
+    panel.id = "panel-" + id; panel.className = "an-panel"; panel.hidden = true;
+    panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", btn.id);
+    panel.innerHTML = '<div id="' + id + '-root" class="viz-root"><div class="cmp-loading">loading&hellip;</div></div>';
+    document.querySelector(".cmp-app").appendChild(panel);
+    wire(btn);
+    show(currentTab()); // a link straight to this tab (#id) can open it now
+  };
+  if (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+    var ext = document.createElement("script");
+    ext.src = "private/tabs.js";
+    ext.onerror = function () { /* no local extensions here */ };
+    document.body.appendChild(ext);
+  }
+})();
+</script>
+<script src="../shared/config.js"></script>
+<script src="../shared/analytics.js"></script>
+<script src="../shared/feedback.js"></script>
+</body>
+</html>

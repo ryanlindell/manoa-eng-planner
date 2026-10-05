@@ -18,6 +18,8 @@
     <h1>Mānoa Prereq Map</h1>
     <select id="catalog-year" class="year-select" aria-label="Catalog year"></select>
     <select id="major-filter" class="year-select filter-select" aria-label="Filter to a major"></select>
+    <select id="track-filter" class="year-select filter-select" aria-label="Filter to a track" hidden></select>
+    <a href="analysis.html" class="page-link">Analysis →</a>
     <div class="nav-history">
       <button id="nav-back" class="nav-btn" type="button" title="Back to previous course" disabled aria-label="Back">&larr;</button>
       <button id="nav-forward" class="nav-btn" type="button" title="Forward to next course" disabled aria-label="Forward">&rarr;</button>
@@ -54,6 +56,9 @@
     <label id="mobile-filter-row" class="mobile-catalog-row">
       <span class="mobile-catalog-label">Filter to major</span>
     </label>
+    <label id="mobile-track-row" class="mobile-catalog-row" hidden>
+      <span class="mobile-catalog-label">Filter to track</span>
+    </label>
 
     <div id="browse">
       <p class="panel-title">Worth a look</p>
@@ -65,11 +70,16 @@
   <div id="stage">
     <div id="cy-wrap">
       <div id="cy"></div>
+      <div id="checklist-view"></div>
+      <div id="gradmap-cy"></div>
       <div class="graph-controls">
         <button id="btn-legend" class="ctl-btn" type="button" aria-label="Show key" aria-expanded="false">Key</button>
         <button id="btn-focus" class="ctl-btn" type="button" aria-label="Zoom to selected course">Focus</button>
         <button id="btn-fit" class="ctl-btn" type="button" aria-label="Fit whole graph">Fit all</button>
-        <button id="btn-max" class="ctl-btn" type="button" aria-pressed="false" title="Hide everything but the graph (Esc to exit)">Full view</button>
+        <button id="btn-checklist" class="ctl-btn" type="button" aria-pressed="false" title="Show every requirement course on one screen -- click a course to mark it (and its prereqs) taken">Checklist</button>
+        <button id="btn-gradmap" class="ctl-btn" type="button" aria-pressed="false" title="A real prereq map of every graduation-requirement course at once -- click a course to see its details, double-click to mark it (and its whole prereq chain) done">Graduation Map</button>
+        <button id="btn-deepest" class="ctl-btn" type="button" aria-pressed="false" title="Highlight the longest prereq chain(s) you still have left -- the courses that set how many semesters you need at minimum">Deepest chains</button>
+        <button id="btn-max"class="ctl-btn" type="button" aria-pressed="false" title="Hide everything but the graph (Esc to exit)">Full view</button>
         <button id="btn-share" class="ctl-btn ctl-share" type="button" aria-label="Share this course">
           <svg class="share-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
           <span>Share</span>
@@ -79,6 +89,7 @@
         <div class="na-title"><span class="na-code"></span> <span class="na-name"></span></div>
         <div class="na-buttons">
           <button id="na-expand" class="na-btn" type="button">Show its prereqs</button>
+          <button id="na-taken" class="na-btn" type="button">Mark as taken</button>
           <button id="na-open" class="na-btn primary" type="button">Open course</button>
         </div>
       </div>
@@ -88,12 +99,15 @@
     <div class="legend">
       <span><span class="swatch" style="background:var(--edge-prereq)"></span> prerequisite</span>
       <span><span class="swatch" style="background:var(--edge-coreq); background-image:repeating-linear-gradient(90deg,var(--edge-coreq) 0 4px,transparent 4px 7px)"></span> corequisite</span>
-      <span><span class="swatch" style="background:var(--depth-6)"></span> node shade = depth (darker = more semesters deep)</span>
+      <span id="legend-depth"><span class="swatch" style="background:var(--depth-6)"></span> node shade = depth (darker = more semesters deep)</span>
+      <div id="legend-categories" class="legend-categories" hidden></div>
       <span><span class="swatch" style="border:1px dashed var(--edge-prereq); background:transparent; height:10px"></span> dashed box = pick one (or N) of these, not all required</span>
       <span class="hint-desktop">click a course to reveal (or hide) its own prereqs &middot; double-click to go there &middot; drag a course to move it &middot; press / to search</span>
       <span class="hint-mobile">tap a course for options &middot; pinch to zoom &middot; drag to pan</span>
     </div>
     <div id="detail-wrap">
+      <!-- Drag to make the course details taller or shorter (double-click to reset); see setupDetailResize() in app.js. -->
+      <div id="detail-resize" class="detail-resize" role="separator" aria-orientation="horizontal" aria-label="Resize course details" tabindex="0" title="Drag to resize the course details · double-click to reset"></div>
       <button id="detail-toggle" class="detail-toggle" type="button" aria-controls="detail" aria-expanded="false">
         <span class="dt-label">Course details</span><span class="dt-chevron" aria-hidden="true">&#9650;</span>
       </button>
@@ -105,6 +119,7 @@
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js" integrity="sha512-EY3U1MWdgKx0P1dqTE4inlKz2cpXtWpsR1YUyD855Hs6RL/A0cyvrKh60EpE8wDZ814cTe1KgRK+sG0Rn792vQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="catalogs.js"></script>
 <script src="app.js"></script>
 <script src="../shared/config.js"></script>
 <script src="../shared/analytics.js"></script>

@@ -1,6 +1,6 @@
 === UH Manoa Catalog -- Prereq Graph Report ===
-Nodes: 6860 (in-catalog: 6684, external/unresolved: 176)
-Edges: 5918 (prereq: 5647, coreq: 271)
+Nodes: 6861 (in-catalog: 6685, external/unresolved: 176)
+Edges: 5921 (prereq: 5650, coreq: 271)
 
 Cycles detected (prereq edges only): 5
   ['KRS 775', 'KRS 776']
@@ -32,24 +32,24 @@ Dangling references (mentioned but not in dataset): 176 distinct codes
   NURS 320L: referenced by 3 course(s), e.g. ['NURS 360', 'NURS 360L', 'NURS 362']
 
 Depth status breakdown (all graph nodes):
-  ok: 4269
+  ok: 4272
   no_prereq: 2240
   unresolved_prereq: 172
-  cycle: 3
-  external: 171
+  cycle: 1
+  external: 168
 
-Depth distribution (in-catalog courses with a resolvable depth, n=6681):
-  min=0 max=10 mean=1.11
-  depth 0: 3741 courses
-  depth 1: 1297 courses
-  depth 2: 516 courses
-  depth 3: 349 courses
-  depth 4: 309 courses
-  depth 5: 199 courses
-  depth 6: 144 courses
-  depth 7: 64 courses
-  depth 8: 46 courses
-  depth 9: 15 courses
+Depth distribution (in-catalog courses with a resolvable depth, n=6684):
+  min=0 max=10 mean=0.88
+  depth 0: 3962 courses
+  depth 1: 1338 courses
+  depth 2: 543 courses
+  depth 3: 361 courses
+  depth 4: 239 courses
+  depth 5: 102 courses
+  depth 6: 81 courses
+  depth 7: 30 courses
+  depth 8: 21 courses
+  depth 9: 6 courses
   depth 10: 1 courses
 
 Deepest courses:
@@ -60,11 +60,11 @@ Deepest courses:
   KOR 640: depth 9 -- Literary Translation of Korean
   KOR 652: depth 9 -- Major Authors in Modern Korean Literature
   KOR 664: depth 9 -- Topics and Issues in Modern Korean Literature
-  ECE 442: depth 9 -- Digital Communications
-  ECE 446: depth 9 -- Information Theory and Coding
-  ECE 616: depth 9 -- Digital Image Processing
-  ECE 651: depth 9 -- Nonlinear Control Systems
-  ECE 652: depth 9 -- Optimal Control Systems
-  ECE 655: depth 9 -- Robust Control
-  ECE 685: depth 9 -- Biomedical Signal Processing and Analysis
-  DH 480: depth 9 -- Advanced Clinical Dental Hygiene II
+  KOR 494: depth 8 -- Introduction to Modern Korean Literature
+  KOR 403: depth 8 -- High-Advanced Korean: Korean Society
+  KOR 404: depth 8 -- High-Advanced Korean II
+  KOR 411: depth 8 -- Advanced Oral Communication in Korean
+  KOR 420: depth 8 -- Korean Composition
+  KOR 421: depth 8 -- Media Analysis in Korean: Contemporary Korean Culture
+  KOR 422: depth 8 -- Media Analysis in Korean: Contemporary Ethical Issues in Korea
+  KOR 425: depth 8 -- Selected Readings in Korean

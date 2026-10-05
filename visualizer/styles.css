@@ -28,6 +28,24 @@
   --depth-0: #eef4fc; --depth-1: #dce8fa; --depth-2: #c2d9f6; --depth-3: #a3c5f0;
   --depth-4: #82ade8; --depth-5: #6396dd; --depth-6: #4a80cf; --depth-7: #386dbd;
 
+  /* Major-filter category colors (app.js's nodeColor()) -- one hue+
+     saturation pair per requirement type (see build_ee_relevant_courses.py's
+     category_by_code), read in JS the same way t.depth above is, then
+     varied by lightness per depth to build each category's own 8-step
+     ramp -- same "darker = more semesters deep" direction as --depth-*,
+     just recolored by category instead of always blue. h-focus isn't a
+     fill category: it's the amber outline app.js draws on courses that
+     carry a W/H/E/O Focus (star_focus.json, built from STAR's section
+     data), and the .badge.focus color in the course details. */
+  --cat-fixed-h: 214;     --cat-fixed-s: 60%;   /* blue -- same family as the default depth ramp */
+  --cat-group1-h: 145;    --cat-group1-s: 50%;  /* green -- Major EE Group I */
+  --cat-group2-h: 178;    --cat-group2-s: 50%;  /* teal -- Major EE Group II */
+  --cat-te-h: 285;        --cat-te-s: 40%;      /* violet -- Technical Electives */
+  --cat-eb-h: 22;         --cat-eb-s: 65%;      /* orange -- Engineering Breadth */
+  --cat-gened-h: 330;     --cat-gened-s: 45%;   /* rose -- open Gen-Ed Core slots */
+  --cat-any-level-h: 214; --cat-any-level-s: 16%; /* muted slate -- ECE/EE grad & other, same hue as fixed but desaturated to read as de-emphasized rather than a second "core requirement" blue */
+  --cat-h-focus-h: 48;    --cat-h-focus-s: 55%; /* amber -- reserved, see above */
+
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -50,6 +68,17 @@
        reason the light theme's dark end is capped, just mirrored. */
     --depth-0: #3f7dc4; --depth-1: #366dae; --depth-2: #2d5d98; --depth-3: #244d82;
     --depth-4: #1c3e6c; --depth-5: #152f56; --depth-6: #0f2140; --depth-7: #09142a;
+
+    /* Same hues as the light theme's category tokens (see :root above),
+       saturation retuned for a dark background the same way --accent is. */
+    --cat-fixed-h: 214;     --cat-fixed-s: 55%;
+    --cat-group1-h: 145;    --cat-group1-s: 42%;
+    --cat-group2-h: 178;    --cat-group2-s: 42%;
+    --cat-te-h: 285;        --cat-te-s: 40%;
+    --cat-eb-h: 22;         --cat-eb-s: 55%;
+    --cat-gened-h: 330;     --cat-gened-s: 42%;
+    --cat-any-level-h: 214; --cat-any-level-s: 14%;
+    --cat-h-focus-h: 48;    --cat-h-focus-s: 45%;
   }
 }
 :root[data-theme="dark"] {
@@ -65,6 +94,15 @@
      media query). */
   --depth-0: #3f7dc4; --depth-1: #366dae; --depth-2: #2d5d98; --depth-3: #244d82;
   --depth-4: #1c3e6c; --depth-5: #152f56; --depth-6: #0f2140; --depth-7: #09142a;
+
+  --cat-fixed-h: 214;     --cat-fixed-s: 55%;
+  --cat-group1-h: 145;    --cat-group1-s: 42%;
+  --cat-group2-h: 178;    --cat-group2-s: 42%;
+  --cat-te-h: 285;        --cat-te-s: 40%;
+  --cat-eb-h: 22;         --cat-eb-s: 55%;
+  --cat-gened-h: 330;     --cat-gened-s: 42%;
+  --cat-any-level-h: 214; --cat-any-level-s: 14%;
+  --cat-h-focus-h: 48;    --cat-h-focus-s: 45%;
 }
 
 * { box-sizing: border-box; }
@@ -109,6 +147,10 @@ header .tagline { color: var(--ink-2); font-size: 0.85rem; margin-inline-start: 
 /* On mobile this select lives in .mobile-catalog-row inside the search
    sheet instead (see below) -- the header has no room left for it there. */
 .is-mobile header .year-select { display: none; }
+.page-link {
+  font-size: 0.8rem; color: var(--ink-2); text-decoration: none; white-space: nowrap;
+}
+.page-link:hover, .page-link:focus-visible { color: var(--accent); }
 .nav-history { display: flex; gap: 6px; }
 .nav-btn {
   width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
@@ -168,6 +210,28 @@ html.sidebar-collapsed:not(.is-mobile) #sidebar {
 .highlight-tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .highlight-pane[hidden] { display: none; }
 
+/* "Find by requirement" tab (app.js renderFindPane) */
+.find-group { margin: 0 0 10px; }
+.find-group-title { font-size: 0.78rem; font-weight: 600; color: var(--ink-2); margin: 0 0 4px; }
+.find-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.find-chip {
+  font: inherit; font-size: 0.72rem; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink-2); cursor: pointer;
+}
+.find-chip:hover { border-color: var(--accent); color: var(--accent); }
+.find-chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.find-mode { font-size: 0.78rem; color: var(--ink-2); margin: 0 0 8px; }
+.find-select, .find-query {
+  font: inherit; font-size: 0.78rem; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink);
+}
+.find-query { width: 100%; box-sizing: border-box; margin: 0 0 6px; }
+.find-clear {
+  font: inherit; font-size: 0.72rem; padding: 4px 10px; margin: 6px 0 4px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--ink-2); cursor: pointer;
+}
+.find-count { font-size: 0.76rem; color: var(--ink-muted); margin: 8px 0 4px; }
+
 #stage {
   /* min-height: 0 overrides the grid item's implied automatic minimum size
      (which defaults to its content's min-content height) -- without it,
@@ -179,6 +243,110 @@ html.sidebar-collapsed:not(.is-mobile) #sidebar {
 }
 #cy-wrap { flex: 1 1 auto; min-height: 340px; position: relative; display: flex; flex-direction: column; }
 #cy { flex: 1 1 auto; min-height: 0; background: var(--surface); }
+
+/* Checklist mode: swaps the graph canvas for every requirement course on
+   one screen (see renderChecklistView() in app.js) -- toggled by
+   html.checklist-mode, same convention as html.graph-max/.detail-open. */
+#checklist-view { display: none; flex: 1 1 auto; min-height: 0; overflow-y: auto; background: var(--surface); padding: 16px 20px 20px; }
+html.checklist-mode #cy { display: none; }
+html.checklist-mode #checklist-view { display: block; }
+html.checklist-mode #btn-focus, html.checklist-mode #btn-fit { display: none; }
+#btn-checklist[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* Graduation Map mode: a second, independent Cytoscape instance (see
+   state.gradCy / renderGradMap() in app.js) showing every degree-requirement
+   course and its real prereq edges at once, instead of the main graph's
+   single-focal windowed view. Same html.<mode>-mode toggle convention as
+   checklist-mode above; the two are mutually exclusive with each other and
+   with the plain graph (see setViewMode()). */
+#gradmap-cy { display: none; flex: 1 1 auto; min-height: 0; background: var(--surface); }
+html.gradmap-mode #cy { display: none; }
+html.gradmap-mode #gradmap-cy { display: block; }
+/* #btn-fit stays available here (see fitAll() in app.js) -- the map's
+   layout keeps settling/drifting after the one-time fit a mode switch
+   does, unlike checklist mode's static grid; #btn-focus has no equivalent
+   since this view has no single focal course. */
+html.gradmap-mode #btn-focus { display: none; }
+/* Graduation Map only -- see applyGradDeepest() in app.js. */
+#btn-deepest { display: none; }
+html.gradmap-mode #btn-deepest { display: inline-block; }
+#btn-deepest[aria-pressed="true"],
+#btn-gradmap[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.checklist-empty { color: var(--ink-muted); font-size: 0.9rem; padding: 20px 4px; }
+.checklist-section { margin: 0 0 22px; max-width: 900px; }
+.checklist-section h3 { font-size: 0.95rem; margin: 0 0 3px; color: var(--ink); }
+.checklist-section .checklist-section-sub { font-size: 0.78rem; color: var(--ink-muted); margin: 0 0 10px; }
+.checklist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.checklist-tile {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2);
+  font: inherit; color: var(--ink); cursor: pointer;
+}
+.checklist-tile:hover, .checklist-tile:focus-visible { border-color: var(--accent); }
+.checklist-tile .code { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.checklist-tile .title { font-size: 0.76rem; color: var(--ink-2); line-height: 1.25; }
+.checklist-tile.done { background: var(--accent-wash); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.checklist-tile.done .title { color: var(--ink-muted); }
+.checklist-tile .mark { flex: 0 0 auto; width: 13px; color: var(--accent); font-weight: 700; }
+/* A real either/or alternative (e.g. "ECE 160 or ECE 110") -- one grid
+   cell (spanning 2 columns for room) holding every alternative's own tile
+   with an "or" divider between them, instead of separate always-required
+   tiles. See fixedGrid() in app.js. */
+.checklist-or-group {
+  grid-column: span 2; display: flex; align-items: stretch; flex-wrap: wrap; gap: 6px;
+  padding: 6px; border: 1px dashed var(--border); border-radius: 10px;
+}
+.checklist-or-group.done { border-color: color-mix(in srgb, var(--accent) 45%, transparent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.checklist-or-group .checklist-tile { flex: 1 1 140px; min-width: 140px; }
+.checklist-or { align-self: center; font-size: 0.72rem; color: var(--ink-muted); font-style: italic; flex: 0 0 auto; }
+
+/* Checklist mode's requirement boxes (reqBox() in app.js): one bordered box
+   per requirement that "lights up" in the accent color once it's met. The
+   major track is a heavier outer box with Group I/II boxed inside it. */
+.req-summary { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; max-width: 900px; }
+.req-chip {
+  display: flex; flex-direction: column; gap: 1px; padding: 6px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface-2); min-width: 120px;
+}
+.req-chip-label { font-size: 0.76rem; font-weight: 700; color: var(--ink); }
+.req-chip-status { font-size: 0.72rem; color: var(--ink-muted); font-family: var(--mono); }
+.req-chip.done { background: var(--accent); border-color: var(--accent); }
+.req-chip.done .req-chip-label, .req-chip.done .req-chip-status { color: var(--accent-ink); }
+
+.req-box {
+  max-width: 900px; margin: 0 0 16px; padding: 12px 14px 14px;
+  border: 1.5px solid var(--border); border-radius: 12px; background: var(--surface);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.req-box.complete {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.req-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 0 4px; }
+.req-head h3 { font-size: 0.95rem; margin: 0; color: var(--ink); }
+.req-head h4 { font-size: 0.85rem; margin: 0; color: var(--ink); }
+.req-status { font-size: 0.76rem; font-family: var(--mono); color: var(--ink-muted); white-space: nowrap; }
+.req-box.complete > .req-head .req-status { color: var(--accent); font-weight: 700; }
+.req-box .checklist-section-sub { font-size: 0.78rem; color: var(--ink-muted); margin: 0 0 8px; }
+.req-bar { margin: 2px 0 10px; }
+.req-box.req-track { border-width: 2px; padding: 14px 16px 16px; }
+.req-track-groups { display: flex; flex-direction: column; gap: 12px; }
+.req-track-groups .req-box { margin: 0; background: var(--surface-2); border-style: dashed; }
+.req-track-groups .req-box.complete { border-style: solid; background: color-mix(in srgb, var(--accent) 10%, var(--surface-2)); }
+.req-track-groups .checklist-tile { background: var(--surface); }
+.req-track-groups .checklist-tile.done { background: var(--accent-wash); }
+.req-pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.req-pill {
+  font-size: 0.74rem; padding: 3px 10px; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--ink-muted); background: var(--surface-2);
+}
+.req-pill.done { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 600; }
+.req-foldout { margin: 10px 0 0; font-size: 0.8rem; }
+.req-foldout summary { cursor: pointer; color: var(--ink-2); padding: 4px 0; }
+.req-foldout summary:hover { color: var(--accent); }
+.req-foldout-body { padding: 8px 0 2px; }
+.req-box .progress-manual { margin-top: 10px; }
 .col-labels {
   display: flex; justify-content: space-between; gap: 8px;
   padding: 10px 14px 0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
@@ -191,6 +359,27 @@ html.sidebar-collapsed:not(.is-mobile) #sidebar {
   max-height: 30vh; overflow-y: auto;
   transition: max-height 0.25s ease, padding 0.25s ease, opacity 0.15s ease, border-top-color 0.25s ease;
 }
+/* A height the visitor dragged the panel to (--detail-h, set by
+   setupDetailResize() in app.js): the panel takes exactly that height, taller
+   or shorter than its content, instead of the default "as tall as the
+   content, up to 30vh". */
+html.detail-sized.detail-open #detail { height: var(--detail-h); max-height: none; }
+html.detail-resizing #detail { transition: none; }
+html.detail-resizing { cursor: ns-resize; user-select: none; }
+/* The grab strip along the panel's top edge. Only there while the panel is
+   open -- closed, there's nothing to resize. */
+.detail-resize {
+  display: none; position: relative; height: 9px; margin-top: -5px; z-index: 3;
+  cursor: ns-resize; touch-action: none;
+}
+html.detail-open .detail-resize { display: block; }
+.detail-resize::after {
+  content: ""; position: absolute; left: 50%; top: 3px; width: 44px; height: 3px; margin-left: -22px;
+  border-radius: 2px; background: var(--hairline); transition: background 0.15s;
+}
+.detail-resize:hover::after, .detail-resize:focus-visible::after, html.detail-resizing .detail-resize::after { background: var(--accent); }
+.detail-resize:focus-visible { outline: none; }
+html.graph-max:not(.is-mobile) .detail-resize { display: none; }
 html:not(.detail-open) #detail {
   max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; overflow: hidden;
   border-top-color: transparent; pointer-events: none;
@@ -206,8 +395,81 @@ html:not(.detail-open) #detail {
 .badge.critical { background: color-mix(in srgb, var(--status-critical) 16%, transparent); color: var(--status-critical); border-color: color-mix(in srgb, var(--status-critical) 40%, transparent); }
 .badge.warning { background: color-mix(in srgb, var(--status-warning) 16%, transparent); color: var(--status-warning); border-color: color-mix(in srgb, var(--status-warning) 40%, transparent); }
 .badge.gened { background: var(--accent-wash); color: var(--accent); }
+.badge.focus { background: color-mix(in srgb, hsl(var(--cat-h-focus-h), var(--cat-h-focus-s), 50%) 22%, transparent); color: var(--ink); border-color: hsl(var(--cat-h-focus-h), var(--cat-h-focus-s), 50%); }
+/* Offering pattern (offeringPattern() in app.js) -- as a details-panel
+   badge and as a line on checklist tiles. Every-semester courses stay
+   quiet; a single-season course is the time-sensitive case and gets the
+   warning color, a course with no recent sections the critical one. */
+.offer-both, .offer-summer { --offer: var(--ink-muted); }
+.offer-fall, .offer-spring, .offer-irregular { --offer: var(--status-warning); }
+.offer-none { --offer: var(--status-critical); }
+.badge.offer {
+  background: color-mix(in srgb, var(--offer) 14%, transparent); color: var(--ink);
+  border-color: color-mix(in srgb, var(--offer) 45%, transparent); margin: 0 0 6px;
+}
+.tile-offer {
+  margin-top: 3px; font-size: 0.68rem; font-weight: 600; padding: 1px 7px; border-radius: 999px;
+  color: var(--ink-2); border: 1px solid color-mix(in srgb, var(--offer) 50%, transparent);
+  background: color-mix(in srgb, var(--offer) 12%, transparent);
+}
+.offer-table { border-collapse: collapse; font-size: 0.76rem; width: 100%; max-width: 520px; margin: 2px 0 4px; }
+.offer-table th { text-align: left; font-weight: 600; color: var(--ink-muted); padding: 2px 8px 3px 0; border-bottom: 1px solid var(--hairline); }
+.offer-table td { padding: 3px 8px 3px 0; color: var(--ink-2); font-family: var(--mono); white-space: nowrap; }
+.offer-table td:first-child { font-family: var(--sans); color: var(--ink); }
+.offer-table tr.off td { color: var(--ink-muted); opacity: 0.7; }
+.offer-table .bar-cell { width: 100%; }
+.offer-bar { height: 6px; min-width: 60px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.offer-bar > div { height: 100%; background: var(--accent); }
+.offer-bar.full > div { background: var(--status-warning); }
+.offer-note { font-size: 0.72rem; color: var(--ink-muted); margin: 2px 0 0; }
 .badge.outside { background: var(--surface-2); color: var(--ink-muted); border-color: var(--border); }
 .filter-select.active { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+/* Course-detail "mark as taken" toggle -- see #detail's own .code/h2 rules
+   above; this sits right below the title, before the meta badge row. */
+.taken-toggle {
+  display: inline-flex; align-items: center; gap: 6px; margin: 6px 0 2px;
+  height: 28px; padding: 0 12px; font: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--surface-2); color: var(--ink);
+}
+.taken-toggle:hover, .taken-toggle:focus-visible { border-color: var(--accent); color: var(--accent); }
+.taken-toggle.active { background: var(--accent-wash); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+/* "My Progress" degree-audit pane -- see renderProgressPane() in app.js. */
+.progress-empty { color: var(--ink-muted); font-size: 0.85rem; padding: 8px 4px; }
+.progress-section { margin: 0 0 18px; }
+.progress-section h4 { font-size: 0.82rem; margin: 0 0 6px; color: var(--ink); }
+.progress-focus-title { font-size: 0.78rem; font-weight: 600; color: var(--ink-2); margin: 10px 0 2px; }
+.progress-focus-list { margin: 4px 0 0; font-size: 0.78rem; }
+.progress-focus-list summary { cursor: pointer; color: var(--ink-muted); }
+.progress-note { font-size: 0.76rem; color: var(--ink-muted); margin: 6px 0 0; }
+.progress-bar-wrap { margin: 0 0 6px; }
+.progress-bar { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--accent); border-radius: inherit; }
+.progress-bar.complete .progress-bar-fill { background: var(--accent); }
+.progress-bar-label { font-size: 0.76rem; color: var(--ink-muted); margin-top: 3px; }
+.progress-subchecks { display: flex; gap: 14px; flex-wrap: wrap; margin: 0 0 6px; }
+.progress-subcheck { font-size: 0.76rem; color: var(--ink-muted); }
+.progress-subcheck.done { color: var(--accent); font-weight: 600; }
+.progress-checklist { list-style: none; margin: 0; padding: 0; }
+.progress-checklist .progress-item { border-bottom: 1px solid var(--hairline); }
+.progress-checklist button {
+  display: flex; align-items: baseline; gap: 8px; width: 100%; padding: 6px 4px;
+  border: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; border-radius: 4px;
+}
+.progress-checklist button:hover, .progress-checklist button:focus-visible { background: var(--surface-2); }
+.progress-mark { flex: 0 0 auto; width: 14px; text-align: center; color: var(--accent); font-weight: 700; }
+.progress-checklist .code { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; flex: 0 0 auto; color: var(--accent); }
+.progress-checklist .title { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); font-size: 0.82rem; }
+.progress-checklist .progress-item.done .title { color: var(--ink-muted); }
+/* A real either/or alternative in Fixed requirements (e.g. "ECE 160 or
+   ECE 110") -- every alternative's own button side by side in one row
+   with an "or" divider, instead of full-width separate rows. See
+   fixedChecklist() in app.js. */
+.progress-item.or-group { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 4px; padding: 2px 0; }
+.progress-item.or-group button { width: auto; flex: 1 1 130px; }
+.progress-or { font-size: 0.72rem; color: var(--ink-muted); font-style: italic; flex: 0 0 auto; }
+.progress-manual { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--ink-2); margin: 4px 0; cursor: pointer; }
 #detail .field-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); margin: 12px 0 3px; }
 #detail .field-value { font-size: 0.88rem; }
 
@@ -225,6 +487,14 @@ html:not(.detail-open) #detail {
 }
 .legend span { display: inline-flex; align-items: center; gap: 5px; }
 .legend .swatch { width: 14px; height: 3px; border-radius: 2px; }
+/* Category swatches (major filter active) -- a compact wrapped chip row
+   instead of one-per-line like the rest of the legend, since there can be
+   up to 8 of these and the legend box has a fixed 360px width. */
+.legend-categories { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.legend-categories[hidden] { display: none; }
+.legend-categories span { flex: 0 0 auto; }
+.legend-categories .swatch { width: 10px; height: 10px; border-radius: 3px; }
+.legend-categories .reserved { opacity: 0.5; }
 
 /* ---------- phone / touch layout ----------
    Everything below hangs off .is-mobile on <html>, which app.js sets when the
@@ -269,6 +539,12 @@ html.graph-max:not(.is-mobile) #sidebar,
 html.graph-max:not(.is-mobile) .col-labels,
 html.graph-max:not(.is-mobile) #detail-wrap { display: none; }
 html.graph-max:not(.is-mobile) #cy-wrap { min-height: 0; }
+/* Checklist in full view: drop the 900px reading-width cap so the boxes use
+   the whole screen, with a small even margin on both sides. */
+html.graph-max:not(.is-mobile) #checklist-view { padding-left: 24px; padding-right: 24px; }
+html.graph-max:not(.is-mobile) #checklist-view .req-box,
+html.graph-max:not(.is-mobile) #checklist-view .req-summary,
+html.graph-max:not(.is-mobile) #checklist-view .checklist-section { max-width: none; }
 
 /* Course details handle: one line that opens and closes the panel below it. */
 .detail-toggle {
@@ -421,3 +697,20 @@ html.graph-max:not(.is-mobile) #cy-wrap { min-height: 0; }
 @media (prefers-reduced-motion: reduce) {
   #toast, .app, #sidebar, #detail, .dt-chevron { transition: none; }
 }
+
+/* ---------- rated difficulty (local only: see the "rated difficulty" block in app.js) ---------- */
+#btn-difficulty[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.diff-light { --diff: var(--accent); }
+.diff-typical { --diff: var(--ink-muted); }
+.diff-hard { --diff: var(--status-warning); }
+.diff-vhard { --diff: var(--status-critical); }
+.badge.diff, .tile-diff {
+  background: color-mix(in srgb, var(--diff) 16%, transparent); color: var(--ink);
+  border-color: color-mix(in srgb, var(--diff) 50%, transparent);
+}
+.badge.diff { font-family: var(--mono); }
+.tile-diff { margin-left: 4px; }
+.diff-table td:first-child { white-space: normal; }
+.legend .swatch.diff-swatch { height: 10px; border: 1px solid var(--hairline); margin-left: 6px; }
+.legend .swatch.diff-swatch:first-child { margin-left: 0; }
+.legend.diff-on #legend-depth, .legend.diff-on #legend-categories { display: none; }

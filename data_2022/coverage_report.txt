@@ -1,0 +1,22 @@
+=== UH Manoa 2022-23 Catalog -- Build Coverage Report ===
+Subject pages processed: 176
+Total course blocks seen: 6953 (98 duplicate posts skipped)
+  Parsed OK: 6947
+    Real courses: 6655
+    (Alpha) parent placeholders (not enrollable): 292
+  Failed to parse heading: 6
+Duplicate course codes detected (post-dedup, should be 0): 10
+  ACM 399: ['arts-languages-letters__acm.html', 'arts-languages-letters__acm.html']
+  SPAN 202: ['arts-languages-letters__llea__span.html', 'arts-languages-letters__llea__span.html']
+  SPAN 202A: ['arts-languages-letters__llea__span.html', 'arts-languages-letters__llea__span.html']
+  PHIL 100: ['arts-languages-letters__phil.html', 'arts-languages-letters__phil.html']
+  DNCE 240: ['arts-languages-letters__theatre-dance__dnce.html', 'arts-languages-letters__theatre-dance__dnce.html']
+  UROP 399: ['oaa__urop.html', 'oss__univ.html']
+  NAVL 202: ['rotc__navl.html', 'rotc__navl.html']
+  PPC 340: ['social-sciences__ppc.html', 'social-sciences__ppc.html']
+  TIM 399: ['travel-industry-management__tim.html', 'travel-industry-management__tim.html']
+  LWPA 569: ['wsr-law__law__lwpa.html', 'wsr-law__law__lwpa.html']
+
+prereq_raw present on 4728/6655 real courses -- clean: 3192, partial: 1336, failed: 200
+coreq_raw present on 233/6655 real courses -- clean: 201, partial: 30, failed: 2
+restrictions_raw extracted (best-effort, see parse_course_2024 docstring): 600

@@ -30,39 +30,39 @@ Dangling references (mentioned but not in dataset): 115 distinct codes
   BIOM 555: referenced by 5 course(s), e.g. ['PATH 545B', 'PATH 545C', 'PATH 545D']
 
 Depth status breakdown (all graph nodes):
-  ok: 4979
+  ok: 4981
   no_prereq: 3482
   unresolved_prereq: 303
-  cycle: 6
-  external: 109
+  cycle: 4
+  external: 108
 
-Depth distribution (in-catalog courses with a resolvable depth, n=8764):
-  min=0 max=10 mean=1.01
-  depth 0: 5110 courses
-  depth 1: 1713 courses
-  depth 2: 620 courses
-  depth 3: 422 courses
-  depth 4: 361 courses
-  depth 5: 226 courses
-  depth 6: 170 courses
-  depth 7: 79 courses
-  depth 8: 43 courses
-  depth 9: 19 courses
+Depth distribution (in-catalog courses with a resolvable depth, n=8766):
+  min=0 max=10 mean=0.85
+  depth 0: 5351 courses
+  depth 1: 1717 courses
+  depth 2: 623 courses
+  depth 3: 440 courses
+  depth 4: 316 courses
+  depth 5: 147 courses
+  depth 6: 98 courses
+  depth 7: 43 courses
+  depth 8: 18 courses
+  depth 9: 12 courses
   depth 10: 1 courses
 
 Deepest courses:
   KOR 496: depth 10 -- Korean Abroad
   ASAN 653: depth 9 -- Major Authors in Modern Korean Literature
   ASAN 664: depth 9 -- Topics and Issues in Modern Korean Literature
-  ECE 442: depth 9 -- Digital Communications
-  ECE 446: depth 9 -- Information Theory and Coding
-  ECE 616: depth 9 -- Digital Image Processing
-  ECE 651: depth 9 -- Nonlinear Control Systems
-  ECE 652: depth 9 -- Optimal Control Systems
-  ECE 655: depth 9 -- Robust Control
-  ECE 685: depth 9 -- Biomedical Signal Processing and Analysis
   KOR 495: depth 9 -- Internship Program
   KOR 613M: depth 9 -- Korean Verse: modern
   KOR 613T: depth 9 -- Korean Verse: traditional
   KOR 614M: depth 9 -- Korean Narrative: modern
   KOR 614T: depth 9 -- Korean Narrative: traditional
+  KOR 615M: depth 9 -- Korean Drama: modern
+  KOR 615T: depth 9 -- Korean Drama: traditional
+  KOR 640: depth 9 -- Literary Translation of Korean
+  KOR 652: depth 9 -- Major Authors in Modern Korean Literature
+  KOR 664: depth 9 -- Topics and Issues in Modern Korean Literature
+  KOR 494: depth 8 -- Introduction to Modern Korean Literature
+  ATMO 601: depth 8 -- Atmospheric Dynamics II

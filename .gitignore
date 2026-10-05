@@ -17,5 +17,30 @@ pages_catoid*/
 # fetched by scripts/scrape_2024_catalog.py instead of capture_playwright.py,
 # but the same "large and fully reproducible" reasoning applies.
 pages_2024_raw/
+# 2023-24 catalog: same site/system as 2024-25, one year earlier (see
+# scripts/scrape_2023_catalog.py).
+pages_2023_raw/
+# 2022-23 catalog: same site/system, one year earlier still (see
+# scripts/scrape_2022_catalog.py).
+pages_2022_raw/
+# 2021-22 and 2020-21 catalogs: same site/system, same pattern (see
+# scripts/scrape_2021_catalog.py, scripts/scrape_2020_catalog.py).
+pages_2021_raw/
+pages_2020_raw/
 debug/
 capture_log*.txt
+
+# STAR captures contain student data / raw scrapes
+data_star/
+*STAR*GPS*Registration*
+
+# Local-only analysis (instructor-level STAR data and the tools that use it).
+# analysis.html loads visualizer/private/tabs.js only on localhost, so none of
+# this exists on the published site either.
+visualizer/private/
+scripts/private/
+
+# The degree planner's local-only data (course difficulty from Rate My
+# Professors, built by scripts/private/build_planner_difficulty.py). app.js
+# only asks for it on localhost, so the published planner never has it.
+web/private/

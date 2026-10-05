@@ -69,7 +69,16 @@ TAG_ANCHOR_RE = re.compile(r'>([A-Z]{1,4})<')
 # COMG 321, MICR 351L, ... -- a source-side markup defect, not something
 # specific to one department), so it's optional here rather than a hard
 # failure losing otherwise-good data.
-HEADING_RE = re.compile(r"^([A-Z]{2,6})\s+(\d+)([A-Za-z]*)\s+(.*?)\s*\(([^()]*?)\)?\s*$")
+# The optional "/SECOND" group handles a genuine joint subject code, e.g.
+# "CINE/ACM 210" -- confirmed by hand this is how the *entire* Cinematic and
+# Digital Arts department was coded in the 2023-24 catalog (retired to a
+# plain "CINE" subject by 2024-25, the same rename pattern as EE -> ECE).
+# Only the primary (first) subject is kept as this course's `subject`/`code`
+# below; the second is folded into crosslisted_raw instead of joined into
+# `subject` itself, since the rest of the pipeline (own_subject fallback
+# resolution in parse_prereq.py, "is this an X course" checks) assumes a
+# single bare subject code.
+HEADING_RE = re.compile(r"^([A-Z]{2,6})(?:/([A-Z]{2,6}))?\s+(\d+)([A-Za-z]*)\s+(.*?)\s*\(([^()]*?)\)?\s*$")
 LEC_LAB_RE = re.compile(r"^\((\d+(?:\s*-\s*\d+)?\s*Lec[^)]*)\)\s*")
 CROSSLISTED_RE = re.compile(r"\(Cross-?[- ]?listed as ([^)]+)\)", re.I)
 OFFERED_RE = re.compile(r"\((Fall|Spring|Summer) only\)", re.I)
@@ -231,7 +240,7 @@ def parse_course_block(post_id: str, classes: str, block_html: str) -> dict:
     m = HEADING_RE.match(heading)
     if not m:
         return _failed_block(post_id, heading, heading)
-    subject, number, alpha_suffix, title, credits_raw = m.groups()
+    subject, dual_subject, number, alpha_suffix, title, credits_raw = m.groups()
     alpha_suffix = alpha_suffix or None
     credits_raw = credits_raw.strip()
     is_alpha_parent = title.strip().lower().startswith("(alpha)")
@@ -239,6 +248,11 @@ def parse_course_block(post_id: str, classes: str, block_html: str) -> dict:
 
     body = strip_tags(body_html) if body_html else ""
     fields = split_prose(body)
+    if dual_subject:
+        dual_code = f"{dual_subject} {number}{alpha_suffix or ''}"
+        fields["crosslisted_raw"] = (
+            f"{fields['crosslisted_raw']}; {dual_code}" if fields["crosslisted_raw"] else dual_code
+        )
 
     # gened tags come from the "gened-tags-<code>" classes on the post div
     # (confirmed against the .dtags anchor text too, which carries the same
